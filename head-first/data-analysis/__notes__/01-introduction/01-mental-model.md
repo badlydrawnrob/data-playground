@@ -1,8 +1,8 @@
-# Introduction to data analysis
-
 ## Mental models
 
-> Always make your mental modals as explicit as possible
+![](./img/mental-model.png)
+
+> Always make your <mark>mental modals as explicit as possible</mark>
 
 Give your mental models the same <b>serious</b>, <b>careful</b> treatment as <b>data</b>.
 
@@ -37,10 +37,10 @@ I perceive a hipster place as <i>superficial</i> and <i>exclusive</i>.
 - [x] To pick the right statistical model, you need be aware of your mental model
     - [ ] Your <b>statistical model</b> is <em>dependant</em> on your</em> on your <b>mental model</b>
 
-> If your <mark>mental model</mark> is wrong, your analysis or recommendations <strong>will fail</strong>
+> <b>If your mental model is wrong, your analysis or recommendations <strong>will fail</strong></b>
 
 - [ ] How you ask questions, or posit theories <b>changes depending</b> on your <b>mental model</b>
 
 ----
 
-![Picture of define -> disassemble -> evaluate -> decide](..)
+![](./img/define-disassemble-evaluate-decide.jpg)

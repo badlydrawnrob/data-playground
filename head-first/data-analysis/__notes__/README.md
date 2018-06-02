@@ -1,5 +1,13 @@
 # README
 
+## != To review
+
+- Should I use `aside` over `blockquote` if it's not a direct quote?
+    - Is the `blockquote` just for **[ACTUAL QUOTES](https://quinnlabs.com/articles/pullquotes-blockquotes-and-asides-in-html5/)**?
+    - `<aside class="aside-error"></aside>`
+        - Can be removed without reducing the meaning of the content
+    - Or `<figure>`?
+
 View the current [HTML element reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Element) (may need to revise occasionally)
 
 
@@ -30,9 +38,21 @@ http://marked2app.com/help/Multi-File_Documents.html
     - [possibly] to compare and contrast in context
 - `q`: inline quotations
 - `blockquote`: long form (block) quotations
+    - `blockquote` > `mark`:
+      - Highlight interesting parts of original text
+  - `blockquote` > `b`:
+      - Highlight errors or gotchas
+      - `blockquote` > `b` > `mark`
+  - `blockquote` > `i`:
+      - Italics (!= do we need?)
 - [`cite`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/cite): A book, research paper, essay or reference to source material
     - Can be used within a paragraph
     - [Debatable])https://stackoverflow.com/questions/5460356/html5-block-quote-with-author): Can be used within a `blockquote`
     - Could also use a `footer` in the `blockquote` with a `cite` for the source (author or work)
     - Possibly use a `<a href="#" rel="author">` tag for the author
         - Basically *no one fucking knows*
+
+## Image sizes
+
+`A4` @ `300ppi` = `2480 x 3508`
+`A4` @ `72ppi` = `595 x 842`

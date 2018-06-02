@@ -1,10 +1,8 @@
-# Introduction to data analysis
-
 ## Filling in the gaps
 
-> <mark>Always</mark> include what you <mark>don't know</mark> as well as what you do
+![](./img/hangman.png)
 
-![Hangman game image](..)
+> <mark>Always include what you don't know</mark> as well as what you do
 
 A mental model helps you <i>fill in the gaps</i> in your knowledge.
 
@@ -27,6 +25,8 @@ You'll always need a mental model to fill in gaps of knowledge to understand the
     - but everything should be testable
 
 
+
+
 ## FOCUS
 
 No matter how much data you have at your disposal, <strong><b>stay focused</b> on what you're trying to achieve!</strong>.
@@ -35,11 +35,11 @@ No matter how much data you have at your disposal, <strong><b>stay focused</b> o
 
 ----
 
-![Focus maps image](..)
-
-<b>Mental model</b> + <b>Baseline assumptions</b> = <b>🔦 Focus</b>
+![<b>Mental model</b> + <b>Baseline assumptions</b> = 🔦 <b>Focus</b>](./img/define-the-problem.jpg)
 
 ----
+
+
 
 
 ## It's an ongoing process
@@ -51,6 +51,7 @@ Data analysis is an ongoing process. You can't know everything and todays succes
     - Your mental model influences your data model
     - Your data model influences your mental model
 - <b>Stay focused on your goals</b> and <b>make your assumptions explicit</b>
+
 
 
 
