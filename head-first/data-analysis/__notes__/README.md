@@ -2,11 +2,19 @@
 
 ## != To review
 
-- Should I use `aside` over `blockquote` if it's not a direct quote?
+- Probably use an `aside` over `blockquote` if not a direct quote?
     - Is the `blockquote` just for **[ACTUAL QUOTES](https://quinnlabs.com/articles/pullquotes-blockquotes-and-asides-in-html5/)**?
     - `<aside class="aside-error"></aside>`
         - Can be removed without reducing the meaning of the content
     - Or `<figure>`?
+
+```
+<aside class="aside aside-standout">
+  <p class="aside-Passage">
+    Always make comparisons <b class="aside-Border">explicit</b>
+  </p>
+</aside>
+```
 
 View the current [HTML element reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Element) (may need to revise occasionally)
 
