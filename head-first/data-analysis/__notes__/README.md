@@ -16,6 +16,33 @@
 </aside>
 ```
 
+```
+<aside class=aside aside-thumbnail">
+  <p class="aside-Passage">
+    <i class="aside-thumbnail">lightbulb</i> This is an exciting idea!</i>
+  </p>
+</aside>
+```
+
+```
+<aside class="aside aside-with-notes">
+  <p class="aside-Passage">
+    A fancy note with a <b class="aside-Border">standout note</b>
+  </p>
+  <footer class="aside-Footer">
+    <p class="aside-Gotcha">This is a note with something</p>
+  </footer>
+</aside>
+```
+
+```
+<aside class="aside aside-split">
+  <p class="aside-Passage">Col 1</p>
+  <p class="aside-Passage">Col 2</p>
+</aside>
+```
+
+
 View the current [HTML element reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Element) (may need to revise occasionally)
 
 
