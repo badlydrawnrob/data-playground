@@ -10,9 +10,7 @@ Give your mental models the same <b>serious</b>, <b>careful</b> treatment as <b>
 
 Be careful of blindly following one perspective or mode of thought.
 
-> You're attracted to what compels you.
->
-> <footer>Paraphrased from <cite>12 Rules for Life</cite> Jordan Peterson</footer>
+> You're attracted to what compels you [paraphrased]. <cite>(12 Rules for Life, Jordan Peterson, 2018)</cite>
 
 In other words, <strong>what you focus on _matters_</strong>. The world will represent to you what you believe. Your mental model will reveal the features of the world you focus on.
 

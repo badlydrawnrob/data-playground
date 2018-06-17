@@ -2,9 +2,13 @@
 
 Personas -vs- Problem-Personas
 
-> 💬 What they say || <mark>TRUTH</mark> || 👍 What they do
+<aside class="callout callout-primary">
 
-- [ ] Qualitative should be tested with quantitative
+<b class="keywords keywords-box">💬 What they say</b> <mark>--TRUTH--</mark> || 👍 What they do
+
+</aside>
+
+- [ ] <b class="keywords keywords-secondary keywords-box">Qualitative</b> should be tested with quantitative
     - Perceptions are not always the same as _objective_ behaviour
 
 
@@ -66,7 +70,7 @@ Draw pictures of how you think things relate. This helps you make your ideas exp
 
 ## Confounders
 
-> <mark>Always</mark> consider how <mark>confounding</mark> may <mark>affect results</mark>
+> <b class="keywords keywords-highlight">Always</b> consider how <b class="keywords keywords-highlight">confounding</b> may <b class="keywords keywords-highlight">affect results</b>
 
 - [ ] Confounders should make sense in the context of your analysis
 
