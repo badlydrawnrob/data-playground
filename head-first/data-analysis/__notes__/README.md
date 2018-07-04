@@ -2,7 +2,10 @@
 
 ## != To review
 
-Blah
+1. Styleguide
+2. Iconography
+3. Visuals
+4. Custom css (if any)
 
 ## Image sizes
 
