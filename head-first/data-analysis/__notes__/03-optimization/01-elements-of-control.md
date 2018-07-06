@@ -31,8 +31,12 @@ You can maximise profit by choosing the right <i>product mix</i>. <b>Objective f
 
 ![!=Objective function or Latex]()
 
-( constraint<sub><b>1</b></sub> decision_variable<sub><b>1</b></sub> ) + ( constraint<sub><b>2</b></sub> decision_variable<sub><b>2</b></sub> )
-**= Profit** (or the objective you want to achieve)
+( C<sub><b>1</b></sub>D<sub><b>1</b></sub> ) + ( C<sub><b>2</b></sub>D<sub><b>2</b></sub> ) **= profit** (or the objective you want to achieve)
+
+```
+c = 'constraint'
+d = 'decision variable'
+```
 
 Complex optimisations will need more sophisticated functions, but in essence, this is how an objective function looks.
 
@@ -40,11 +44,17 @@ Complex optimisations will need more sophisticated functions, but in essence, th
 
 The constraints in this case are profit for each coffee. The decision variable is how many of each to produce.
 
-##### Working it out ...
+**Working it out ...**
 
-(profit per `☕ A` x count of cup) <small>_total `☕ A` profit_</small>
-**+**
-(profit per `☕ B` x count of cup) <small>_total `☕ B` profit_</small>
-**= Profit**
+```python
+☕ = profit per cup
+count = number of cups
+
+(☕ A * count)  # total ☕ A profit
++
+(☕ B * count)  # total ☕ B profit
+=
+profit
+```
 
 > This is for a very basic constraint: other variables, like time, materials etc will need further thought.
