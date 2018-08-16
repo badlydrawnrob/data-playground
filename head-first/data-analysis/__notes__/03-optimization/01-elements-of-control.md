@@ -1,22 +1,19 @@
 ## Elements of control
 
-> When receiving a brief, it's helpful to collect data and group it by elements <mark>you can control</mark> and elements <mark>you can't</mark> - <strong>always</strong> ask for this data!
+> When receiving a brief, it's helpful to collect data and group it by elements <em>you can control</em> and elements <em>you can't</em> - <strong>always</strong> ask for this data!
 
 ### Decision variables and constraints
 
+> The balance of your _decision variables_ and your _constraints_ determine your profit
+
 | **1:** Things you can control | **2:** Things you can't control |
 |------------------------|--------------------------|
-| How much <i>Brand A</i> to buy | Cost of each brand (wholesale) |
-| How much <i>Brand B</i> to buy | How profitable each brand is |
-| | How much it costs to deliver |
-| | How long it takes to deliver |
+| _Your decision variables<br>.... **can** alter profit:_ | _Your constraints_<br>.... **can't** alter profit |
+| — How much <i>Brand A</i> to buy | — Cost of each brand (wholesale) |
+| — How much <i>Brand B</i> to buy | — How profitable each brand is |
+| | — How much it costs to deliver |
+| | — How long it takes to deliver |
 
-1. These are your <b>decision variables</b>
-    - These _can_ alter profit
-2. These are your <b>constraints</b>
-    - These _can't_ alter profit
-
-> The balance of your decision variables and your constraints <mark>determine your profit</mark>
 
 
 ### Optimization

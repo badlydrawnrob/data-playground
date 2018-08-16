@@ -1,4 +1,5 @@
 <<[metadata.txt]
+<!--<<{folder/raw_file.html}-->
 
 # Head First: Data Analysis
 
@@ -10,8 +11,13 @@
 # 02: Test your theories
 <<[02-test-your-theories/01-observations.md]
 <<[02-test-your-theories/02-confounders.md]
-<!--<<{folder/raw_file.html}-->
+
 
 # 03: Optimization and control
 <<[03-optimization/01-elements-of-control.md]
-<!--<<{folder/raw_file.html}-->
+<<[03-optimization/02-product-mix.md]
+<<[03-optimization/03-independent-or-linked.md]
+
+
+# 04: Data visualisation
+<<[04-data-visualisation/01-multivatiate-vs-single.md]
