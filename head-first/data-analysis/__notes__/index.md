@@ -21,3 +21,12 @@
 
 # 04: Data visualisation
 <<[04-data-visualisation/01-multivatiate-vs-single.md]
+
+
+# 05: ...
+# 06: ...
+
+# 07: Subjective probabilities
+<<[07-subjective-probability/01-probability-words.md]
+<<[07-subjective-probability/02-visualising-probability-words.md]
+<<[07-subjective-probability/03-new-information.md]
