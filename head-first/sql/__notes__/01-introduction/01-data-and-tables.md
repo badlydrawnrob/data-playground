@@ -49,9 +49,10 @@ Once we've chunked our data, it might look something like this:
 
 - A column describes the data with a label
 - It should be descriptive and clearly explain the type of data
-- It should also be `snake_case`
+- Often referred to as _field_
 
 #### Rows
 
 - A row is a _set of columns_ that describe an _object_, or _thing_
 - The columns can be thought of as an _objects attributes_
+- Often referred to as _record_

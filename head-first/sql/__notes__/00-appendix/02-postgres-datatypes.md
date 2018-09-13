@@ -15,8 +15,8 @@
 
 | Type             | Description                                         |
 | ---------------- | --------------------------------------------------- |
-| `SMALLINT`       | integer with `range(-32,768, 32,767)`               |
-| `INT`            | integer with `range(-2,147,483,648, 2,147,483,647)` |
+| `SMALLINT`       | integer with `range(-32 768, 32 767)`               |
+| `INT`            | integer with `range(-2 147 483 648, 2 147 483 647)` |
 | `SERIAL`         | integer (auto populate like `AUTO_INCREMENT`)       |
 | `float(n)`       | floating point (n) precision                        |
 | `real`           | double precision                                    |
