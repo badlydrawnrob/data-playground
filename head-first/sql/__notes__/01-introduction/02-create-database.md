@@ -1,11 +1,13 @@
 ## Creating a database
 
-The command is quite simple:
-
 ```sql
 CREATE DATABASE database_name;
 ```
 
-1. **Capitalize** an SQL command
-2. **lowercase**, `snake_case` names
-3. **Always** end an SQL command with a semi-colon `;`
+### Rename your database
+
+```sql
+ALTER DATABASE database_name RENAME TO new_database_name;
+```
+
+Always end your statement with a semi-colon `;`!

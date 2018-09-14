@@ -25,5 +25,3 @@ CREATE TABLE sticky_note (
   telephone INT(11)
 )
 ```
-
-_Note: Commas separate `column_names`, but the last statement doesn't need one._
