@@ -21,6 +21,11 @@
 <<[02-select/08-not.md]
 
 
+# 03: Delete and update
+<<[03-delete-and-update/01-record-order.md]
+<<[03-delete-and-update/02-delete-statement.md]
+
+
 # Appendix
 <!-- <<[00-appendix/00-todo.md] -->
 <<[00-appendix/00-styleguide.md]

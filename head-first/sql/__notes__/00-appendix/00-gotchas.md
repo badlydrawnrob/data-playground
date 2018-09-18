@@ -49,4 +49,10 @@ WHERE col_name > 't'  -- No need for a comma here
 
 ### Any value is better than NULL
 
-It's best to add something, rather than leaving values `NULL`, as it can't be directly selected from a table.
+- It's best to add something, rather than leaving values `NULL`
+- It can't be directly selected from a table
+- Sometimes it may even be best to delete (or ignore) them completely!
+
+### Deleting records
+
+- Always include a `WHERE` statement, or you'll delete _all_ your rows!
