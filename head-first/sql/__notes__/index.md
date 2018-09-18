@@ -13,6 +13,12 @@
 # 02: Displaying your data
 <<[02-select/01-select.md]
 <<[02-select/02-where.md]
+<<[02-select/03-combine.md]
+<<[02-select/04-null.md]
+<<[02-select/05-like.md]
+<<[02-select/06-between.md]
+<<[02-select/07-in.md]
+<<[02-select/08-not.md]
 
 
 # Appendix

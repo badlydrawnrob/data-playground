@@ -1,6 +1,7 @@
 ## Adding data to a table
 
-> Insert your name right here!
+![Insert your `('value')` into the table!](./img/insert-into-table.jpg)
+
 
 ```sql
 INSERT INTO table_name (column_name, column_name, ...)

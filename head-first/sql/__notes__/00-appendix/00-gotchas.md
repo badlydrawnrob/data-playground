@@ -29,8 +29,24 @@ SELECT * FROM easy_drinks WHERE amount1 = '1.5';  -- Treats as a number
 
 ```sql
 INSERT INTO easy_drinks
-VALUES ('Rob\'s soda');
+VALUES ('Rob''s soda');
 ```
 
+- Postgres prefers [an extra single quote](https://bit.ly/2xqzvKI) (there's other ways too)
+- Where possible, let your programming language [do it for you](https://stackoverflow.com/a/12317363)!
+- In standard sql, you can escape with a backslash `\'`
 - Never use double quotes to escape, as it can cause your software problems
 - Use the same method when using a `SELECT` query
+
+
+### You don't need a comma for that!
+
+```sql
+SELECT col_name FROM table
+WHERE col_name > 't'  -- No need for a comma here
+  AND price < 4;      -- but make sure you end with a semi-colon;
+```
+
+### Any value is better than NULL
+
+It's best to add something, rather than leaving values `NULL`, as it can't be directly selected from a table.

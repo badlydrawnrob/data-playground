@@ -21,18 +21,14 @@ WHERE first_name = 'Anne';  -- first_name is Anne
 - `<>` or `!=` not equal
 
 
-### Other expressions
+### Matching strings
+
+You can also use comparisons for characters:
 
 ```sql
--- More than one expression
-expression AND expression
-expression OR expression
+SELECT * FROM my_contacts
+WHERE first_name > 'A';  -- Returns values beginning with `B`—`Z`
 
--- Includes endpoint values in the range
-a BETWEEN x AND y      -- same as `a >= x AND a <= y`
-a NOT BETWEEN x AND y  -- same as `a < x OR a > y`
-
--- NULL is not equal to anything
-expression IS NULL
-expression IS NOT NULL
+SELECT * FROM my_contacts
+WHERE first_name >= 'C';  -- Returns values (including `C`), so `C`—`Z`
 ```
