@@ -29,6 +29,12 @@
 <<[03-delete-and-update/05-update.md]
 
 
+# 04: Smart table design
+<<[04-smart-table-design/01-atomic-data.md]
+<<[04-smart-table-design/02-fix-record.md]
+<<[04-smart-table-design/03-normalisation.md]
+
+
 # Appendix
 <!-- <<[00-appendix/00-todo.md] -->
 <<[00-appendix/00-styleguide.md]
