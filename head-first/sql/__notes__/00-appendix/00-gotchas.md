@@ -56,3 +56,17 @@ WHERE col_name > 't'  -- No need for a comma here
 ### Deleting records
 
 - Always include a `WHERE` statement, or you'll delete _all_ your rows!
+- Always check your `WHERE` statement for errors
+- Always check your `DELETE` order
+- Always check other rows for _shared values_ (that you don't want to change)
+- If in doubt: **use `SELECT` first to check your `WHERE` statement!**
+
+
+### Updating records
+
+- Always include a `WHERE` statement, or you'll update _all_ your rows!
+- Always check your `WHERE` statement for errors
+- Always check other rows for _shared values_ (that you don't want to change)
+- Order matters: (highest first: `{1.50 -> 2.00, 1.00 -> 1.50}`)
+    + Or, just be more specific with your `WHERE` :)
+- If in doubt: **use `SELECT` first to check your `WHERE` statement!**

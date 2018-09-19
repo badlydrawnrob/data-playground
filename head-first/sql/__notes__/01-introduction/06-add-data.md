@@ -27,7 +27,7 @@ Or, you can leave out some column `'values'`, but you _must_ specify the `column
 
 ```sql
 INSERT INTO table_name (column_name, column_name, ...)
-VALUES ('value', 'value', ...),
+VALUES ('value', 'value', ...),  -- Separate with a comma
        ('value', 'value', ...);  -- Value lists must all be the same length
 ```
 

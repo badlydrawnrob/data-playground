@@ -24,6 +24,9 @@
 # 03: Delete and update
 <<[03-delete-and-update/01-record-order.md]
 <<[03-delete-and-update/02-delete-statement.md]
+<<[03-delete-and-update/03-delete-errors.md]
+<<[03-delete-and-update/04-select-insert-delete.md]
+<<[03-delete-and-update/05-update.md]
 
 
 # Appendix
