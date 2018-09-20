@@ -33,6 +33,8 @@
 <<[04-smart-table-design/01-atomic-data.md]
 <<[04-smart-table-design/02-fix-record.md]
 <<[04-smart-table-design/03-normalisation.md]
+<<[04-smart-table-design/04-primary-key.md]
+<<[04-smart-table-design/05-add-column.md]
 
 
 # Appendix

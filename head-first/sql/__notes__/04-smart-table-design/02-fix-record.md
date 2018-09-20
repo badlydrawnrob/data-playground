@@ -18,3 +18,18 @@ activities | little car
 ```
 
 You can see we've changed `activities` to have one, and only one value, `'little car'`. We could have made `appearance` atomic too, but we don't need to query that column.
+
+### But what if I want to make everything atomic?
+
+If you wanted to go crazy and atomise _all_ the data, you'd have to do something like:
+
+```text
+-[ RECORD 1 ]-------------------------------------
+name       | Elsie
+last_seen  | Cherry Hill Senior Center
+gender     | F
+hair_color | red
+clothing   | green dress  
+other      | huge feet
+activities | little car
+```

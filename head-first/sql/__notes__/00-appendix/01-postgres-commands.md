@@ -28,7 +28,7 @@
 | ------------------- | ------------------------------- |
 | `\c [database]`     | connect to database             |
 | `\dt`               | Lists all tables                |
-| `\d`                | `\d [table_name]` display table |
+| `\d` or `\d+`       | `\d [table_name]` display table |
 | `q`                 | Exit list                       |
 
 
