@@ -17,7 +17,7 @@ INSERT INTO table_name (...)
 VALUES (...)
 ```
 
-### Method 2: UPDATE TABLE statement
+### Method 2: ALTER TABLE statement
 
 ```sql
 -- Add a primary key column

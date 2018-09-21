@@ -46,6 +46,11 @@ What's the focus? What's it's purpose? Think about the chunks of data you'll nee
 - Throw away anything you don't need
 
 
+#### What shall I name my atomic data?
+
+- Use descriptive labels, like `last_seen`
+- Make it short and easy to write (for your queries)
+
 #### Atomic data rules
 
 1. Each column must contain only one type of data

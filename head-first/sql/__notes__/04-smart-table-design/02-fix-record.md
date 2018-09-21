@@ -1,12 +1,14 @@
 ## Let's fix our record
 
-Take our example record above:
+> So, I need to find a clown who's <mark>name</mark> is Elsie, where was she <mark>last seen</mark>? What was she doing? What was her <mark>activity</mark> at the time?
+
+Take our example record above. Write a description like the one above — ask yourself questions! Now, chunk the main points:
 
 - Elsie is a clown with a `name`
 - We want to know where she was `last_seen`
 - We want to find out by searching her `activity`
 
-It'd be far easier to search for who's driving a `'little car'` if we made that chunk atomic:
+It's far easier to answer "who's driving a `'little car'`?" in a query, if we made that chunk atomic:
 
 
 ```text

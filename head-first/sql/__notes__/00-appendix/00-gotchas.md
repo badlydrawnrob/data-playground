@@ -25,11 +25,14 @@ SELECT * FROM easy_drinks WHERE amount1 = '1.5';  -- Treats as a number
 | `decimal`               |               | ✔         |
 
 
-### Escaping strings
+### Escaping
 
 ```sql
+-- Escape strings
 INSERT INTO easy_drinks
 VALUES ('Rob''s soda');
+-- Escape columns
+SELECT "name", price FROM easy_drinks;
 ```
 
 - Postgres prefers [an extra single quote](https://bit.ly/2xqzvKI) (there's other ways too)
@@ -70,3 +73,9 @@ WHERE col_name > 't'  -- No need for a comma here
 - Order matters: (highest first: `{1.50 -> 2.00, 1.00 -> 1.50}`)
     + Or, just be more specific with your `WHERE` :)
 - If in doubt: **use `SELECT` first to check your `WHERE` statement!**
+
+
+### Speed and size
+
+- Always try to delete unused columns or data
+- Always add sensible limits to data types

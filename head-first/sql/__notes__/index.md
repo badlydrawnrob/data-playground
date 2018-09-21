@@ -37,6 +37,11 @@
 <<[04-smart-table-design/05-add-column.md]
 
 
+# 05: Alter table design
+<<[05-alter-table/01-alter-table.md]
+<<[05-alter-table/02-string-functions.md]
+<<[05-alter-table/03-moving-location.md]
+
 # Appendix
 <!-- <<[00-appendix/00-todo.md] -->
 <<[00-appendix/00-styleguide.md]
