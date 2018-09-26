@@ -42,6 +42,14 @@
 <<[05-alter-table/02-string-functions.md]
 <<[05-alter-table/03-moving-location.md]
 
+
+# 06: Advanced select
+<<[06-advanced-select/01-case.md]
+<<[06-advanced-select/02-order-by.md]
+<<[06-advanced-select/03-aggregate-functions.md]
+<<[06-advanced-select/04-limit-by.md]
+
+
 # Appendix
 <!-- <<[00-appendix/00-todo.md] -->
 <<[00-appendix/00-styleguide.md]

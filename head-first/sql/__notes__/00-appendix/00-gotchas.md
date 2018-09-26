@@ -71,11 +71,15 @@ WHERE col_name > 't'  -- No need for a comma here
 - Always check your `WHERE` statement for errors
 - Always check other rows for _shared values_ (that you don't want to change)
 - Order matters: (highest first: `{1.50 -> 2.00, 1.00 -> 1.50}`)
-    + Or, just be more specific with your `WHERE` :)
+    + Two statements may update the same column
+    + Be specific with your `WHERE` clauses :)
 - If in doubt: **use `SELECT` first to check your `WHERE` statement!**
 
 
-### Speed and size
+### Speed, size, accuracy
 
+- Always make your data as simple as possible
+    + Reduce cognitive load (and potential mistakes)
+    + Make it fast and easy to: enter, monitor, edit
 - Always try to delete unused columns or data
 - Always add sensible limits to data types
