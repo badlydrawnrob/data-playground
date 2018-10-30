@@ -73,6 +73,7 @@ WHERE col_name > 't'  -- No need for a comma here
 - Order matters: (highest first: `{1.50 -> 2.00, 1.00 -> 1.50}`)
     + Two statements may update the same column
     + Be specific with your `WHERE` clauses :)
+- Be sure to check your new values — are they _all_ what you expected?
 - If in doubt: **use `SELECT` first to check your `WHERE` statement!**
 
 
