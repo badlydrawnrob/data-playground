@@ -25,7 +25,7 @@ SELECT * FROM easy_drinks WHERE amount1 = '1.5';  -- Treats as a number
 | `decimal`               |               | ✔         |
 
 
-### Escaping
+### Escaping characters
 
 ```sql
 -- Escape strings
@@ -35,8 +35,10 @@ VALUES ('Rob''s soda');
 SELECT "name", price FROM easy_drinks;
 ```
 
-- Postgres prefers [an extra single quote](https://bit.ly/2xqzvKI) (there's other ways too)
+- Postgres prefers [an extra single quote](https://bit.ly/2xqzvKI)
+    + You can also [escape with a backslash](https://bit.ly/2Rl4znu)
 - Where possible, let your programming language [do it for you](https://stackoverflow.com/a/12317363)!
+    + [Use a GUI](https://postgresapp.com/documentation/gui-tools.html) for working with raw SQL
 - In standard sql, you can escape with a backslash `\'`
 - Never use double quotes to escape, as it can cause your software problems
 - Use the same method when using a `SELECT` query

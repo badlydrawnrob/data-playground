@@ -54,5 +54,7 @@
 <!-- <<[00-appendix/00-todo.md] -->
 <<[00-appendix/00-styleguide.md]
 <<[00-appendix/00-gotchas.md]
-<<[00-appendix/01-postgres-commands.md]
-<<[00-appendix/02-postgres-datatypes.md]
+<<[00-appendix/01-postgres-tools.md]
+<<[00-appendix/02-postgres-psql.md]
+<<[00-appendix/03-postgres-admin.md]
+<<[00-appendix/04-postgres-datatypes.md]
