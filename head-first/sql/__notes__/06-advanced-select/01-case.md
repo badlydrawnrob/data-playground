@@ -14,16 +14,16 @@
 
 1. Currently _genre_ headings are set to `True` or `False`
 2. Some films belong to _more than one_ genre
-    + Where should these films be shelved?
+    + Which genre should these films be shelved?
     + Adding `True` or `False` is time consuming and error-prone
 
 
 ### The solution
 
-Dataville videos have decided to add a _category_ column. You _could_ add each film to the new category like this:
+Dataville videos have decided to add a _category_type_ column. You _could_ add each film to the new category like this:
 
-- If this category is `True`, set the category name to `category`
-- `UPDATE table SET category = 'category' where category = 'True'`
+- If this genre is `True`, set the category_type to `category`
+- `UPDATE table SET category_type = 'category' WHERE category = 'True'`
 
 As we've seen before **order is important** — if some films have _more than one_ genre set, it's `category` will be whichever `UPDATE` statement runs last.
 
@@ -48,7 +48,7 @@ END;                         -- end the case statement
 
 ```sql
 UPDATE movie_table
-SET category =
+SET category_type =
 CASE
   WHEN drama = 'T' THEN 'drama'
   WHEN comedy = 'T' THEN 'comedy'
@@ -69,7 +69,7 @@ END;
 
 ```sql
 UPDATE movie_table
-SET category =
+SET category_type =
 CASE
   WHEN cartoon = 'T' THEN 'family'
   ...
