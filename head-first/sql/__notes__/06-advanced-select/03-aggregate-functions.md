@@ -164,4 +164,113 @@ Lindsey    | 32.02
 Britney    | 43.21
 Nicole     | 31.99
 Ashley     | 26.82
-```  
+```
+
+### COUNT()
+
+`count()` returns the number of rows in a given column:
+
+```sql
+SELECT COUNT(sale_date)  -- Will return number of rows (28)
+FROM cookie_sales;
+```
+
+If we wanted to see how many days each girl sold cookies, we could try this:
+
+```sql
+SELECT first_name, COUNT(sale_date)  -- #1
+FROM cookie_sales
+WHERE sales > 0       -- #2
+GROUP BY first_name;  -- #3
+```
+
+1. We don't have to include `first_name`, but let's display
+2. Generally you'll want to remove `0` values from results
+    + Only return days when `sales` were _more than_ `0`
+3. Grouping by `first_name` links `sale_date` rows to each girl
+
+```text
+-- Daaamn girl, you still be on top
+
+first_name | count
+-----------+-------
+Lindsey    |     6
+Britney    |     7
+Nicole     |     6
+Ashley     |     6
+```
+
+#### COUNT() and SELECT DISTINCT
+
+We might like to know for sure how many days the girls were out selling cookies (even if they didn't make a sale!)
+
+- We could `ORDER BY` the `sale_date`
+    + But there might be tons of entries
+    + And we might get the calulation wrong
+- It's far easier to _select_ all the _distinct_ rows
+
+
+```text
+--[ SELECT DISTINCT rows ]--
+
+x -> | x
+y -> | y
+z -> | z
+z -> |
+y -> |
+x -> |
+```
+
+```sql
+SELECT DISTINCT sale_date  -- No duplicates!
+FROM cookie_sales          
+ORDER BY sale_date;  -- Earliest date first!
+```
+```text
+sale_date  
+------------
+2007-03-06
+2007-03-07
+2007-03-08
+2007-03-09
+2007-03-10
+2007-03-11
+2007-03-12
+(7 rows)
+```
+
+We can use our `COUNT()` function to return the number of distinct rows!
+
+```sql
+SELECT COUNT(DISTINCT sale_date) -- DISTINCT goes inside the function
+FROM cookie_sales; -- Only returns one value, no need to ORDER BY
+```
+
+Now let's add that our original [count()](#count) for the girls:
+
+```sql
+SELECT first_name, COUNT(sale_date)
+FROM cookie_sales
+WHERE sales > 0
+GROUP BY first_name;
+```
+
+- This will return exactly the same result as before (Britney wins again!) ...
+- But we can be certain it returns ONLY ONE of a particular `sale_date`
+    + If a girl had two records (or rows) for the same day, one would be ignored
+    + This helps us quickly see the variety of values in _any_ column (ignoring duplicates)
+
+
+#### COUNT() and DISTINCT — Another way!
+
+For small tables, the above method works. In big tables, [you're gonna have problems my friend](https://stackoverflow.com/a/14732410) ...
+
+```sql
+SELECT COUNT(*)
+FROM (
+  SELECT DISTINCT sale_date
+  FROM cookie_sales
+) AS total_days;
+```
+
+This will give you exactly the same results, quicker. It's called an _inner select_.

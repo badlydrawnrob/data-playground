@@ -91,3 +91,8 @@ WHERE col_name > 't'  -- No need for a comma here
 ### Aggregate functions
 
 - Postgres expects columns in `GROUP BY` when using aggregate functions
+- It's generally good practice to ignore `0` and `NULL` values:
+    + `WHERE column_name > 0` or `WHERE column_name IS NULL`
+- `NULL` is **never returned** by any aggregate function
+- `SELECT DISTINCT` should use an [inner select](https://stackoverflow.com/a/14732410)
+    + Especially when using `count()` or another aggregate function!
