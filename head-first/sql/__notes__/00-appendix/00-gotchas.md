@@ -86,3 +86,8 @@ WHERE col_name > 't'  -- No need for a comma here
     + Make it fast and easy to: enter, monitor, edit
 - Always try to delete unused columns or data
 - Always add sensible limits to data types
+
+
+### Aggregate functions
+
+- Postgres expects columns in `GROUP BY` when using aggregate functions

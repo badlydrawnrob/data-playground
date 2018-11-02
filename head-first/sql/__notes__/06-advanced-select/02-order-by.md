@@ -57,9 +57,9 @@ ORDER BY category_type, purchased;  -- #2, #3
 You'll notice films are ordered by _purchase date_, not alphabetically.
 
 ```text
-A --> Sort by category --> Sort by purchase date { alpha, '2008', auto, '2012' }
+A --> Sort by category --> Sort by purchased { alpha, '2008', auto, '2012' }
 |
-Z --> Sort by category --> Sort by purchase date { zelda, '2001', zappo, '2002' }
+Z --> Sort by category --> Sort by purchased { zelda, '2001', zappo, '2002' }
 ```
 
 Let's add `title` as the last column to sort:
