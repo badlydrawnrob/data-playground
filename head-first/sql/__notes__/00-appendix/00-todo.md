@@ -1,4 +1,6 @@
-# Things to look up
+# To-do list
+
+## Look up these ...
 
 1. Tree data structures
 2. GraphQL
@@ -10,3 +12,10 @@
 6. Read up on [Postgres views](https://www.postgresql.org/docs/current/static/sql-createview.html)
 7. UPDATE/CASE vs Merge in Postgres?
 8. Look up rules for `ORDER BY`: how are character positions calculated?
+9. Check [constraints and enum](https://stackoverflow.com/q/7250939)
+
+## Do these ...
+
+1. Find quiz/test data for refresher
+2. Find a business-case for _paid_ refresher
+3. Quick refresh on statement, function, keyword

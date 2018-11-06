@@ -25,7 +25,7 @@ ORDER BY sales;
 ...
 ```
 
-### SUM() function
+### SUM
 
 What's the total amount of sales for each girl guide?
 
@@ -59,18 +59,8 @@ sum
 107.91
 ```
 
-#### GROUP BY and aggregate functions
 
-There's an easier way. `GROUP BY` allows us to group rows together by a column.
-
-```text
-A -> GROUP BY column_name -> function(column_name) on this group -> Results
-|
-Z -> GROUP BY column_name -> function(column_name) on this group -> Results
-```
-
-
-#### SUM() and GROUP BY
+#### SUM (using GROUP BY)
 
 If we want to find the total of all our girl guides, we'd need to:
 
@@ -118,7 +108,18 @@ Lindsey    | 81.08
 ```
 
 
-### AVG() and GROUP BY
+### GROUP BY (with aggregate functions)
+
+There's an easier way. `GROUP BY` allows us to group rows together by a column.
+
+```text
+A -> GROUP BY column_name -> function(column_name) on this group -> Results
+|
+Z -> GROUP BY column_name -> function(column_name) on this group -> Results
+```
+
+
+### AVG
 
 We could also work out each girls average (over 7 days):
 
@@ -146,7 +147,7 @@ Lindsey    | 11.5828571428571
 ```
 
 
-### MIN() or MAX() and GROUP BY
+### MIN or MAX
 
 We could also look for the _`min()`imum_ or _`max()`imum_ sales for each girl guide, to see which girl had the most (or least) sales on a single day:
 
@@ -166,7 +167,7 @@ Nicole     | 31.99
 Ashley     | 26.82
 ```
 
-### COUNT()
+### COUNT
 
 `count()` returns the number of rows in a given column:
 
@@ -200,7 +201,7 @@ Nicole     |     6
 Ashley     |     6
 ```
 
-#### COUNT() and SELECT DISTINCT
+#### COUNT and SELECT DISTINCT
 
 We might like to know for sure how many days the girls were out selling cookies (even if they didn't make a sale!)
 
