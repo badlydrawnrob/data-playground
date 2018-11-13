@@ -50,6 +50,11 @@
 <<[06-advanced-select/04-limit-by.md]
 
 
+# 07: Multi table design
+<<[07-multi-table-design/01-outgrowing-your-table.md]
+<<[07-multi-table-design/02-database-schema.md]
+
+
 # Appendix
 <!-- <<[00-appendix/00-todo.md] -->
 <<[00-appendix/00-styleguide.md]

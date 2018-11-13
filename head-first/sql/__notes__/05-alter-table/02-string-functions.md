@@ -12,6 +12,7 @@
 | `left(str, n)`                   | Return first _n_ characters in the string (see docs for `-n`egative) |
 | `right(str, n)`                  | Return last _n_ characters in the string                             |
 | `substr(string, from [, count])` | `substr('alphabet', 3, 2) -> 'ph'` (see docs)                        |
+| `split_part(...)`                | Split string to delimiter (see below, like MySQL `substring_index`)  |
 | `lower(string)`                  | Convert characters to lowercase                                      |
 | `upper(string)`                  | Convert characters to uppercase                                      |
 | `reverse(str)`                   | Return reversed string                                               |
@@ -41,8 +42,8 @@ Mountain View, CA
 
 ```sql
 -- 1. split location
--- 2. at the comma
--- 3. return the first part
+-- 2. at the 1st comma
+-- 3. return the first part (before 1st comma)
 SELECT split_part(location, ',', 1) FROM my_contacts;
 ```
 ```text

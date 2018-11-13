@@ -61,6 +61,7 @@ WHERE col_name > 't'  -- No need for a comma here
 - It can't be directly selected from a table
 - Sometimes it may even be best to delete (or ignore) them completely!
 
+
 ### Deleting records
 
 - Always include a `WHERE` statement, or you'll delete _all_ your rows!
@@ -87,6 +88,7 @@ WHERE col_name > 't'  -- No need for a comma here
 - Always make your data as simple as possible
     + Reduce cognitive load (and potential mistakes)
     + Make it fast and easy to: enter, monitor, edit
+    + See [Atomic Data](#atomic-data) chapter notes
 - Always try to delete unused columns or data
 - Always add sensible limits to data types
 - Always request what you _need_ (`limit` results)
