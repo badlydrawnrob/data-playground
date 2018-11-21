@@ -17,12 +17,12 @@
 
 
 
-| Connect to database |                                 |
-| ------------------- | ------------------------------- |
-| `\c [database]`     | connect to database             |
-| `\dt`               | Lists all tables                |
-| `\d` or `\d+`       | `\d [table_name]` display table |
-| `q`                 | Exit list                       |
+| Connect to database |                                                  |
+| ------------------- | ------------------------------------------------ |
+| `\c [database]`     | connect to database                              |
+| `\dt`               | Lists all tables                                 |
+| `\d` or `\d+`       | `\d [table_name]` display table, constraints etc | 
+| `q`                 | Exit list                                        |
 
 
 

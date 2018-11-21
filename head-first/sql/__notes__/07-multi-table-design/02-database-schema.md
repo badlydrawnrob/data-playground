@@ -21,4 +21,15 @@ id | attributes
 1  | red hair, green dress, huge feet
 ```
 
-Into a properly formatted table, further atomising the data into _rows_.
+Into a properly formatted table, further atomising `attributes` data into _rows_.
+
+
+### What's a schema?
+
+![pg.295/296 image]()
+
+A **schema** helps us understand the relationships between the data:
+
+1. A description of the data (columns, tables)
+2. How the objects relate to each other
+3. How the columns and tables connect together

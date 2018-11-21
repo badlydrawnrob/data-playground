@@ -13,6 +13,7 @@
 7. UPDATE/CASE vs Merge in Postgres?
 8. Look up rules for `ORDER BY`: how are character positions calculated?
 9. Check [constraints and enum](https://stackoverflow.com/q/7250939)
+10. Database diagrams and best practices (postgres)
 
 ## Do these ...
 

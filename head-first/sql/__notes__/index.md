@@ -53,6 +53,8 @@
 # 07: Multi table design
 <<[07-multi-table-design/01-outgrowing-your-table.md]
 <<[07-multi-table-design/02-database-schema.md]
+<<[07-multi-table-design/03-database-diagram.md]
+<<[07-multi-table-design/04-table-relationships.md]
 
 
 # Appendix

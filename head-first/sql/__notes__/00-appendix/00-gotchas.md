@@ -94,6 +94,8 @@ WHERE col_name > 't'  -- No need for a comma here
 - Always request what you _need_ (`limit` results)
     + But _you must_ make sure the order is predictable (`order by`)
     + Row order _is not guaranteed_ in SQL queries
+- Always keep a diagram of your schema
+    + Keep data and schema independent of each other
 
 
 ### Aggregate functions
