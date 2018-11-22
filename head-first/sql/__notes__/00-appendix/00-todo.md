@@ -12,8 +12,11 @@
 6. Read up on [Postgres views](https://www.postgresql.org/docs/current/static/sql-createview.html)
 7. UPDATE/CASE vs Merge in Postgres?
 8. Look up rules for `ORDER BY`: how are character positions calculated?
-9. Check [constraints and enum](https://stackoverflow.com/q/7250939)
+9. Check [constraints and enum](https://stackoverflow.com/q/7250939) (unique and check constraints)
 10. Database diagrams and best practices (postgres)
+11. Research table relationships further, [especially many-to-many](https://support.airtable.com/hc/en-us/articles/218734758-A-beginner-s-guide-to-many-to-many-relationships) and junction tables
+12. Other methods of relationships? Or Junctions? arrays? Multiple tags and tag groups?
+13. When to use a composite key (synthetic vs natural, managing dependencies)
 
 ## Do these ...
 

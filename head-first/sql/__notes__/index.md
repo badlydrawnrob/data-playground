@@ -55,6 +55,10 @@
 <<[07-multi-table-design/02-database-schema.md]
 <<[07-multi-table-design/03-database-diagram.md]
 <<[07-multi-table-design/04-table-relationships.md]
+<<[07-multi-table-design/05-normalisation-1nf.md]
+<<[07-multi-table-design/06-normalisation-2nf.md]
+<<[07-multi-table-design/07-normalisation-3nf.md]
+<<[07-multi-table-design/08-reformat-our-table.md]
 
 
 # Appendix

@@ -1,6 +1,6 @@
 ## Database diagram
 
-![pg.298/299 image]()
+![](./img/database-diagram.jpg)
 
 You can view your database as objects (tables), and lists (columns)
 
@@ -23,7 +23,7 @@ A _foreign key_ is a column that links a _primary key_ of another table. This pr
 
 ![You're going to need to constrain your child!](./img/parent-child.jpg)
 
-A constraint **only** allows you to add values that exist in the parent table. It's also called _referential integrity_, which helps you avoid breaking your table.
+A constraint **only** allows you to add values that exist in the parent table. It's also called _referential integrity_, which helps you avoid breaking your table, avoids "dead" data, keeping your database speedy.
 
 - The value you add into your _foreign key_ must already exist in your _primary key_
 
@@ -44,3 +44,9 @@ CREATE TABLE interests (
     + `(contact_id)` is optional
 
 The [`FOREIGN KEY`](https://www.postgresql.org/docs/current/ddl-constraints.html#DDL-CONSTRAINTS-FK) statement is only needed in Postgres when creating a foreign key with more than one column.
+
+### Deleting a row
+
+If you try to delete a foreign key row, within a parent table, you're going to have problems my friend.
+
+- You _must_ delete it's linked child table rows first.

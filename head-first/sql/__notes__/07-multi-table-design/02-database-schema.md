@@ -26,7 +26,7 @@ Into a properly formatted table, further atomising `attributes` data into _rows_
 
 ### What's a schema?
 
-![pg.295/296 image]()
+![](./img/database-schema.jpg)
 
 A **schema** helps us understand the relationships between the data:
 
