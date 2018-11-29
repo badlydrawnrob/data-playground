@@ -61,6 +61,10 @@
 <<[07-multi-table-design/08-reformat-our-table.md]
 
 
+# 08: Joins
+<<[08-joins/01-linking-tables.md]
+
+
 # Appendix
 <!-- <<[00-appendix/00-todo.md] -->
 <<[00-appendix/00-styleguide.md]

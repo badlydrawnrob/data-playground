@@ -47,13 +47,23 @@ SELECT "name", price FROM easy_drinks;
 - Use the same method when using a `SELECT` query
 
 
-### You don't need a comma for that!
+### You DON'T need a comma for that!
 
 ```sql
 SELECT col_name FROM table
 WHERE col_name > 't'  -- No need for a comma here
   AND price < 4;      -- but make sure you end with a semi-colon;
 ```
+
+
+### You DO need a comma for that!
+
+```sql
+ALTER TABLE my_table
+ADD COLUMN column_name int,  -- watch out for those commas!
+ADD COLUMN column_name int
+```
+
 
 ### Any value is better than NULL
 
@@ -105,5 +115,8 @@ WHERE col_name > 't'  -- No need for a comma here
     + `WHERE column_name > 0` or `WHERE column_name IS NULL`
 - `NULL` is **never returned** by any aggregate function
     + `NULL` is not the same as zero!
-- `SELECT DISTINCT` should use an [inner select](https://stackoverflow.com/a/14732410)
+- Use `GROUP BY` when you want to use aggregate functions
+- Use `SELECT DISTINCT` when you want to remove duplicates
+    + It's better to use an [inner select](https://stackoverflow.com/a/14732410)
     + Especially when using `count()` or another aggregate function!
+    + Returns the same values as `GROUP BY` (without aggregate functions)
