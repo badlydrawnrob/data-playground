@@ -63,6 +63,12 @@
 
 # 08: Joins
 <<[08-joins/01-linking-tables.md]
+<<[08-joins/02-migrate-data.md]
+<<[08-joins/03-merging-data.md]
+<<[08-joins/04-aliasing.md]
+<<[08-joins/05-cartesian-join.md]
+<<[08-joins/06-inner-join.md]
+<<[08-joins/07-natural-join.md]
 
 
 # Appendix
