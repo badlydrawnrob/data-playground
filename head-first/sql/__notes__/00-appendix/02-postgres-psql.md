@@ -1,4 +1,4 @@
-## PSQL
+## Postgres: PSQL
 
 | Documentation |                                        |
 | ------------- | -------------------------------------- |
@@ -21,7 +21,7 @@
 | ------------------- | ------------------------------------------------ |
 | `\c [database]`     | connect to database                              |
 | `\dt`               | Lists all tables                                 |
-| `\d` or `\d+`       | `\d [table_name]` display table, constraints etc | 
+| `\d` or `\d+`       | `\d [table_name]` display table, constraints etc |
 | `q`                 | Exit list                                        |
 
 

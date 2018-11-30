@@ -1,4 +1,4 @@
-## Postgres datatypes
+## Postgres: datatypes
 
 - [Basic overview](http://www.postgresqltutorial.com/postgresql-data-types/)
 - [Full documentation](https://www.postgresql.org/docs/10/static/datatype.html)

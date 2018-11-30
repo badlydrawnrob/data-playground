@@ -1,4 +1,4 @@
-## User roles and privileges
+## Postgres: roles and privileges
 
 ### Create user
 
