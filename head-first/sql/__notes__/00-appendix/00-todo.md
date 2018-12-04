@@ -17,6 +17,8 @@
 11. Research table relationships further, [especially many-to-many](https://support.airtable.com/hc/en-us/articles/218734758-A-beginner-s-guide-to-many-to-many-relationships) and junction tables
 12. Other methods of relationships? Or Junctions? arrays? Multiple tags and tag groups?
 13. When to use a composite key (synthetic vs natural, managing dependencies)
+14. Postgres fine-tuning, best practices (IN, EXISTS, etc)
+15. Refresh set theory
 
 ## Do these ...
 

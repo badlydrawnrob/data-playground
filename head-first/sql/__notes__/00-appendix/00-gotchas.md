@@ -98,7 +98,7 @@ ADD COLUMN column_name int
 - Always make your data as simple as possible
     + Reduce cognitive load (and potential mistakes)
     + Make it fast and easy to: enter, monitor, edit
-    + See [Atomic Data](#atomic-data) chapter notes
+    + See [Atomic Data](#atomicdata) chapter notes
 - Always try to delete unused columns or data
 - Always add sensible limits to data types
 - Always request what you _need_ (`limit` results)
@@ -106,6 +106,23 @@ ADD COLUMN column_name int
     + Row order _is not guaranteed_ in SQL queries
 - Always keep a diagram of your schema
     + Keep data and schema independent of each other
+- Make the question as _easy as possible_ for the database to answer
+- Smaller is better: `cross join > correlated > non-correlated > join`
+
+
+### Mapping out a database
+
+- See [introduction](#dataandtables) and [atomic data](#atomicdata)
+- Split out concerns
+    + Tables, atomic, acid, ...
+- Is it universal?
+    + Will this data be used everywhere?
+    + Or only a segment of your entries?
+    + Which tables and records link together?
+- How will it be used?
+    + Do you need to limit access?
+    + What parts of the data do they need to see?
+
 
 
 ### Aggregate functions

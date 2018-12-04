@@ -71,6 +71,24 @@
 <<[08-joins/07-natural-join.md]
 
 
+# 09: Subqueries
+<<[09-subqueries/01-queries-within-queries.md]
+<<[09-subqueries/02-subquery-steps.md]
+<<[09-subqueries/03-in.md]
+<<[09-subqueries/04-correlation.md]
+<<[09-subqueries/05-exists.md]
+
+
+# 10: More joins
+<<[10-more-joins/01-cleaning-up-data.md]
+<<[10-more-joins/02-outer-join.md]
+<<[10-more-joins/03-full-outer-join.md]
+<<[10-more-joins/04-join-single-table.md]
+<<[10-more-joins/05-union.md]
+<<[10-more-joins/06-intersect-except.md]
+
+
+
 # Appendix
 <!-- <<[00-appendix/00-todo.md] -->
 <<[00-appendix/00-styleguide.md]

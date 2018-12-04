@@ -9,4 +9,4 @@ FROM boys
   toys;
 ```
 
-Will return the very same result from our first [inner join](#innerjoin)
+Will return the _very same_ result from our first [inner join](#innerjoin)!
