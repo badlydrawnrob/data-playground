@@ -13,7 +13,7 @@ ON t2.manager_id = t1.employee_id;
 ```
 
 
-You can also join on the _same table_. One example is using a self-referencing foreign key:
+You can also join on the _same table_. One example is using a [self-referencing foreign key](https://stackoverflow.com/q/246477):
 
 - Self referencing foreign key:
     + primary key of table used within the same table for a different use case
