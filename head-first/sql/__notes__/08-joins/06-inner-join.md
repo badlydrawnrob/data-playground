@@ -12,6 +12,8 @@ FROM table1
 ON somecondition;
 ```
 
+You can use `GROUP BY`, `ORDER BY`, `WHERE`, and functions with a `JOIN` — just like a regular `SELECT`!
+
 ### Equijoin
 
 Equijoin inner joins test for equality — here, we're matching foreign key to a primary key:

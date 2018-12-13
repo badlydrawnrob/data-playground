@@ -1,8 +1,8 @@
 ## UNION
 
-![union illustration]()
+![](./img/union.png)
 
-...
+`UNION` allows you to merge two or more sets, returning common values:
 
 
 ```text
@@ -10,8 +10,21 @@
 {'nurse', 'designer'}   =>  {'designer', 'dentist', 'manager', 'nurse'}
 {'manager'}             =>
 ```
-
-You can even create a table from a `UNION`!
+```SQL
+SELECT title FROM job_current
+UNION
+SELECT title FROM job_desired
+UNION
+SELECT title FROM job_listings;
+```
+```text
+title
+--------
+designer
+dentist
+manager
+nurse
+```
 
 ### Limitations
 
@@ -23,4 +36,4 @@ Each `SELECT` query must have:
 
 ### UNION ALL
 
-To show _every single_ record from each `SELECT`, *including* duplicates — use `UNION ALL`.
+To show _every single_ record from each `SELECT` — *including* duplicates — use `UNION ALL`.

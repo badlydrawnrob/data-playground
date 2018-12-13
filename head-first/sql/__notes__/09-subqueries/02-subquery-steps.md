@@ -13,15 +13,16 @@ Finally, you'll combine the queries together with the `WHERE` clause.
 
 ### Subquery vs join
 
-![subquery vs join examples]()
+![An example of a subquery and a join — both give the same result!](./img/subquery-vs-join.jpg)
 
-You can often avoid subqueries by using a different method, such as a `JOIN` or `LIMIT`. Most subqueries can be replaced and return the same data; you'll need to ask yourself:
+You often get faster results by using a `JOIN` (or `LIMIT`) _instead_ of a subquery. Most subqueries can be replaced and return the same data; you'll need to ask yourself:
 
 - Which method is faster? (experiment)
+- Does it need to be fast? (local/live)
 - Which is easiest to read?
 - Is it simpler to use?
 
-Make the query as _easy as possible_ for your database to answer.
+Make the query as _easy as possible_ for your database to answer. Write what makes logical sense first, and worry about performance later.
 
 
 

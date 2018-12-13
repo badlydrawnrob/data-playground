@@ -108,6 +108,7 @@ ADD COLUMN column_name int
     + Keep data and schema independent of each other
 - Make the question as _easy as possible_ for the database to answer
 - Smaller is better: `cross join > correlated > non-correlated > join`
+    + `join` is generally [faster than a `subquery`](https://stackoverflow.com/questions/2577174/join-vs-sub-query)
 
 
 ### Mapping out a database
@@ -117,7 +118,7 @@ ADD COLUMN column_name int
     + Tables, atomic, acid, ...
 - Is it universal?
     + Will this data be used everywhere?
-    + Or only a segment of your entries?
+    + Or only with a segment of your entries?
     + Which tables and records link together?
 - How will it be used?
     + Do you need to limit access?

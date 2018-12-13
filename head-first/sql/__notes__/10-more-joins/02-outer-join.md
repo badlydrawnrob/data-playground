@@ -1,34 +1,34 @@
 ## Outer join
 
-![Outer join set theory illustration]()
+![](./img/outer-join.png)
 
 You've seen an _inner join_ before. Another tool in your belt is the _outer join_.
 
 
-**NEEDS MUCH BETTER EXPLAINATION!**
+### An inner join:
 
-An inner join:
+- `row a` in `table a` matches to ...
+    + `row b` in `table b`
 
-Matches `row a` (key) in `table a`
-with `row b` (key) in `table b`
+Returns exact matches between `table a` and `table b`, using a matching _primary key_ or _id_
 
 
-An outer join:
+### An outer join:
 
-Matches ALL rows in `table a`
-with rows in `table b`
+- rows in `table a` match to ...
+    + rows in `table b`
+        + even if there's `NULL` matching result
 
-Returns `NULL` values on `table a` (that do not have matches or entries on `table b`)
+Returns exact matches between `table a` and `table b` — also returns `NULL` values if no matching _primary key_ or _id_ can be found on `table b`.
 
 
 ### Left and right joins
 
-A _left outer join_ matches `table a`, against `table b`
+![](./img/outer-join-example.png)
 
-![sketch match `A` against `B`]
-
-
-A _right outer join_ matches `table b` against `table a`
-
+| Left outer join | Right outer join |
+|-----------------|------------------|
+| ![](./img/left-outer-join.png)  | ![](./img/right-outer-join.png)  |
+| A _left outer join_ matches `table a`, against `table b`  | A _right outer join_ matches `table b` against `table a`  |
 
 It's generally best to **stick to one** and switch the actual tables instead.
