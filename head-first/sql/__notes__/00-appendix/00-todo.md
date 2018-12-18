@@ -22,6 +22,7 @@
 16. Write a section on _data cleansing_ with R and Python
 17. Write a condensed version, with _images_ and _analogies_
 18. Find some dummy tests for sql
+19. `CHECK` constraint or Python?
 
 ## Do these ...
 

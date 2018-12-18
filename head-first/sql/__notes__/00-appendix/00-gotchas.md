@@ -138,3 +138,12 @@ ADD COLUMN column_name int
     + It's better to use an [inner select](https://stackoverflow.com/a/14732410)
     + Especially when using `count()` or another aggregate function!
     + Returns the same values as `GROUP BY` (without aggregate functions)
+
+
+### Security
+
+- Restrict user access
+    + Who needs to access data, and why?
+    + Which tables and actions might they need?
+    + Do you restrict your users to _read only_ access?
+- Is your [`VIEW`](#view) a security vulnerability?

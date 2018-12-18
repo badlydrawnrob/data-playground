@@ -22,6 +22,7 @@
 | `\c [database]`     | connect to database                              |
 | `\dt`               | Lists all tables                                 |
 | `\d` or `\d+`       | `\d [table_name]` display table, constraints etc |
+| `\dv`               | `\dv [table_name]` display views                 |
 | `q`                 | Exit list                                        |
 
 
