@@ -95,6 +95,12 @@
 <<[11-constraints-views-transactions/04-transactions.md]
 
 
+# 12: Security
+<<[12-security/01-database-security.md]
+<<[12-security/02-add-user.md]
+<<[12-security/03-user-privileges.md]
+
+
 
 # Appendix
 <!-- <<[00-appendix/00-todo.md] -->

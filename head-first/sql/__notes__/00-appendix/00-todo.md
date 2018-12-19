@@ -24,6 +24,7 @@
 18. Find some dummy tests for sql
 19. `CHECK` constraint or Python?
 20. Research **transactions** further — when to use? when to handover to Python?
+21. Investigate _security_ and _best practices_ for postgres and it's users
 
 ## Do these ...
 
