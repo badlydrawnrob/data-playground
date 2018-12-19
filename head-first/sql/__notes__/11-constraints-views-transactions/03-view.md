@@ -36,6 +36,8 @@ SELECT * FROM (
 
 ### Updating the view
 
+> There are two types of views, _updatable_ and _non-updatable_.
+
 You can change the underlying structure of the `VIEW`, or table, without the user (or app) needing to know about it. `DROP VIEW` to delete it (do this before deleting it's table).
 
 ### Views and security

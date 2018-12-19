@@ -23,6 +23,7 @@
 17. Write a condensed version, with _images_ and _analogies_
 18. Find some dummy tests for sql
 19. `CHECK` constraint or Python?
+20. Research **transactions** further — when to use? when to handover to Python?
 
 ## Do these ...
 
