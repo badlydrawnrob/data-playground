@@ -2,26 +2,31 @@
 
 ![](./img/hangman.png)
 
-> <mark>Always include what you don't know</mark> as well as what you do
-
 A mental model helps you <i>fill in the gaps</i> in your knowledge.
 
-- [ ] Find problems and gaps in knowledge
-- [ ] Test these with data wherever possible
+- Find problems and gaps in knowledge
+- Test these with data wherever possible
 
-You'll always need a mental model to fill in gaps of knowledge to understand the world — or make links between your data and knowledge.
+Make links between your data and knowledge — your mental model will help you understand the world, filling in the gaps as you go.
 
-- <strong>It's OK to be wrong</strong>
-- Keep asking the question: <q>Does it work?</q>
+> Always include what you don't know, as well as what you do
+
+- What do you know?
+- What don't you know?
+- What don't you know, you don't know?
+
+**It's ok to be wrong**. you'll make mistakes so just keep asking the question: does it work?
 
 
-![Problem and mental model circle image](..)
 
-> <mark><b>Todays</b> research</mark> become <b>assumptions</b> you take into <mark><b>tomorrows</b> research
+### Your baseline assumptions
 
-- [ ] <strong>Make your assumptions explicit</strong>
-    - so you can <b>recognise errors</b> and <b>change them</b>
-- [ ] You can't test everything
+> Todays research become assumptions you take into tomorrows research
+
+- <strong>Make your assumptions explicit</strong>
+    - so you can recognise errors ...
+    - then correct them
+- <strong>You can't test everything</strong>
     - but everything should be testable
 
 
@@ -29,15 +34,16 @@ You'll always need a mental model to fill in gaps of knowledge to understand the
 
 ## FOCUS
 
-No matter how much data you have at your disposal, <strong><b>stay focused</b> on what you're trying to achieve!</strong>.
+![Your mental model and baseline assumptions help you find your focus](./img/define-the-problem.jpg)
 
-> BUILD → MEASURE → LEARN ⟲
+<strong>Stay focused on what you're trying to achieve</strong>, no matter how much data you have at your disposal.
 
-----
+> BUILD → MEASURE → LEARN
 
-![<b>Mental model</b> + <b>Baseline assumptions</b> = 🔦 <b>Focus</b>](./img/define-the-problem.jpg)
+1. Your mental model
+2. Your baseline assumptions
+3. Together, become your focus 🔦
 
-----
 
 
 

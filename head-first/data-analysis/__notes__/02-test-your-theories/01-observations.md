@@ -1,47 +1,74 @@
 ## Problems to be solved
 
-Personas -vs- Problem-Personas
+### What, exactly is the problem?
 
-<aside class="callout callout-primary">
+There's a few ways to gauge the problem:
 
-<b class="keywords keywords-box">💬 What they say</b> <mark>--TRUTH--</mark> || 👍 What they do
+1. Client interviews
+2. Customer interviews
+3. Personas or archetypes
 
-</aside>
+Gather your **baseline set of assumptions** about their problems. They won't necessarily true as these can be _feelings_ (not _facts_), but it's a good place to start:
 
-- [ ] <b class="keywords keywords-secondary keywords-box">Qualitative</b> should be tested with quantitative
-    - Perceptions are not always the same as _objective_ behaviour
+1. Define the problem
+2. Write your client (or customer) story
+    + Tasks they want to perform
+    + Assumptions they might have
+3. Write down their _baseline set of assumptions_
 
 
+![](./img/say-do.jpg)
+
+### Finding the TRUTH™
+
+> TRUTH™ is somewhere between _**what they say**_ and _**what they do**_
+
+Let's take the example of a meal out. Jim is asked by the waiter "was everything ok for you?"
+
+- Does he answer honestly?
+- Or does he say what they want to hear?
+
+Perceptions are not always the same as _objective_ behaviour. Conversations help us empathise through _speech_ and _feeling_ (empathy) — but always check your facts:
+
+- <b>Qualitative</b> _gathers_ insights
+- <b>Quantitative</b> _validates_ insights (always test theories)
+
+It takes a little of both!
 
 
 
 ## Comparing Data
 
-> Always use the <mark>method of comparison</mark> in analysis
+![It's best to break your data into chunks](./img/chunks.jpg)
 
-![Picture of $sales chunks]()
+Data is <strong>only</strong> interesting when in <strong>comparison</strong> to other data. What changes or patterns do you see?
 
-- [ ] Data is <strong>only</strong> interesting when in <strong>comparison</strong> to other data.
-    - <b>November</b> compared to <b>December</b>
-    - One statistic compared to other statistics
+> Always use the _method of comparison_ in analysis
+
+- _November_ compared to _December_
+- One statistic (or data point) compared to another
+
+
+### Speaking your TRUTH™
 
 > Always make comparisons <mark>explicit</mark>
 
-1. It needs to clearly state the <i>assumption</i> about the <i>comparison</i>
-2. It needs to communicate to client and yourself
+1. Clearly state your <i>assumption</i> about the <i>comparison</i>
+2. Clearly communicate this to client and yourself
 
-![Picture of brownie observation]()
 
-### Observational Data
 
-![Picture of an eye]()
+## Observational Data
 
-> Qualitative doesn't tell the whole story, but gathers insights for further experimentation
+![](./img/people-watching.jpg)
+
+Qualitative doesn't tell the whole story, but gathers insights for further experimentation:
 
 1. Watch. Observe.
 2. See what they do.
 3. See what groups they assign themselves to.
 4. Take inventory (track observations)
+
 
 ### Flipping the theory
 
@@ -52,13 +79,14 @@ Sometimes you'll have to flip the theory to see if the opposite is going on. A g
 - Or does a customer value something more when the price is higher?
     - <q>The price is too cheap! It mustn't be good quality!</q>
 
-> 🙄 Observational data has it's limitations
+#### Another header
+##### Observational data has it's limitations
 
-- [ ] Be careful you're not drawing the wrong conclusions
+- Be careful you're not drawing the wrong conclusions
     - Take observational data with a pinch of salt
 
 
-### Say it in pictures
+## Say it in pictures
 
 Draw pictures of how you think things relate. This helps you make your ideas explicit and easy to view at-a-glance.
 
