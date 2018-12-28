@@ -26,11 +26,17 @@
 # 05: ...
 # 06: ...
 
+
 # 07: Subjective probabilities
 <<[07-subjective-probability/01-probability-words.md]
 <<[07-subjective-probability/02-visualising-probability-words.md]
 <<[07-subjective-probability/03-new-information.md]
 
+
 # 08: Heuristics
 <<[08-heuristics/01-analyse-like-a-human.md]
 <<[08-heuristics/02-pick-the-right-variables.md]
+
+
+# Appendix
+<<[00-appendix/01-further-reading.md]
