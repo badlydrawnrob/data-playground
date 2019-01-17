@@ -1,14 +1,19 @@
 ## Elements of control
 
-> When receiving a brief, it's helpful to collect data and group it by elements <em>you can control</em> and elements <em>you can't</em> - <strong>always</strong> ask for this data!
+> Always ask for this data
+
+When receiving a brief, it's helpful to collect data and group it by:
+
+- Elements you <em>can</em> control
+- Elements you <em>can not</em> control
 
 ### Decision variables and constraints
 
 > The balance of your _decision variables_ and your _constraints_ determine your profit
 
-| **1:** Things you can control | **2:** Things you can't control |
+| 1. Things you can control | 2. Things you can't control |
 |------------------------|--------------------------|
-| _Your decision variables<br>.... **can** alter profit:_ | _Your constraints_<br>.... **can't** alter profit |
+| _Decision variables (can alter profit)_ | _Constraints (can't alter profit)_ |
 | — How much <i>Brand A</i> to buy | — Cost of each brand (wholesale) |
 | — How much <i>Brand B</i> to buy | — How profitable each brand is |
 | | — How much it costs to deliver |
@@ -20,9 +25,10 @@
 
 > Example: if I increased production of (`☕ A`) or (`☕ B`), which would maximise profit?
 
-You can maximise profit by choosing the right <i>product mix</i>. <b>Objective functions</b> help you decide how many of each product range (for example) to produce.
+- **You can maximise profit** by choosing the right <i>product mix</i>
+- **Objective functions** help you decide how many of each product range (for example) to produce.
 
-> An <mark>objective function</mark> is used when you want to find a `max()` or `min()` of something. This could be profit, or manpower, or logistics. You'll combine the things you <i>can</i> change with things you <i>can't</i> change to reach your objective.
+An _objective function_ is used when you want to find a `max()` or `min()` of something. This could be profit, manpower, or logistics. You'll combine the things you <i>can</i> change with things you <i>can't</i> change to reach your objective.
 
 #### An objective function
 

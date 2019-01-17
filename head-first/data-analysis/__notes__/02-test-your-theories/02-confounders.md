@@ -2,22 +2,58 @@
 
 > <b class="keywords keywords-highlight">Always</b> consider how <b class="keywords keywords-highlight">confounding</b> may <b class="keywords keywords-highlight">affect results</b>
 
-- [ ] Confounders should make sense in the context of your analysis
+- Confounders should make sense in the context of your analysis
+- A confounder in one observational study, may not be relevant in another
 
-![Confounders sketch]()
+Imagine you're conducting two studies. The economy is shot, consumer spending down, and your stores are in both _rich_ and _poor_ areas — sales are down and you're trying to find out why. For each theory, what are the confounders?
 
-Manage confounders by breaking the data into chunks. Sometimes it's a good idea to split out the data into smaller chunks, where the data is less likely to be biased.
+| ☕ Value perception | ☕ Temperature |
+|---------------------|---------------|
+| 📍 location | <s>📍 location</s> |
+| -  | 👨🏻‍🍳 staff member   |
+| -  | ⏰ time of day  |
 
-Some good examples are: location, wealth, age, weather, etc — sometimes these may be linked! (wealthy locations)
 
-![pg.50 splitting the tables]()
 
-> 🙄 Sometimes a theory will overlap with observational data. Or, sometimes observations will give rise to a theory.
 
-- [x] If the observational data doesn't describe this theory, you'll need an experiment.
-    - [ ] e.g if there's not enough (or good enough) data to validate a theory, or give you predictions — it's <strong>just a theory</strong>!
-    - <q>If I train staff better, will the temperature of the coffee improve?</q>
-- [ ] Observational data will often <em>not</em> be able to predict the future
+
+
+## Managing Confounders
+
+![Breaking the store survey results by region](./img/chunks-table.jpg)
+
+> Break data into chunks
+
+Sometimes it's a good idea to split out the data into smaller chunks, where the data is less likely to be biased. It'll help you manage confounders, some of which could be linked:
+
+- 🔗 location
+- 🔗 wealth
+- age
+- weather
+- ...
+
+
+
+
+
+
+
+
+## Are your observations valid?
+
+> If I train staff better, will the temperature of the coffee improve?
+
+- Sometimes a theory will overlap with observational data.
+- Sometimes observations will give rise to a theory.
+- Observational data is often unlikely to predict the future
+
+### You'll need an experiment if
+
+- Your observational data doesn't describe this theory
+- There's not enough data to validate a theory, or give you predictions
+- Your observational data isn't strong enough
+
+If any of these are true, it's <strong>just a theory</strong>!
 
 
 
@@ -25,18 +61,31 @@ Some good examples are: location, wealth, age, weather, etc — sometimes these
 
 ## Experimenting
 
+![](./img/test-tubes.jpg)
+
 > You might have two or more theories: <mark>You need an experiment!</mark>
 
-![3 test tubes image]()
+You'd like to find out why people aren't buying.
 
-> <mark>Always set a baseline</mark>
+1. Mark thinks it's a _pricing_ problem (discount, reduce price)
+2. Ben thinks it's a _perception_ problem (rebrand)
+
+Who's right?
+
+### It's important to set a baseline
 
 ![Customer segment (theory and control) image]()
 
-- [x] Always set a baseline control group
-    - [ ] An A/B test or experiment
-    - [ ] You need to know <i>what would have happened</i> without the experiment!
-    - [ ] You can't <em>always</em> set a control, but always aim to.
+Let's take Mark's theory. If we went ahead and changed price across all stores, we can never be quite sure if our changes were the _real_ reason for failure or success!
+
+- **Set a baseline control group**
+    - An A/B test or experiment
+    - A multivariate test
+- **What would've happened _without_ the experiment?**
+    - Did it have the desired effect?
+    - Have you ruled out any confounders?
+
+You can't <em>always</em> set a control, but always aim to.
 
 
 
