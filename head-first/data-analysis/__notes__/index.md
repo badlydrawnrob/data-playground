@@ -27,8 +27,10 @@
 
 # 03: Optimization and control
 <<[03-optimization/01-elements-of-control.md]
-<<[03-optimization/02-product-mix.md]
-<<[03-optimization/03-independent-or-linked.md]
+<<[03-optimization/02-objective-function.md]
+<<[03-optimization/03-product-mix.md]
+<<[03-optimization/04-optimisation-assumptions.md]
+<<[03-optimization/05-independent-or-linked.md]
 
 
 # 04: Data visualisation
