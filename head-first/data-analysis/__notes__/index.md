@@ -18,10 +18,11 @@
 <<[02-test-your-theories/03-comparing-data.md]
 <<[02-test-your-theories/04-observational-data.md]
 <<[02-test-your-theories/05-say-it-in-pictures.md]
-<<[02-test-your-theories/06-managing-confounders.md]
-<<[02-test-your-theories/07-validating-observations.md]
-<<[02-test-your-theories/08-experimenting.md]
-<<[02-test-your-theories/09-randomise.md]
+<<[02-test-your-theories/06-confounders.md]
+<<[02-test-your-theories/07-managing-confounders.md]
+<<[02-test-your-theories/08-validating-observations.md]
+<<[02-test-your-theories/09-experimenting.md]
+<<[02-test-your-theories/10-randomise.md]
 
 
 # 03: Optimization and control
