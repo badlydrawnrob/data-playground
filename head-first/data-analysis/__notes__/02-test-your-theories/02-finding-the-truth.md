@@ -1,6 +1,6 @@
 ## Finding the TRUTH™
 
-![](./img/say-do.jpg)
+![](./img/between-say-do.jpg)
 
 > TRUTH™ is somewhere between _**what they say**_ and _**what they do**_
 

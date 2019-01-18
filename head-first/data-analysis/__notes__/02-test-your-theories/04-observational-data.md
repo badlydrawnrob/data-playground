@@ -12,6 +12,8 @@ Qualitative doesn't tell the whole story, but gathers insights for further exper
 
 ### Flipping the theory
 
+![](./img/perceived-value.jpg)
+
 Sometimes you'll have to flip the theory to see if the opposite is going on. A good example of this is <b>value perception</b>:
 
 - Is it a customer sense of value for their money?
