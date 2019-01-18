@@ -23,6 +23,7 @@
 <<[02-test-your-theories/08-validating-observations.md]
 <<[02-test-your-theories/09-experimenting.md]
 <<[02-test-your-theories/10-randomise.md]
+<<[02-test-your-theories/11-experiment-flow.md]
 
 
 # 03: Optimization and control

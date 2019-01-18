@@ -13,7 +13,7 @@ Who's right?
 
 ### It's important to set a baseline
 
-![Customer segment (theory and control) image]()
+![](./img/experimental-group.jpg)
 
 Let's take Mark's theory. If we went ahead and changed price across all stores, we can never be quite sure if our changes were the _real_ reason for failure or success!
 

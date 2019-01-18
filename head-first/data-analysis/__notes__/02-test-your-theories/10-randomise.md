@@ -1,30 +1,31 @@
 ## Randomise
 
-When you randomise, the factors that might otherwise become confounders get equal representation in control/experiment groups.
+> Random selection gets you as close as possible to causal relationships
 
-> **pg.64—67** <mark>!= NEEDS EXPANDING / ILLUSTRATION / example</mark>
+We've already tried:
 
-```text
-I think it means — if age was a confounder — split into separate age groups and test control groups within these micro-groups
-```
+- Chunking the regions
+- Running an A/B experiment
 
-> <mark>Random</mark> selection gets you as close as possible to <mark>causal relationships</mark>
+**Confounders may still plague our experiments!** In order to reduce our confounders _our groups need to be the same_. We could try the following:
 
-### An example confounder ...
+1. <s>Charge every other customer a different price</s> (wouldn't go down well)
+2. <s>Historical controls (has historical confounders)</s>
+3. <s>Randomly assign stores control and experiment groups</s> (customers may choose cheapest)
+4. Divide big geographic regions into micro regions (and randomly assign to control/experiment)
 
-Here's a group of people we want to test an experiment on:
+When you randomise, the factors that might otherwise become confounders get equal representation in control/experiment groups. So if we had a hidden confounder "X", both groups should contain the hidden confounder in (roughly) equal amounts. It _should_ (but not guaranteed to) affect your groups in equal ways.
 
-![Image of confounder bug]()
+![Randomise your experimental groups to minimise confounders](./img/randomise.jpg)
 
-The experiment groups should be random. This equals out any potential <i>confounders</i>, as each should contain them in equal amounts. They are essentially the same, other than the variable you're testing for.
-
-![Image of random experiment]()
-
-- [x] This is the case, <b>even if you don't know what the confounder is!</b>
-    - [ ] Ideally you'd equal out everything _except_ the variable you're testing for, but that's best case scenario.
+So, here were the steps we took:
 
 1. First try to avoid any obvious confounders, like location
-    - [ ] See Starbuzz example [**pg: 67** grouping by micro-regions]
+    - See Starbuzz example [**pg: 67** grouping by micro-regions]
 2. Next, <b>randomly assign</b> those groups to the <b>control</b> and <b>experiment</b>
+    - Ideally you'd equal out everything _except_ the variable you're testing for, but that's best case scenario.
 
-> 💡 This is an example of a <mark>randomised controlled experiment</mark>
+### ⚠️ Other confounders to consider
+
+- Sample size
+- [Observer or subject bias](http://www.biostathandbook.com/confounding.html)
