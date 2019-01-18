@@ -5,12 +5,23 @@
 
 # 01: Introduction to data analysis
 <<[01-introduction/01-mental-model.md]
-<<[01-introduction/02-focus.md]
+<<[01-introduction/02-your-mental-model.md]
+<<[01-introduction/03-def-dis-eval-decide.md]
+<<[01-introduction/04-filling-in-the-gaps.md]
+<<[01-introduction/05-focus.md]
+<<[01-introduction/06-ongoing-process.md]
 
 
 # 02: Test your theories
-<<[02-test-your-theories/01-observations.md]
-<<[02-test-your-theories/02-confounders.md]
+<<[02-test-your-theories/01-problems-to-be-solved.md]
+<<[02-test-your-theories/02-finding-the-truth.md]
+<<[02-test-your-theories/03-comparing-data.md]
+<<[02-test-your-theories/04-observational-data.md]
+<<[02-test-your-theories/05-say-it-in-pictures.md]
+<<[02-test-your-theories/06-managing-confounders.md]
+<<[02-test-your-theories/07-validating-observations.md]
+<<[02-test-your-theories/08-experimenting.md]
+<<[02-test-your-theories/09-randomise.md]
 
 
 # 03: Optimization and control
