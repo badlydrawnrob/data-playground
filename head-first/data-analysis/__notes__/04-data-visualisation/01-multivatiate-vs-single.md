@@ -1,8 +1,8 @@
-## Multivatiate -vs- single
+## Multivariate -vs- single
 
 ### Scatterplots
 
-A scatterplot explores <i class="highlight highlight-italic">causes</i>. It's an example of <i class="highlight highlight-italic">exploratory data analysis</i> (having a peak at the data that needs testing).
+**A scatterplot explores <i class="highlight highlight-italic">causes</i>**. It's an example of <i class="highlight highlight-italic">exploratory data analysis</i> (having a peak at the data that needs testing).
 
 When creating a scatterplot, you're asking two main questions:
 

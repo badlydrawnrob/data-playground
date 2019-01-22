@@ -35,7 +35,8 @@
 
 
 # 04: Data visualisation
-<<[04-data-visualisation/01-multivatiate-vs-single.md]
+<<[04-data-visualisation/01-scatterplots.md]
+<<[04-data-visualisation/02-multivariate.md]
 
 
 # 05: ...
@@ -46,6 +47,8 @@
 <<[07-subjective-probability/01-probability-words.md]
 <<[07-subjective-probability/02-visualising-probability-words.md]
 <<[07-subjective-probability/03-new-information.md]
+<<[07-subjective-probability/04-bayes-rule.md]
+<<[07-subjective-probability/05-comparison.md]
 
 
 # 08: Heuristics

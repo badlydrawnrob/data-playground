@@ -1,5 +1,7 @@
 ## Dealing with probability words
 
+![](./img/unsure.jpg)
+
 If you have a hunch, a mental model, belief or state, it's easy to say how you feel; but that's often fuzzy. People have differing opinions, or opinions change over time. It's not unusual for people to say things like:
 
 - "It's **highly likely** that cuddly toys will sell next year"
