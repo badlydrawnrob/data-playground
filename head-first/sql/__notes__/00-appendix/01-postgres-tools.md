@@ -4,6 +4,7 @@ Postgres can be used with an app, or on the command line.
 
 - **Use the CLI** for quick exploration, backups and admin
 - **[Use a GUI](https://postgresapp.com/documentation/gui-tools.html)** for data manipulation
+- **[Postgres guide](http://www.postgresguide.com)** (unofficial)
 
 You can download [Postgres app](https://postgresapp.com) for Mac:
 
