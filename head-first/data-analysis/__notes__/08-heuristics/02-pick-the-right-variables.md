@@ -1,40 +1,21 @@
-## How do you pick the right variables?
+## It's not an ideal world — keep it simple, stupid!
 
-![Image of survey]()
-![Image of moving parts]()
-![Image of what they do]()
+![](./img/system-map.jpg)
 
-Once you have a broad view of the problem, understand the moving parts and variables you can measure:
+> Use the right tool, for the right job
 
-1. First, ask yourself "what's feasible to measure?"
-2. Which are too expensive, difficult, or time-consuming?
-3. Which might solve our question, or validate our objective/goal?
-4. Does it fit the brief, or the clients mental model?
+You can't hold all variables in a complex system. Pick the important ones, understand your solutions are probabilities, not absolutes.
 
-### Remember, the client has their own heuristics
+- An optimisation function is useful for ultra-specific problems
+- **Use heuristics** in most other situations
+- **Pick a sensible objective** and the best variables to achieve it
+- **Simplify** wherever possible. It often work
 
-> We need litter down by <b class="highlight highlight-bold">10%</b>, or we <b class="highlight highlight-bold">stop your funding</b>!
+**Map out the moving parts** of the system. Ask yourself:
 
-![City council vs Littergitter heuristic]()
-
-#### Customer heuristics: how they decide
-
-> The council don't care about your public opinion survey. They want hard data, not fuzzy feelings.
-
-Every customer or client has their own heuristics:
-
-- How does your customer think?
-- What drives their decisions?
-- Are they what you think?
-- Are they realistic?
-
-#### Data analyst: how you convince
-
-> Monitoring tonnage isn't feasible. It's too hard. What do we need to convince them otherwise?
-
-Your job is to understand customer heuristics and understand their reasoning. You then use this as a basis for your own analysis, helping them decide.
-
-- How might you integrate them into your analysis?
-- What facts or figures would you need?
-- Do they prove your point?
-- ... or disprove it? (be honest)
+1. List and group your system parts
+2. What types of data are there? (quantative or qualitative)
+3. Which pieces might give clues to achieve my goal?
+4. Which are expensive, time consuming, complex, or impossible?
+5. Is your goal reasonable? If not, can you describe why?
+6. What is realistic, quick, or easy to gather?

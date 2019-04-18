@@ -54,6 +54,7 @@
 # 08: Heuristics
 <<[08-heuristics/01-analyse-like-a-human.md]
 <<[08-heuristics/02-pick-the-right-variables.md]
+<<[08-heuristics/03-heuristics.md]
 
 
 # Appendix
