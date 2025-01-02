@@ -1,0 +1,25 @@
+:root {
+  --primary: #8697cb;
+  --secondary: #BCBDFD;
+  --highlight: #2c2f38;
+
+  --text-header: var(--primary);
+  --text-main-headers: var(--highlight);
+  --text-links: #007bff;
+  --text-footer: #333;
+
+  --bg-main: white;
+  --bg-dots: var(--highlight);
+  --bg-lesson: white;
+
+  --nav-buttons: var(--highlight);
+  --nav-buttons-text: white;
+
+  --corner-active: var(--highlight);
+  --corner-inactive: #f4f4f4;
+  --icons: var(--highlight);
+  --footer-icons: var(--highlight);
+
+  --emphasized-bg: #dce8ff;
+  --emphasized-border: #aab6d2;
+}
