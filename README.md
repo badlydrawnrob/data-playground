@@ -14,3 +14,9 @@ Examples such as the **Programming Flashcards App**, **Google Ads**, **Simple An
 
 > - [Appropriate uses for SQLite](https://www.sqlite.org/whentouse.html)
 > - When to use [Postgres -vs- SQLite](https://www.boltic.io/blog/postgresql-vs-sqlite)
+
+## Other courses
+
+> Google "udemy/coursera sql course"
+
+I think the original SQL courses I did ages back are on Udemy.
