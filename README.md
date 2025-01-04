@@ -19,6 +19,8 @@ Examples such as the **Programming Flashcards App**, **Google Ads**, **Simple An
 
 ## ⚠️ Warnings
 
+### SQLite
+
 > Sqlite is very permissive.
 > It isn't at all Type safe!
 
@@ -31,6 +33,16 @@ ALTER TABLE BandMember ADD COLUMN TEXT;
 CREATE TABLE shit_types (a INT, b VARCHAR(10));
 INSERT INTO shit_types (a,b) VALUES('123',1234567891011);
 -- 123|1234567891011
+```
+
+#### Foreign keys are not respected (fix)
+
+> You **must** notify SQLite to respect foreign keys for **every** connection!
+
+```sql
+-- For every connection, set this ...
+-- Especially for `INSERT` and `DELETE`
+PRAGMA foreign_keys=on;
 ```
 
 
