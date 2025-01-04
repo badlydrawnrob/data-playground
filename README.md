@@ -29,7 +29,8 @@ Be careful with bugs when dealing with SQLite, as it's not as strict as Postgres
 ALTER TABLE BandMember ADD COLUMN TEXT;
 -- These types are allowed 🤦
 CREATE TABLE shit_types (a INT, b VARCHAR(10));
-INSERT INTO shit_types (a,b) VALUES('123',456);
+INSERT INTO shit_types (a,b) VALUES('123',1234567891011);
+-- 123|1234567891011
 ```
 
 
