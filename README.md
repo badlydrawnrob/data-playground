@@ -10,10 +10,28 @@
 
 Examples such as the **Programming Flashcards App**, **Google Ads**, **Simple Analytics** research, **Library Data**, and so on. Should involve basically ZERO database admin, unless absolutely necessary.
 
+
 ## Notes
 
 > - [Appropriate uses for SQLite](https://www.sqlite.org/whentouse.html)
 > - When to use [Postgres -vs- SQLite](https://www.boltic.io/blog/postgresql-vs-sqlite)
+
+
+## ⚠️ Warnings
+
+> Sqlite is very permissive.
+> It isn't at all Type safe!
+
+Be careful with bugs when dealing with SQLite, as it's not as strict as Postgres. For example, if you write improper SQL such as:
+
+```sql
+-- Creates `null` column name (missing name) 
+ALTER TABLE BandMember ADD COLUMN TEXT;
+-- These types are allowed 🤦
+CREATE TABLE shit_types (a INT, b VARCHAR(10));
+INSERT INTO shit_types (a,b) VALUES('123',456);
+```
+
 
 ## Other courses
 
