@@ -15,6 +15,7 @@ Examples such as the **Programming Flashcards App**, **Google Ads**, **Simple An
 
 > - [Appropriate uses for SQLite](https://www.sqlite.org/whentouse.html)
 > - When to use [Postgres -vs- SQLite](https://www.boltic.io/blog/postgresql-vs-sqlite)
+> - [Modern SQL](https://modern-sql.com/) and what's changed
 
 
 ## ⚠️ Warnings
