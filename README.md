@@ -52,3 +52,13 @@ PRAGMA foreign_keys=on;
 > Google "udemy/coursera sql course"
 
 I think the original SQL courses I did ages back are on Udemy.
+
+
+## Tools
+
+> True as of 2025
+
+- [Enso](https://help.enso.org/) (data prep and visualisation)
+- [VS Code](https://marketplace.visualstudio.com/items?itemName=alexcvzz.vscode-sqlite) plugin
+- [Convert files to SQL](https://sqlizer.io/) and database
+- [5 best GUIs](https://turso.tech/blog/5-best-free-sqlite-gui) for SQLite
