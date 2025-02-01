@@ -24,7 +24,7 @@ Examples such as the **Programming Flashcards App**, **Google Ads**, **Simple An
 > Sqlite is very permissive.
 > It isn't at all Type safe!
 
-Be careful with bugs when dealing with SQLite, as it's not as strict as Postgres. For example, if you write improper SQL such as:
+You can, however, enable [strict mode](https://sqlite.org/src/wiki?name=StrictMode) or [strict tables](https://www.sqlite.org/stricttables.html). Be careful with bugs when dealing with SQLite, as it's not as strict as Postgres. For example, if you write improper SQL such as:
 
 ```sql
 -- Creates `null` column name (missing name) 
