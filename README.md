@@ -20,6 +20,13 @@ Examples such as the **Programming Flashcards App**, **Google Ads**, **Simple An
 
 ## ⚠️ Warnings
 
+### Security
+
+1. [Writing raw SQL](https://www.youtube.com/watch?v=Cp3bXHYp-bY) (things to watch out for)
+2. [SQLite books](https://www.sqlite.org/books.html)
+3. [About ORMS](https://www.fullstackpython.com/object-relational-mappers-orms.html)
+4. ORM [lists](https://github.com/grundic/awesome-python-models?tab=readme-ov-file#odm-orm-active-record) and [other lists](https://github.com/vajol/python-data-engineering-resources/blob/main/resources/orms-for-python.md#list-of-orms) and [Piccalo](https://piccolo-orm.com/)
+
 ### SQLite
 
 > Sqlite is very permissive.
