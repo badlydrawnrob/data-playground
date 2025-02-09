@@ -69,3 +69,6 @@ I think the original SQL courses I did ages back are on Udemy.
 - [VS Code](https://marketplace.visualstudio.com/items?itemName=alexcvzz.vscode-sqlite) plugin
 - [Convert files to SQL](https://sqlizer.io/) and database
 - [5 best GUIs](https://turso.tech/blog/5-best-free-sqlite-gui) for SQLite
+- [SQL for Humans](https://github.com/kennethreitz/records) (records tool)
+    - May be better used for internal use than app use (security)
+
