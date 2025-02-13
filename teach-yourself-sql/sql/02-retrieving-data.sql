@@ -5,12 +5,6 @@
    might be applied to the Taste-Token project. Don't write out all examples, as
    "Sams Teach Yourself SQL in 10 Minutes" is a good reference for this.
 
-   1. Read the chapter
-   2. Execute the examples
-   3. Make notes (the best bits)
-   4. Condense the notes (lazy loading)
-   5. Make comments (avoid with obvious code)
-
     Notes
     -----
     1. Run `.help` to get available options

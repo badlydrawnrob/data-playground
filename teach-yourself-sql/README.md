@@ -19,6 +19,15 @@ possible, leave it to the book as a resource (don't repeat yourself) and make su
 **Just start BUILDING!** Don't make the mistake of trying to deep dive, or run through ever single example before you start. That's the goal, the point, the purpose anyway. Make a start, see how it holds up, and iterate on the way.
 
 
+## How to learn
+
+1. Read the chapter
+2. Execute the examples
+3. Make notes (the best bits)
+4. Condense the notes (lazy loading)
+5. Make comments (avoid with obvious code)
+
+
 ## ⚠️ A little warning
 
 > Trust no one!
