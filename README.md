@@ -17,6 +17,15 @@ Examples such as the **Programming Flashcards App**, **Google Ads**, **Simple An
 > - When to use [Postgres -vs- SQLite](https://www.boltic.io/blog/postgresql-vs-sqlite)
 > - [Modern SQL](https://modern-sql.com/) and what's changed
 
+### Some handy settings
+
+```sql
+-- SQLite settings:
+-- Show table headings and column format
+.headers on
+.mode column
+```
+
 
 ## ⚠️ Warnings
 
@@ -32,7 +41,7 @@ Examples such as the **Programming Flashcards App**, **Google Ads**, **Simple An
 > Sqlite is very permissive.
 > It isn't at all Type safe!
 
-You can, however, enable [strict mode](https://sqlite.org/src/wiki?name=StrictMode) or [strict tables](https://www.sqlite.org/stricttables.html). Be careful with bugs when dealing with SQLite, as it's not as strict as Postgres. For example, if you write improper SQL such as:
+You can, however, enable [strict tables](https://www.sqlite.org/stricttables.html) (or [strict mode](https://sqlite.org/src/wiki?name=StrictMode)). Be careful with bugs when dealing with SQLite, as it's not as strict as Postgres. For example, if you write improper SQL such as:
 
 ```sql
 -- Creates `null` column name (missing name) 

@@ -37,6 +37,14 @@ possible, leave it to the book as a resource (don't repeat yourself) and make su
 3. Keep your data under lock and key.
 4. Never share customer data.
 5. Pick the ONE way to do it (SQLite/Postgres).[^4]
+6. Take [extra care](https://www.youtube.com/watch?v=Cp3bXHYp-bY) with raw sql (use an ORM).
+
+## 🏎️ On performance (speed)
+
+> Your database is very good at storing, moving, and filtering data. That's what it was designed for, after all. Use that performance as much as you can!
+
+- If a list is potentially large, SQL is _far_ more performant (data transfer)
+- Small and dynamic filtering _could_ be handled by application (client side)
 
 
 ## Useful links
@@ -51,7 +59,7 @@ possible, leave it to the book as a resource (don't repeat yourself) and make su
 
 [^2]: Whenever you're making permanent changes, don't trust yourself, back up just to be safe. Exactly like you're doing with this repository!
 
-[^3]: Validate and sanatize all data before it hits the database. Make sure your code doesn't allow [SQL injections](https://realpython.com/prevent-python-sql-injection/) from your API.
+[^3]: Validate and sanatize all data before it hits the database. You should be validating at the application, API, and database level. Make sure your code doesn't allow [SQL injections](https://realpython.com/prevent-python-sql-injection/) from your API.
 
 [^4]: If there's a shorthand, but it's not available in Postgres (or the other `db` you're highly likely to use) then use the "safe" and expanded version. Do the same wherever you can with methods _particular_ to only one `db`. In general I'll be using Postgres and SQLite (not MySQL) so focus on syntax for migration between those.
 
