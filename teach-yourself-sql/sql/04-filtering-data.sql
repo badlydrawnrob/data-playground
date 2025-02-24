@@ -18,7 +18,8 @@
    2. When to filter at the application level? (and not with SQL)
        - SQL to optimise performance (it's faster, reduce data transfer)
        - Application when it's highly dynamic (needs more flexibility)
-   3. Why do `NULL` values not show up in searches?
+   3. When do `NULL` values not show up in searches? (see pg.42 and chapter 06)
+       - `NULL` isn't _like_ anything, it only equates to `NULL`!
 
 */
 
