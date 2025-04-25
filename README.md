@@ -19,12 +19,42 @@ Examples such as the **Programming Flashcards App**, **Google Ads**, **Simple An
 
 ### Some handy settings
 
+> You can [save settings](https://stackoverflow.com/a/42910299) in your `~/` home directory with an `.sqliterc` file!
+
 ```sql
--- SQLite settings:
 -- Show table headings and column format
 .headers on
 .mode column
+
+-- Show pretty printed schema
+.schema --indent
 ```
+
+
+## Tools
+
+> True as of 2025
+
+- [Enso](https://help.enso.org/) (data prep and visualisation)
+- [SQLite Utils](https://sqlite-utils.datasette.io/en/stable/) (rapid manipulation and CLI)
+- [JQ](https://jqlang.org/) (for manipulating `json`, and it's [playground](https://play.jqlang.org/))
+- [SQL for Humans](https://github.com/kennethreitz/records) (records tool)
+    - May be better used for internal use than app use (security)
+- [VS Code](https://marketplace.visualstudio.com/items?itemName=alexcvzz.vscode-sqlite) plugin
+- [Convert files to SQL](https://sqlizer.io/) (eg: `.csv` -> `.sqlite`)
+- [5 best GUIs](https://turso.tech/blog/5-best-free-sqlite-gui) for SQLite
+- ORM [lists](https://github.com/grundic/awesome-python-models?tab=readme-ov-file#odm-orm-active-record) and [other lists](https://github.com/vajol/python-data-engineering-resources/blob/main/resources/orms-for-python.md#list-of-orms) and [Piccalo](https://piccolo-orm.com/)
+
+
+## Books
+
+1. [SQLite books](https://www.sqlite.org/books.html)
+
+## Courses
+
+> Google "udemy/coursera sql course"
+
+I think the original SQL courses I did ages back are on Udemy.
 
 
 ## ⚠️ Warnings
@@ -32,11 +62,10 @@ Examples such as the **Programming Flashcards App**, **Google Ads**, **Simple An
 ### Security
 
 1. [Writing raw SQL](https://www.youtube.com/watch?v=Cp3bXHYp-bY) (things to watch out for)
-2. [SQLite books](https://www.sqlite.org/books.html)
-3. [About ORMS](https://www.fullstackpython.com/object-relational-mappers-orms.html)
-4. ORM [lists](https://github.com/grundic/awesome-python-models?tab=readme-ov-file#odm-orm-active-record) and [other lists](https://github.com/vajol/python-data-engineering-resources/blob/main/resources/orms-for-python.md#list-of-orms) and [Piccalo](https://piccolo-orm.com/)
+2. [About ORMS](https://www.fullstackpython.com/object-relational-mappers-orms.html) (safer than raw SQL)
 
 ### SQLite
+#### Types
 
 > Sqlite is very permissive.
 > It isn't at all Type safe!
@@ -52,9 +81,10 @@ INSERT INTO shit_types (a,b) VALUES('123',1234567891011);
 -- 123|1234567891011
 ```
 
-#### Foreign keys are not respected (fix)
+#### Pragmas
 
 > You **must** notify SQLite to respect foreign keys for **every** connection!
+> This will make sure that `DELETE` [cascades](https://www.techonthenet.com/sqlite/foreign_keys/foreign_delete.php) (if foreign key deleted)
 
 ```sql
 -- For every connection, set this ...
@@ -62,22 +92,4 @@ INSERT INTO shit_types (a,b) VALUES('123',1234567891011);
 PRAGMA foreign_keys=on;
 ```
 
-
-## Other courses
-
-> Google "udemy/coursera sql course"
-
-I think the original SQL courses I did ages back are on Udemy.
-
-
-## Tools
-
-> True as of 2025
-
-- [Enso](https://help.enso.org/) (data prep and visualisation)
-- [VS Code](https://marketplace.visualstudio.com/items?itemName=alexcvzz.vscode-sqlite) plugin
-- [Convert files to SQL](https://sqlizer.io/) and database
-- [5 best GUIs](https://turso.tech/blog/5-best-free-sqlite-gui) for SQLite
-- [SQL for Humans](https://github.com/kennethreitz/records) (records tool)
-    - May be better used for internal use than app use (security)
 
