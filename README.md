@@ -41,6 +41,7 @@ Examples such as the **Programming Flashcards App**, **Google Ads**, **Simple An
 - [SQL for Humans](https://github.com/kennethreitz/records) (records tool)
     - May be better used for internal use than app use (security)
 - [VS Code](https://marketplace.visualstudio.com/items?itemName=alexcvzz.vscode-sqlite) plugin
+- [Mockaroo](https://www.mockaroo.com/) (generate mock data)
 - [Convert files to SQL](https://sqlizer.io/) (eg: `.csv` -> `.sqlite`)
 - [5 best GUIs](https://turso.tech/blog/5-best-free-sqlite-gui) for SQLite
 - ORM [lists](https://github.com/grundic/awesome-python-models?tab=readme-ov-file#odm-orm-active-record) and [other lists](https://github.com/vajol/python-data-engineering-resources/blob/main/resources/orms-for-python.md#list-of-orms) and [Piccalo](https://piccolo-orm.com/)
