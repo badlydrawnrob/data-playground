@@ -1,53 +1,71 @@
 {
-    "films": [
+  "films": [
+    {
+      "id": "1",
+      "title": "Spider-Man: Homecoming",
+      "trailer": "https://www.imdb.com/video/vi4175083801/",
+      "summary": "Peter Parker tries to stop Adrian &apos;The Vulture&apos; Toomes from selling weapons made with advanced Chitauri technology while trying to balance his life as an ordinary high school student.",
+      "poster": [
+        "GKJVeP"
+      ],
+      "tags": [
+        "Action",
+        "Adventure",
+        "Sci-Fi"
+      ],
+      "reviews": [
         {
-            "id": 1,
-            "title": "Spider-Man: Homecoming",
-            "trailer": "https://www.imdb.com/video/vi4175083801/",
-            "summary": "Peter Parker tries to stop Adrian &apos;The Vulture&apos; Toomes from selling weapons made with advanced Chitauri technology while trying to balance his life as an ordinary high school student.",
-            "image": ["GKJVeP"],
-            "tags": [
-                "Action",
-                "Adventure",
-                "Sci-Fi"
-            ],
-            "reviews": [
-                { 
-                    "name": "Mark Kermode",
-                    "review": "I enjoyed the interaction between the characters, but it is one joke...",
-                    "stars": 4
-                },
-                { 
-                    "name": "Jake Wilson",
-                    "review": "The focus on the ensemble and the character development here I think is dope... and they nailed it.",
-                    "stars": 4
-                }
-            ]
+          "name": "Mark Kermode",
+          "review": "I enjoyed the interaction between the characters, but it is one joke...",
+          "stars": 4
         },
         {
-            "id": 2,
-            "title": "Thunderbolts*",
-            "trailer": "https://www.imdb.com/video/vi2242955289/",
-            "summary": "After finding themselves ensnared in a death trap, an unconventional team of antiheroes must embark on a dangerous mission that will force them to confront the darkest corners of their pasts.",
-            "image": ["JTFcza"],
-            "tags": [
-                "Action",
-                "Adventure",
-                "Crime"
-            ],
-            "reviews": null
-        },
-        {
-            "id": 3,
-            "title": "28 Years Later",
-            "trailer": "https://www.imdb.com/video/vi2545010713/",
-            "summary": "A group of survivors of the rage virus lives on a small island. When one of the group leaves the island on a mission into the mainland, he discovers secrets, wonders, and horrors that have mutated not only the infected but other s...",
-            "image": ["2E9goh"],
-            "tags": [
-                "Horror",
-                "Thriller"
-            ],
-            "reviews": null
+          "name": "Jake Wilson",
+          "review": "The focus on the ensemble and the character development here I think is dope... and they nailed it.",
+          "stars": 4
         }
-    ]
+      ]
+    },
+    {
+      "id": "2",
+      "title": "Thunderbolts*",
+      "trailer": "https://www.imdb.com/video/vi2242955289/",
+      "summary": "After finding themselves ensnared in a death trap, an unconventional team of antiheroes must embark on a dangerous mission that will force them to confront the darkest corners of their pasts.",
+      "poster": [
+        "JTFcza"
+      ],
+      "tags": [
+        "Action",
+        "Adventure",
+        "Crime"
+      ],
+      "reviews": null
+    },
+    {
+      "id": "3",
+      "title": "28 Years Later",
+      "trailer": "https://www.imdb.com/video/vi2545010713/",
+      "summary": "A group of survivors of the rage virus lives on a small island. When one of the group leaves the island on a mission into the mainland, he discovers secrets, wonders, and horrors that have mutated not only the infected but other s...",
+      "poster": [
+        "2E9goh"
+      ],
+      "tags": [
+        "Horror",
+        "Thriller"
+      ],
+      "reviews": null
+    },
+    {
+      "id": "4",
+      "title": "Nuovo Cinema Paradiso",
+      "trailer": "https://www.imdb.com/video/vi2800655897/",
+      "summary": "Salvatore, a famous film director, returns to his hometown for the funeral of the local theater&apos;s film projectionist, Alfredo. He reminisces about his life as a young boy falling in love with cinema.",
+      "poster": null,
+      "tags": [
+        "Drama",
+        "Romance"
+      ],
+      "reviews": null
+    }
+  ]
 }
