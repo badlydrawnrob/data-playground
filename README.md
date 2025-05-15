@@ -35,16 +35,21 @@ Examples such as the **Programming Flashcards App**, **Google Ads**, **Simple An
 
 > True as of 2025
 
-- [Enso](https://help.enso.org/) (data prep and visualisation)
-- [SQLite Utils](https://sqlite-utils.datasette.io/en/stable/) (rapid manipulation and CLI)
-- [JQ](https://jqlang.org/) (for manipulating `json`, and it's [playground](https://play.jqlang.org/))
-- [SQL for Humans](https://github.com/kennethreitz/records) (records tool)
-    - May be better used for internal use than app use (security)
-- [VS Code](https://marketplace.visualstudio.com/items?itemName=alexcvzz.vscode-sqlite) plugin
-- [Mockaroo](https://www.mockaroo.com/) (generate mock data)
-- [Convert files to SQL](https://sqlizer.io/) (eg: `.csv` -> `.sqlite`)
+### GUIs
+
 - [5 best GUIs](https://turso.tech/blog/5-best-free-sqlite-gui) for SQLite
-- ORM [lists](https://github.com/grundic/awesome-python-models?tab=readme-ov-file#odm-orm-active-record) and [other lists](https://github.com/vajol/python-data-engineering-resources/blob/main/resources/orms-for-python.md#list-of-orms) and [Piccalo](https://piccolo-orm.com/)
+- [Enso](https://help.enso.org/) (data prep and visualisation)
+- [Mockaroo](https://www.mockaroo.com/) (generate mock data)
+
+### Code
+
+- [JQ](https://jqlang.org/) (for manipulating `json`, and it's [playground](https://play.jqlang.org/))
+- [VS Code](https://marketplace.visualstudio.com/items?itemName=alexcvzz.vscode-sqlite) plugin
+- Python list of [ORMs](https://github.com/grundic/awesome-python-models?tab=readme-ov-file#odm-orm-active-record) and [here](https://github.com/vajol/python-data-engineering-resources/blob/main/resources/orms-for-python.md#list-of-orms) and [ice axe](https://github.com/piercefreeman/iceaxe)
+- [Piccalo](https://piccolo-orm.com/) (ORM for FastApi with [notes](https://github.com/piccolo-orm/piccolo/issues/1187) for pragma/types)
+- [SQL for humans](https://github.com/kennethreitz/records) (Just write SQL in Python!)
+    - Great for internal admin (where security isn't a concern)
+- [SQLite Utils](https://sqlite-utils.datasette.io/en/stable/) (rapid manipulation and CLI)
 
 
 ## Books
@@ -56,6 +61,8 @@ Examples such as the **Programming Flashcards App**, **Google Ads**, **Simple An
 > Google "udemy/coursera sql course"
 
 I think the original SQL courses I did ages back are on Udemy.
+
+- [Database design](https://www.youtube.com/playlist?list=PL_c9BZzLwBRK0Pc28IdvPQizD2mJlgoID) in 8 hours
 
 
 ## ⚠️ Warnings
