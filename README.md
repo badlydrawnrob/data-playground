@@ -46,7 +46,7 @@ Examples such as the **Programming Flashcards App**, **Google Ads**, **Simple An
 > There are LOTS of frameworks for dealing with data.
 > I may consider [Ocaml](https://aantron.github.io/dream/)/[Elixir](https://www.phoenixframework.org/)/Go/Gleam/Roc or [another language](https://survey.stackoverflow.co/2024/technology) later ... for now, Python!
 
-- [JQ](https://jqlang.org/) (for [manipulating `json`](https://programminghistorian.org/en/lessons/json-and-jq), and it's [playground](https://play.jqlang.org/))
+- [JQ](https://jqlang.org/) (for [manipulating `json`](https://programminghistorian.org/en/lessons/json-and-jq), and it's [playground](https://play.jqlang.org/) with some [examples](https://programminghistorian.org/en/lessons/json-and-jq))
 - [VS Code](https://marketplace.visualstudio.com/items?itemName=alexcvzz.vscode-sqlite) plugin
 - Python list of [ORMs](https://github.com/grundic/awesome-python-models?tab=readme-ov-file#odm-orm-active-record) and [here](https://github.com/vajol/python-data-engineering-resources/blob/main/resources/orms-for-python.md#list-of-orms) and [ice axe](https://github.com/piercefreeman/iceaxe)
 - [Piccalo](https://piccolo-orm.com/) (ORM for FastApi with [notes](https://github.com/piccolo-orm/piccolo/issues/1187) for pragma/types)
