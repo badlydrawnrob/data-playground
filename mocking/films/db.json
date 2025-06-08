@@ -41,7 +41,7 @@
         "Adventure",
         "Crime"
       ],
-      "reviews": null
+      "reviews": []
     },
     {
       "id": "3",
@@ -55,7 +55,7 @@
         "Horror",
         "Thriller"
       ],
-      "reviews": null
+      "reviews": []
     },
     {
       "id": "4",
@@ -65,7 +65,7 @@
       "poster": [
         "4gSVgZ.png"
       ],
-      "tags": null,
+      "tags": [],
       "reviews": [
         {
           "timestamp": "1988-09-29T09:00:00+00:00",

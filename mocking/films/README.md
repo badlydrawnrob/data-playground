@@ -45,6 +45,12 @@ Here's [an example](https://www.rottentomatoes.com/m/thunderbolts/reviews?type=t
 Rotten Tomatoes store reviews as `True` or `False` ([fresh or rotten](https://en.wikipedia.org/wiki/Rotten_Tomatoes#Critics'_aggregate_score)), but most
 films will be reviewed with stars. Either they're converted from the original review into binary results, or the reviewer has an account and approximates their review themselves. There's also an [interesting comparison](https://www.pretentious-o-meter.co.uk/) between audience scores and critic's scores.
 
+## `null` values
+
+> If you don't need `null`, don't use it!
+
+It's good to be explicit when a value doesn't exist, but `[]` empty lists are semantically _similar_ to a `null` (or in Elm `Nothing`) so just use them. Otherwise, consider using a `non-empty-list` type (so the `json` is always populated with a `[singleton]` or a list).
+
 ## Images
 
 > Images don't have to be the same type, but it makes life easier if they are.
