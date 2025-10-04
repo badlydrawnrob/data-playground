@@ -35,7 +35,7 @@ Examples such as the **Programming Flashcards App**, **Google Ads**, **Simple An
 
 > True as of 2025
 
-### GUIs
+### GUIs
 
 - [5 best GUIs](https://turso.tech/blog/5-best-free-sqlite-gui) for SQLite (and [Tad](https://www.tadviewer.com/) for pivots)
 - [Enso](https://help.enso.org/) (data prep and visualisation)
