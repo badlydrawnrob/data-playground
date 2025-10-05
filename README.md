@@ -11,13 +11,22 @@
 Examples such as the **Programming Flashcards App**, **Google Ads**, **Simple Analytics** research, **Library Data**, and so on. Should involve basically ZERO database admin, unless absolutely necessary.
 
 
-## Notes
+## SQLite (and SQL)
 
+> An sqlite [cheat sheet](https://vhernando.github.io/sqlite3-cheat-sheet) ...
 > - [Appropriate uses for SQLite](https://www.sqlite.org/whentouse.html)
 > - When to use [Postgres -vs- SQLite](https://www.boltic.io/blog/postgresql-vs-sqlite)
 > - [Modern SQL](https://modern-sql.com/) and what's changed
 
-### Some handy settings
+```terminal
+-- Launch sqlite
+sqlite3 database.sqlite
+
+-- Quit sqlite
+.quit
+```
+
+### Handy settings
 
 > You can [save settings](https://stackoverflow.com/a/42910299) in your `~/` home directory with an `.sqliterc` file!
 
