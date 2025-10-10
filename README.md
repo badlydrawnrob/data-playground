@@ -22,8 +22,12 @@ Examples such as the **Programming Flashcards App**, **Google Ads**, **Simple An
 -- Launch sqlite
 sqlite3 database.sqlite
 
+-- Clear lines
+.shell clear
+
 -- Quit sqlite
 .quit
+.exit
 ```
 
 ### Handy settings
