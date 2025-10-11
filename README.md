@@ -46,7 +46,9 @@ sqlite3 database.sqlite
 
 ## Tools
 
-> True as of 2025
+> True as of 2025. There are lots of frameworks for dealing with data ...
+
+Python isn't the ideal language for performant data transfer, but it's quite easy to get started with. Other languages like [Ocaml](https://aantron.github.io/dream/), [Elixir](https://www.phoenixframework.org/)/Go/Gleam/Roc, might be worth a look at some point (other [popular languages](https://survey.stackoverflow.co/2024/technology) here). Remember the "sunk cost fallacy" and "opportunity cost" and cognitive load it takes to learn a new thing. Is the performance 10x better? Worthy of investing 3 months of your time?
 
 ### GUIs
 
@@ -54,19 +56,27 @@ sqlite3 database.sqlite
 - [Enso](https://help.enso.org/) (data prep and visualisation)
 - [Mockaroo](https://www.mockaroo.com/) (generate mock data)
 
-### Code
+### ORMs
 
-> There are LOTS of frameworks for dealing with data.
-> I may consider [Ocaml](https://aantron.github.io/dream/)/[Elixir](https://www.phoenixframework.org/)/Go/Gleam/Roc or [another language](https://survey.stackoverflow.co/2024/technology) later ... for now, Python!
+> There's [async](https://www.youtube.com/watch?v=GSiZkP7cI80) and sync and not all ORMs will work for async.
+
+- [Piccalo](https://piccolo-orm.com/) works well with FastApi
+    - Take care with [types](https://github.com/piccolo-orm/piccolo/issues/1187) and [async](https://piccolo-orm.readthedocs.io/en/1.3.2/piccolo/tutorials/using_sqlite_and_asyncio_effectively.html) writes with SQLite
+- [Peewee](https://docs.peewee-orm.com/en/latest/peewee/database.html#sanic) is great
+    - Only for `sync` with an ORM like [Sanic](https://sanic.readthedocs.io/en/stable/) (or [others](https://docs.peewee-orm.com/en/latest/peewee/database.html#sanic))
+- [Records: SQL for humans](https://github.com/kennethreitz/records), a nice stripped back library for raw SQL.
+    - An alternative to `sqlite-utils` for exporting and manipulating data (`.csv` etc)
+- [Ice axe](https://github.com/piercefreeman/iceaxe) could be one for the future (Postgres only)
+- A list of other ORM options [here](https://github.com/grundic/awesome-python-models?tab=readme-ov-file#odm-orm-active-record) and [here](https://github.com/vajol/python-data-engineering-resources/blob/main/resources/orms-for-python.md#list-of-orms)
+
+
+### Utilities
+
+> These are great for quickly working with your data
 
 - [JQ](https://jqlang.org/) (for [manipulating `json`](https://programminghistorian.org/en/lessons/json-and-jq), and it's [playground](https://play.jqlang.org/) with some [examples](https://programminghistorian.org/en/lessons/json-and-jq))
-- [VS Code](https://marketplace.visualstudio.com/items?itemName=alexcvzz.vscode-sqlite) plugin
-- Python list of [ORMs](https://github.com/grundic/awesome-python-models?tab=readme-ov-file#odm-orm-active-record) and [here](https://github.com/vajol/python-data-engineering-resources/blob/main/resources/orms-for-python.md#list-of-orms) and [ice axe](https://github.com/piercefreeman/iceaxe)
-- [Piccalo](https://piccolo-orm.com/) (ORM for FastApi with [notes](https://github.com/piccolo-orm/piccolo/issues/1187) for pragma/types)
-- Alternatively, [Sanic](https://sanic.readthedocs.io/en/stable/) and [Peewee ORM](https://docs.peewee-orm.com/en/latest/peewee/database.html#sanic) (or non-async API)
-- [SQL for humans](https://github.com/kennethreitz/records) (Just write SQL in Python!)
-    - Great for internal admin (where security isn't a concern)
 - [SQLite Utils](https://sqlite-utils.datasette.io/en/stable/) (rapid manipulation and CLI)
+- [VS Code](https://marketplace.visualstudio.com/items?itemName=alexcvzz.vscode-sqlite) plugin
 
 
 ## Books
