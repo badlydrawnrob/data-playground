@@ -61,7 +61,7 @@ Python isn't the ideal language for performant data transfer, but it's quite eas
 > There's [async](https://www.youtube.com/watch?v=GSiZkP7cI80) and sync and not all ORMs will work for async.
 
 - [Piccalo](https://piccolo-orm.com/) works well with FastApi (careful with [types](https://github.com/piccolo-orm/piccolo/issues/1187) and [async](https://piccolo-orm.readthedocs.io/en/1.3.2/piccolo/tutorials/using_sqlite_and_asyncio_effectively.html) writes)
-- [Peewee](https://docs.peewee-orm.com/en/latest/) is great (`sync` only with [these](https://docs.peewee-orm.com/en/latest/peewee/database.html) API frameworks)
+- [Peewee](https://docs.peewee-orm.com/en/latest/) is great (`sync` only with [these](https://docs.peewee-orm.com/en/latest/peewee/database.html#framework-integration) API frameworks)
 - [Records: SQL for humans](https://github.com/kennethreitz/records) for raw SQL (alternative to `sqlite-utils` with `.csv` etc)
 - [Ice axe](https://github.com/piercefreeman/iceaxe) could be one for the future (Postgres only)
 - A list of other ORM options [here](https://github.com/grundic/awesome-python-models?tab=readme-ov-file#odm-orm-active-record) and [here](https://github.com/vajol/python-data-engineering-resources/blob/main/resources/orms-for-python.md#list-of-orms)
