@@ -1,0 +1,21 @@
+[project]
+name = "fruits"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi[standard]>=0.119.0",
+    "piccolo[orjson,sqlite]>=1.28.0",
+    "uvicorn>=0.37.0",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "pyright>=1.1.406",
+    "sqlite-utils>=3.38",
+]
+
+[tool.pyright]
+strict = ["."]
+exclude = [".venv"]
