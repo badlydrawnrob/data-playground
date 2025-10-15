@@ -78,7 +78,7 @@ Python isn't the ideal language for performant data transfer, but it's quite eas
 - [SQLite Utils](https://sqlite-utils.datasette.io/en/stable/) (rapid manipulation and CLI)
 - [VS Code](https://marketplace.visualstudio.com/items?itemName=alexcvzz.vscode-sqlite) plugin
 
-## Scaling
+### Scaling
 
 > SQLite is growing in popularity for production servers
 
