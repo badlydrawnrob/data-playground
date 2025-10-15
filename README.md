@@ -22,6 +22,12 @@ Examples such as the **Programming Flashcards App**, **Google Ads**, **Simple An
 -- Launch sqlite
 sqlite3 database.sqlite
 
+-- Schema information
+.schema --indent
+
+-- Table information
+pragma table_info(ticket);
+
 -- Clear lines
 .shell clear
 
@@ -38,9 +44,6 @@ sqlite3 database.sqlite
 -- Show table headings and column format
 .headers on
 .mode column
-
--- Show pretty printed schema
-.schema --indent
 ```
 
 
@@ -74,6 +77,13 @@ Python isn't the ideal language for performant data transfer, but it's quite eas
 - [JQ](https://jqlang.org/) (for [manipulating `json`](https://programminghistorian.org/en/lessons/json-and-jq), and it's [playground](https://play.jqlang.org/) with some [examples](https://programminghistorian.org/en/lessons/json-and-jq))
 - [SQLite Utils](https://sqlite-utils.datasette.io/en/stable/) (rapid manipulation and CLI)
 - [VS Code](https://marketplace.visualstudio.com/items?itemName=alexcvzz.vscode-sqlite) plugin
+
+## Scaling
+
+> SQLite is growing in popularity for production servers
+
+- [Litestream](https://litestream.io/) for backups (costs pennies per day)
+- [Litefs](https://github.com/superfly/litefs) for clusters and [local-first](https://fly.io/docs/litefs/) (like [Turso](https://turso.tech/))
 
 
 ## Books

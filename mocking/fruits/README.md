@@ -2,7 +2,12 @@
 
 > Some helpful info for a basic "fruits" api (similar to [Elm Land](https://github.com/elm-land/elm-land/tree/main/examples/06-query-parameters)'s version)
 
-1. Short UUIDs should be handled on the [client side](https://dba.stackexchange.com/questions/307520/how-to-handle-short-uuids-with-postgres)?
+1. [`UUID`](https://github.com/piccolo-orm/piccolo/issues/1271) columns, or using short ids. Handle on [client side](https://dba.stackexchange.com/questions/307520/how-to-handle-short-uuids-with-postgres)?
+2. [Authentication](https://github.com/piccolo-orm/piccolo/issues/1259) and using `Base.login()`
+3. [`piccolo-api`](https://github.com/piccolo-orm/piccolo_api) is a [separate packge](https://github.com/piccolo-orm/piccolo/issues/1272) and SQLite DB drivers must be installed with Piccolo ORM package.
+    - This should be more clearly labelled on the docs
+    - You should also be able to easily `scaffold --fastapi`
+    - You should also be able to `uv add 'piccolo-api[sqlite]'
 
 
 ## ORMs
