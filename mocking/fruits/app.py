@@ -1,17 +1,3 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import RedirectResponse
-
-from piccolo_api.crud.endpoints import PiccoloCRUD
-from piccolo_api.fastapi.endpoints import FastAPIWrapper
-from piccolo.table import create_db_tables_sync
-
-from models.database import Fruits, Colours
-
-# from routes.fruits import fruits_router
-
-import uvicorn
-
 # ------------------------------------------------------------------------------
 # Fruits demo app (Piccolo ORM)
 # ==============================================================================
@@ -26,21 +12,21 @@ import uvicorn
 # and databases can be tricky and time consuming! There's too much to learn, so
 # aim for "just in time" learning. What's not my job?
 #
-# My job
-# ------
-# 1. Static typed functional python where it makes sense (rrr classes, Elm style)
-# 2. Simple and minimal data structures with a simple API (rrr file size)
-# 3. Understanding API route architecture decisions (# of endpoints)
-# 4. Understanding backend data structures (especially search queries)
-# 5. Aiming to keep data shapes flat where possible (avoid nesting?)
-# 6. Remove code duplication. Simplify your code. 5 steps (Tesla)
-# 7. Maximise readability and maintainability (my stupid future self)
 #
-# Not my job
-# ----------
-# 1. ~~Security: authentication and more~~
+# Learning frame
+# --------------
+# 1. ✅ Static typed functional python where it makes sense (rrr classes, Elm style)
+# 2. ✅ Simple and minimal data structures with a simple API (rrr file size)
+# 3. ✅ Understanding API route architecture decisions (# of endpoints)
+# 4. ✅ Understanding backend data structures (especially search queries)
+# 5. ✅ Aiming to keep data shapes flat where possible (avoid nesting?)
+# 6. ✅ Remove code duplication. Simplify your code. 5 steps (Tesla)
+# 7. ✅ Maximise readability and maintainability (my stupid future self)
+#
+# 1. ❌ ~~Security: authentication and more~~
 #     - is owner of data, is logged on, etc
 #     - Malicious SQL injections and DDOS attacks.
+#
 #
 # Piccolo ORM
 # -----------
@@ -50,6 +36,23 @@ import uvicorn
 # 3. Piccolo connects and closes database with a single function (careful with async writes)
 #    - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/tutorials/fastapi.html#transactions
 #    - @ https://tinyurl.com/piccolo-sqlite-tips-concurrent (database locked error)
+#
+#
+# Improvements
+# ------------
+# 1. Aim for beautiful, readable, ELi5 code (my stupid future self)
+#     - I shouldn't need to be an expert to understand Piccolo!
+#     - Elm code uses a lot of whitespace which I prefer
+#     - If something can be simplified or removed, do so
+# 2. Do not include needless packages where they can be avoided
+#     - Code and dependencies should follow a miniamlist approach
+# 3. Code should be pitched at the right level of ability and knowledge
+#     - Advanced features should be hidden for begginers (like `Readable`)
+# 4. Code should follow expectations setup from other parts of the documentation
+#     - `playground run` is using a `Band` database, so why not here?
+# 5. Aim for faster loading while still sticking to the above
+#     - Which code is faster in an object oriented style? (e.g: find task with id)
+#     - If speed is negligible, prefer readable and functional style
 #
 #
 # Questions
@@ -83,25 +86,144 @@ import uvicorn
 #    - You store it as a `json` string, then convert to a dictionary
 #
 #
+# Errors
+# ------
+# 1. Tighten up the types?
+# 2. SQLiteEngine has no `connect()` and `close()` functions?
+#     - This should be documented somewhere.
+#
+#
 # Wishlist
 # --------
-# 1. Better documentation for SQLite and `engine_finder()`
+# 1. Add SQLite transactions
+# 2. Better documentation for SQLite and `engine_finder()`
 #    - Setup with FastAPI
 #    - Setup database, opening and closing connections, and so on.
 #    - Does SQLite have connection pooling?
+# 3. Understand how Piccolo apps work a bit better?
+#     - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/projects_and_apps/
+# 4. Investigate `case` in Python`
+#     - @ https://stackoverflow.com/a/11479840 (Python 3.10+)
+# 5. Understand and implement the `BaseUser` table properly
+#    - And how does it differ from `piccolo_user` table?
+#    - @ https://github.com/sinisaos/simple-piccolo/blob/main/fastapi_app.py#L73
+#    - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/authentication/baseuser.html#baseuser
+#    - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/authentication/baseuser.html#extending-baseuser
+# 6. Decide whether to persue Migrations or just use JQ and `sqlite-utils`
+#    - Migrations are a little advanced for beginners
+#    - Auto migrations do not work with SQLite
 
 
-app = FastAPI()
+from contextlib import asynccontextmanager
+
+from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
+from fastapi.staticfiles import StaticFiles
+
+from piccolo_admin.endpoints import create_admin
+# from piccolo_api.crud.endpoints import PiccoloCRUD
+# from piccolo_api.fastapi.endpoints import FastAPIWrapper
+from piccolo.table import create_db_tables
 
 
-# Register our routers ---------------------------------------------------------
+from fruits.piccolo_app import APP_CONFIG 
+from fruits.routes import fruits_router
+from fruits.tables import Fruits
 
-app.include_router(fruits_router, prefix="/fruits")
+
+# ------------------------------------------------------------------------------
+# Setting up the database
+# ==============================================================================
+# > This part of the app can be treated like a black box. You only need to know
+# > what it does, not how.
+#
+# 1. `create_admin` only registers the tables for the view (not create them)
+# 2. `create_tables()` or `create_db_tables()` creates the DB and tables.
+#
+# 
+# Migrations
+# ----------
+# > I feel like this is an advanced topic and there's other ways to do it.
+# 
+# SQLite does not have automatic migrations currently. Use `sqlite-utils`.
+#
+#
+# 🤖 Ai summary: What the fuck is a context manager?
+# --------------------------------------------------
+# > @ https://medium.com/@marcnealer/fastapi-after-the-getting-started-867ecaa99de9
+#
+# It ensures that setup (like opening a file) happens when you start using the resource,
+# and cleanup (like closing the file) happens when you're done, even if an error occurs.
+#
+# - What exactly should be setup on startup? Shutdown?
+# - The essential is to create our database and setup the tables.
+#
+# I've not come across this the Elm world and the `contextlib` docs really don't
+# do a great job of explaining it, or why I should care. In fact I find the whole
+# concept of `async` a little weird, scattering around `async` and `await` keywords
+# all over the place. It feels like it should be built into the language.
+#
+#
+# 🤖 Ai summary: `yield`
+# ----------------------
+# > The lifespan allows us to define startup and teardown in one function
+#
+# The code block before the yield executes during the startup phase, just before
+# the application begins to accept requests. This is where you can perform expensive
+# operations like loading a model or establishing a database connection. The yield
+# acts as a pause point, after which the application becomes operational and can
+# handle incoming requests. The code block after the yield executes during the
+# shutdown phase, after the application has finished processing all requests.
+#
+#
+# 🤖 Ai fails
+# -----------
+# It took an unnecessary amount of time to understand lifespan etc. It's easier
+# than the web would have you believe, but there's not many ELi5 resources. Do
+# not attempt to use Ai to do this for you, as it gave me a MASSIVE and WRONG
+# code sample, even though it crawled the Piccolo docs, which goes to show it can't
+# (yet) be trusted for critical tasks. Does this mean the docs need improving?
+# At least for a bot to crawl them.
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await create_db_tables(Fruits, if_not_exists=True)
+    yield
+
+
+# ------------------------------------------------------------------------------
+# Initiate the app (with Piccolo Admin)
+# ==============================================================================
+# > We're extending `FastAPI` here to add Piccolo's Admin interface
+#
+# 1. `StaticFiles` does NOT serve static files by default (why not?!) so you've
+#     got to explicitly tell it to. We're using the fastapi package (not starlette)
+# 2. `Mount` is a FastAPI advanced feature (maybe not great for quickstart). The
+#    current `agsi new` command uses Starlette, but possibly best to use FastAPI?
+#    - @ https://fastapi.tiangolo.com/advanced/sub-applications/
+# 3. It seems `create_admin` function automatically creates the tables?
+#    - If so `@asynccontextmanager` above is not needed?
+#    - I'm not super keen on the `tables=` argument. Better to be explicit and
+#      list all tables here? Do we _really_ need `APP_CONFIG` at all?
+#
+# Piccolo Admin
+# --------------
+# > #! Make sure to protect your admin routes in production! `allowed_hosts=`
+#
+# Static files
+# -------------
+# > @ https://fastapi.tiangolo.com/tutorial/static-files/#use-staticfiles
+
+app = FastAPI(lifespan=lifespan)
+
+admin = create_admin(tables=APP_CONFIG.table_classes)
+
+app.mount("/admin", admin)
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 # Middleware -------------------------------------------------------------------
-# A list of allowed CORS origins (defaults to only same domain and port)
-# @ https://fastapi.tiangolo.com/tutorial/cors/
 
 origins = [
     "http://localhost:8000",
@@ -117,22 +239,13 @@ app.add_middleware(
 )
 
 
-# Database setup and build -----------------------------------------------------
+# Routes and tabs ---------------------------------------------------------------
 
-@app.on_event("startup")
-def on_startup():
-    create_db_tables_sync(Colours, Fruits, if_not_exists=True)
+app.include_router(fruits_router, prefix="/fruits") # Swagger and `/redoc` groups
 
 
-# Routes -----------------------------------------------------------------------
+# Homepage ---------------------------------------------------------------------
 
 @app.get("/")
 def home():
     return RedirectResponse(url="/fruits/")
-
-
-# Run our app ------------------------------------------------------------------
-# Slightly different from the "Building with FastAPI" book code sample
-
-if __name__ == "__main__":
-    uvicorn.run("main:app", host="localhost", port=8000, reload=True)

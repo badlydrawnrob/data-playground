@@ -1,0 +1,27 @@
+meta {
+  name: Fruits (update put)
+  type: http
+  seq: 4
+}
+
+put {
+  url: http://localhost:8000/tasks/:id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: 1
+}
+
+body:json {
+  {
+    "name": "We haven't tested if Fruits works yet",
+    "completed": false
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

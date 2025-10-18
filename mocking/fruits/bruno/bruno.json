@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "Piccolo Fruits App",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

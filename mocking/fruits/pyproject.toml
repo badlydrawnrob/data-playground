@@ -1,13 +1,15 @@
 [project]
 name = "fruits"
 version = "0.1.0"
-description = "Add your description here"
+description = "My cool fruits API"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "fastapi[standard]>=0.119.0",
-    "piccolo[orjson,sqlite]>=1.28.0",
-    "uvicorn>=0.37.0",
+    "piccolo_admin>=1.0.0",
+	"piccolo-api>=1.7.0",
+	"piccolo[orjson,sqlite]>=1.28.0",
+	"uvicorn>=0.37.0"
 ]
 
 [tool.uv]
