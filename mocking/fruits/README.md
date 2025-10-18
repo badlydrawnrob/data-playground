@@ -1,13 +1,13 @@
 # README
 
-> Some helpful info for a basic "fruits" api (similar to [Elm Land](https://github.com/elm-land/elm-land/tree/main/examples/06-query-parameters)'s version)
+> A fruits API using Python and the [Piccolo](https://piccolo-orm.com/) ecosystem!
 
-1. [`UUID`](https://github.com/piccolo-orm/piccolo/issues/1271) columns, or using short ids. Handle on [client side](https://dba.stackexchange.com/questions/307520/how-to-handle-short-uuids-with-postgres)?
-2. [Authentication](https://github.com/piccolo-orm/piccolo/issues/1259) and using `Base.login()`
-3. [`piccolo-api`](https://github.com/piccolo-orm/piccolo_api) is a [separate packge](https://github.com/piccolo-orm/piccolo/issues/1272) and SQLite DB drivers must be installed with Piccolo ORM package.
-    - This should be more clearly labelled on the docs
-    - You should also be able to easily `scaffold --fastapi`
-    - You should also be able to `uv add 'piccolo-api[sqlite]'
+This mocking example is based on Elm Land's [fruits API](https://github.com/elm-land/elm-land/tree/main/examples/06-query-parameters) to see the difference in speed and efficiency of Elm-based queries compared to SQLite and FastAPI.
+
+1. For users it uses business identifiers as well as serial `ID`.
+2. Authentication uses the `BaseUser` table and [`BaseUser.login()`](https://piccolo-orm.readthedocs.io/en/latest/piccolo/authentication/baseuser.html#login-login-sync) function
+3. Piccolo uses [seperate packages](https://github.com/piccolo-orm/piccolo/issues/1272) for it's Admin and API.
+    - Ideally you could `uv add 'piccolo-api[sqlite]'` and `scaffold --fastapi`
 
 
 ## Dependencies
@@ -17,7 +17,7 @@
 Just keep an eye on how fast these are changing and what impact it has on your maintenance.
 
 
-## Bugs
+## Bugs
 
 > Have a naming convention and stick to it: singular or plural?
 
@@ -26,11 +26,18 @@ Just keep an eye on how fast these are changing and what impact it has on your m
 - Folder `fruit` or `fruits`? (package)
 
 
-## ORMs
+## SQLite
 
-> Piccolo seems to be one of the easiest ways to query data (see [ORM challenges](https://piccolo-orm.com/blog/orm-design-challenges/))
+> Piccolo is one of the easiest ways to query your data (see [ORM challenges](https://piccolo-orm.com/blog/orm-design-challenges/))
 
-Peewee was great but not setup for async (it has an [untested plugin](https://peewee-async.readthedocs.io/en/latest/index.html)) and SQLModel is an abstraction of an abstraction (SQLAlchemy) which feels bloated. SQLModel does I think use the data mapper pattern rather than active record. It gets a bit confusing with `.session.exec()`, add, commit, etc, but isn't as object based as Peewee. Compared to both, however, Piccolo seems a lot lighter and easier to wrap your head around!
+- Peewee was great but not setup for `async` (although it has an [untested plugin](https://peewee-async.readthedocs.io/en/latest/index.html))
+- SQLModel is an abstraction of an abstraction (SQLAlchemy) and feels bloated to me
+
+SQLModel uses the Data Mapper pattern rather than Active Record and is a little more confusing with `.session.exec()`, add, commit, etc, whereas Piccolo needs no `connect()` or `close()` functions as it's `select()` queries are handled automatically. Peewee and Piccolo have an object oriented style, but (I think) only Piccolo has a functional data style. Piccolo feels a lot lighter and easier to wrap your head around!
+
+The downside of using SQLite over Postgres is data integrity (without [strict tables](https://www.sqlite.org/stricttables.html)) and data types. Some SQLite fields are stored as `json`, which will require a [plugin](https://sqlite.org/json1.html) to query them, or use [`sqlite-utils`](https://sqlite-utils.datasette.io/en/stable/cli-reference.html) (with `--json-cols`) and `jq`.
+    
+The upsides are Piccolo gives a wider range of [columns](https://piccolo-orm.readthedocs.io/en/latest/piccolo/schema/column_types.html) to work with, so whereas SQLite only has `1` (`True`) and `0` (`False`) for boolean values, Piccolo will add them as proper (`json`) types. Postgres is _far_ more capable than SQLite but is also harder to setup, store, and migrate data (it's documentation is huge).
 
 
 ## User experience
