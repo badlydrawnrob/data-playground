@@ -19,11 +19,20 @@ Just keep an eye on how fast these are changing and what impact it has on your m
 
 ## Bugs
 
+### Naming conventions
+
 > Have a naming convention and stick to it: singular or plural?
 
 - Table `Fruit` or `Fruits`?
 - Model `FruitModelIn` or `FruitsModelIn`?
 - Folder `fruit` or `fruits`? (package)
+
+### 🤖 Ai fails hard
+
+> Trying to understand `lifespan` and `contextlib` was a big fat fail!
+
+- [Using LLMs](https://simonwillison.net/2025/Mar/11/using-llms-for-code/) for coding
+- Be extremely careful letting Ai handle critical parts of your app (human in the loop)
 
 
 ## SQLite
