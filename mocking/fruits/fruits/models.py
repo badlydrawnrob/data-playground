@@ -11,18 +11,28 @@
 # Serialization
 # -------------
 # > @ https://docs.pydantic.dev/latest/concepts/serialization/
+# > For `None` values use `exclude_none=True` or `exclude_unset=True`!
 #
 # Pydantic models have a `.model_dump()` method which returns the data as a
 # dictionary. This can be useful when passing in all `POST` data to a model.
 # You can exclude optional missing fields with `exclude_unset=True`, and there are
 # other options also.
 #
+# Data integrity
+# --------------
+# > SQLite defaults to accept whatever data you give it by default ...
+# > @ https://sqlite.org/stricttables.html
+#
+# SQLite doesn't respect types unless it's a strict table. Strict tables are
+# inconvenient with Piccolo as we have helpful column types (especially when
+# using Postgres) ... ALWAYS validated the `DataModelIn` before inserting!
+#
 # Errors
 # ------
 # 1. `Any` is a bad type, is this the only thing we can use?
 
 from piccolo_api.crud.serializers import create_pydantic_model
-from fruits.tables import Fruits
+from fruits.tables import Fruits, Colors
 from typing import Any # (1)
 
 
@@ -36,4 +46,9 @@ FruitsModelOut: Any = create_pydantic_model(
     table=Fruits,
     include_default_columns=True,
     model_name="FruitsModelOut",
+)
+
+ColorsModelIn: Any = create_pydantic_model(
+    table=Colors,
+    model_name="ColorsModelIn",
 )

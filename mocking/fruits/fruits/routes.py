@@ -10,11 +10,29 @@
 # Requests
 # --------
 # > You can use `status=` in the decorator instead of response if needed
+# > @ https://docs.pydantic.dev/latest/concepts/serialization/
 #
 # - You can use named arguments with types for clarity
 # - You can use `(**kwargs)` to `data.model_dump()` a dictionary into a model
-# - `PATCH` is generally more flexible than `PUT` but it's not as explicit
-#     - For `null` values it may be better to include them instead of missing 
+# - You can use `.model_dump(exclude_unset=True)` to remove `None` fields
+# - You can use `PUT` or `PATCH` to update data, but `PUT` is far more explicit
+#
+#
+# PATCH -vs- PUT
+# --------------
+# > In general I feel it's better to be explicit unless there's a good reason
+# > not to. So, store all fields in Elm model, then `PUT` with updated values.
+#
+# You'll also want dedicated routes rather than partially updating a bigger `json`
+# set, for example `user` and `user.settings` — have a form/route for both. The
+# problem with `PATCH` is it can have any number of `Optional` fields not set, and
+# there's no way of knowing which data is present in the request body.
+#
+# That's not a huge problem in and of itself, but you'll have to be careful to
+# make sure the DB doesn't get wrong values. Also remember @lydell's note about
+# `Json.Decode` and using `nullable` rather than `maybe` with missing values.
+#
+# `PUT` means you'll always know which data is being updated (all fields)
 #
 #
 # Responses
@@ -25,7 +43,7 @@
 #
 # - You can use the `response_model=` to pass a Pydantic type as the json response
 # - You can also use a Pydantic type as the response type `def func() -> Type:`
-# - Sensitive information hidden with `response_model=` or `secret=True` (tables)
+# - Hide sensitive information with `response_model=` or Piccolo `secret=True`
 # - `Depends()` (always?) runs first before the route function executes.
 # - Take care to use the proper status codes for each operation.
 #
@@ -73,20 +91,13 @@
 # ---------
 # 1. How do we test concurrent connections for read and write?
 #    - How many connections can SQLite handle?
-# 2. Does Piccolo ORM have a `None` type?
-#    - (`.select()` can return `[]` an empty list)
+# 2. When do queries not return an `[]` empty list?
+#    - `Band.objects().get(Band.id == 1)` will return single object (no list)
 # 3. What's the difference between a response type and `response_model=`?
 #    - Why is `response_model=` used in some cases and not others?
 # 4. What are named keyword arguments and how do they work?
 #    - `session=Depends(get_session)` (sometimes it has a type also)
-# 5. Why `data.model_dump(exclude_unset=True)`?
-#    - Removes any `None` values that haven't been set.
-# 6. When to use `PATCH` vs `PUT` requests? (see tag `1.10.4`)
-#    - `PATCH` could have any number of `Optional` fields not set
-#    - `PATCH` has no way of knowing which data is present so Piccolo would need
-#      to be flexible with it's update function. Use objects?
-#    - @ https://fastapi.tiangolo.com/tutorial/body-updates/#update-replacing-with-put
-# 7. `Depends()` can go in the route decorator AND route function.
+# 5. `Depends()` can go in the route decorator AND route function.
 #    - What's up with that?!
 #
 #
@@ -121,6 +132,7 @@ from fruits.models import FruitsModelIn, FruitsModelOut
 from fruits.tables import Fruits
 
 from typing import List
+from uuid import uuid4
 
 
 fruits_router = APIRouter(
@@ -194,11 +206,49 @@ def retrieve_event(id: int):
 @fruits_router.post(
         "/new",
         # dependencies=[Depends(transaction)]
+        response_model=FruitsModelOut
         )
 def create_event(
     body: FruitsModelIn,
     # user: str = Depends(authenticate)
     ) -> FruitsModelOut:
+    """Create a new fruit
+
+    > The `name` field must be unique! We'll return an error if it already exists.
+
+    1. Create UUID
+    2. Create fruit
+    3. Do not return the `ID` field
+
+    Some fields (like the auto incrementing `id`) are created by the ORM, so
+    they're not required in the POST body. We can use `exclude_none=True` to
+    ignore any fields that aren't set in the request body.
+
+    Returning values
+    ----------------
+    > Only SQLite 3.35.0 and above support the returning clause.
+
+    By default, an update query returns an empty list, but using the `returning`
+    clause you can retrieve values from the updated rows. We return the full `Task`
+    object after updatating the row.
+
+    Wishlist
+    --------
+    1. Dealing with `UNIQUE` constraint failed error (from SQLite)
+    2. JWT should return claim (with user `sub` details)
+    3. Check speed of creating a new fruit
+    4. What's the best way to enter the `Color` foreign key?
+    5. Enforce logged in and verified user
+    """
+    pass
+    
+
+
+@fruits_router.put("/{id}",
+        # dependencies=[Depends(transaction)]
+        response_model=FruitsModelOut
+        )
+def update_fruit():
     """Create a new fruit (if logged in)
 
     Data checks
@@ -246,6 +296,7 @@ def create_event(
     object after updatating the row.
     """
     pass
+
 
 
 

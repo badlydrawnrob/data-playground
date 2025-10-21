@@ -95,23 +95,32 @@
 #
 # Wishlist
 # --------
-# 1. Add SQLite transactions
-# 2. Better documentation for SQLite and `engine_finder()`
+# 1. Create a script that automatically creates mock data
+#    - Use `sqlite-utils` or Piccolo itself
+# 2. Add SQLite transactions (see docs)
+#    - Test concurrent connections and writes
+# 3. Better documentation for SQLite and `engine_finder()`
 #    - Setup with FastAPI
 #    - Setup database, opening and closing connections, and so on.
 #    - Does SQLite have connection pooling?
-# 3. Understand how Piccolo apps work a bit better?
+# 4. Understand how Piccolo apps work a bit better?
 #     - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/projects_and_apps/
-# 4. Investigate `case` in Python`
+# 5. Investigate `case` in Python`
 #     - @ https://stackoverflow.com/a/11479840 (Python 3.10+)
-# 5. Understand and implement the `BaseUser` table properly
+# 6. Understand and implement the `BaseUser` table properly
 #    - And how does it differ from `piccolo_user` table?
 #    - @ https://github.com/sinisaos/simple-piccolo/blob/main/fastapi_app.py#L73
 #    - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/authentication/baseuser.html#baseuser
 #    - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/authentication/baseuser.html#extending-baseuser
-# 6. Decide whether to persue Migrations or just use JQ and `sqlite-utils`
+# 7. Decide whether to persue Migrations or just use JQ and `sqlite-utils`
 #    - Migrations are a little advanced for beginners
 #    - Auto migrations do not work with SQLite
+# 8. How best to reduce the surface area of XSS attacks?
+#    - Do we need to sanitize text if it's not rendered as HTML or used in SQL?
+# 9. What's the best method to insert one-to-many relationships?
+#    - See the `tables.py` file for more notes.
+# 10. Harden validating fields and routes ...
+#    - Fields are not empty and not null, for example
 
 
 from contextlib import asynccontextmanager
@@ -129,7 +138,7 @@ from piccolo.table import create_db_tables
 
 from fruits.piccolo_app import APP_CONFIG 
 from fruits.routes import fruits_router
-from fruits.tables import Fruits
+from fruits.tables import Colors, Fruits
 
 
 # ------------------------------------------------------------------------------
@@ -188,7 +197,7 @@ from fruits.tables import Fruits
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await create_db_tables(Fruits, if_not_exists=True)
+    await create_db_tables(Colors, Fruits, if_not_exists=True)
     yield
 
 

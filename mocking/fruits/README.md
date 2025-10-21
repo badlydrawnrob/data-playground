@@ -4,20 +4,55 @@
 
 This mocking example is based on Elm Land's [fruits API](https://github.com/elm-land/elm-land/tree/main/examples/06-query-parameters) to see the difference in speed and efficiency of Elm-based queries compared to SQLite and FastAPI.
 
-1. For users it uses business identifiers as well as serial `ID`.
-2. Authentication uses the `BaseUser` table and [`BaseUser.login()`](https://piccolo-orm.readthedocs.io/en/latest/piccolo/authentication/baseuser.html#login-login-sync) function
-3. Piccolo uses [seperate packages](https://github.com/piccolo-orm/piccolo/issues/1272) for it's Admin and API.
+1. Pick a naming convention and stick to it:
+    - Singular -vs- plural (eg: column names)
+    - Capital Case, Sentence case, lowercase (e.g: tags)
+2. Use a business identifiers as well as incremental serial `ID`.
+    - Make sure to [use indexes](https://github.com/piccolo-orm/piccolo/issues/1271#issuecomment-3395347091) for fast searching, but ...
+    - Integers are approximately 1.2 times faster than bytes ...
+    - About 1.4 times faster than strings during join operations.
+3. Authentication uses the `BaseUser` table and [`BaseUser.login()`](https://piccolo-orm.readthedocs.io/en/latest/piccolo/authentication/baseuser.html#login-login-sync) function
+4. Piccolo uses [seperate packages](https://github.com/piccolo-orm/piccolo/issues/1272) for it's Admin and API.
     - Ideally you could `uv add 'piccolo-api[sqlite]'` and `scaffold --fastapi`
+    - It might be wise to host `piccolo-admin` only locally for extra security
+5. You can check SQLite column data types in a [few ways](https://database.guide/5-ways-to-check-a-columns-data-type-in-sqlite/)
+    - SQLite [data types](https://www.sqlite.org/datatype3.html) are really quite simple
+    - Piccolo stores `json` as `text` (I think)
+
+
+## Database
+
+> Currently the master `.config/git/ignore` file disallows `*.sqlite` databases
+
+This is probably a LOT better for security reasons, so make sure you backup and have an easy way to setup your initial data.
+
+
+## Coding style
+
+> In general prefer a data-style rather than OOP
+
+I imagine OCaml and Elm would do things manually, rather than using magic like `response_model=` and `model_dump()`?
 
 
 ## Dependencies
 
-> A big concerns is having too many dependencies!
+> A big concern is having too many dependencies!
 
 Just keep an eye on how fast these are changing and what impact it has on your maintenance.
 
 
+## Models
+
+> Currently I'm using `create_pydantic_models` and not _quite_ splitting API and DATA layer
+
+Unless the API and DATA layer models need to vary, generating a single model that can be reused for `DataModelIn` and `DataModelOut` might work ok. FastAPI will check it for data integrity in `data: Request` and `response_model=`.
+
+
 ## Bugs
+
+### Pylance squiggles
+
+Is this because `pyproject.toml` is `name="fruits"` and I also have a fruits subfolder?
 
 ### Naming conventions
 
