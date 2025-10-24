@@ -11,7 +11,8 @@ This mocking example is based on Elm Land's [fruits API](https://github.com/elm-
     - Make sure to [use indexes](https://github.com/piccolo-orm/piccolo/issues/1271#issuecomment-3395347091) for fast searching, but ...
     - Integers are approximately 1.2 times faster than bytes ...
     - About 1.4 times faster than strings during join operations.
-3. Authentication uses the `BaseUser` table and [`BaseUser.login()`](https://piccolo-orm.readthedocs.io/en/latest/piccolo/authentication/baseuser.html#login-login-sync) function
+3. **Authentication uses the `BaseUser` table** and [`BaseUser.login()`](https://piccolo-orm.readthedocs.io/en/latest/piccolo/authentication/baseuser.html#login-login-sync) function
+    - **[JWT is a bad default](https://evertpot.com/jwt-is-a-bad-default/) but probably [use it anyway]**
 4. Piccolo uses [seperate packages](https://github.com/piccolo-orm/piccolo/issues/1272) for it's Admin and API.
     - Ideally you could `uv add 'piccolo-api[sqlite]'` and `scaffold --fastapi`
     - It might be wise to host `piccolo-admin` only locally for extra security
@@ -68,6 +69,10 @@ Is this because `pyproject.toml` is `name="fruits"` and I also have a fruits sub
 
 - [Using LLMs](https://simonwillison.net/2025/Mar/11/using-llms-for-code/) for coding
 - Be extremely careful letting Ai handle critical parts of your app (human in the loop)
+
+### Pydantic `null` values
+
+- [An issue here](https://github.com/piccolo-orm/piccolo/issues/1132)
 
 
 ## SQLite

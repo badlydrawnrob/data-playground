@@ -23,16 +23,20 @@
 # > In general I feel it's better to be explicit unless there's a good reason
 # > not to. So, store all fields in Elm model, then `PUT` with updated values.
 #
-# You'll also want dedicated routes rather than partially updating a bigger `json`
-# set, for example `user` and `user.settings` — have a form/route for both. The
-# problem with `PATCH` is it can have any number of `Optional` fields not set, and
-# there's no way of knowing which data is present in the request body.
+# 1. Use dedicated routes (not patch) for `user` and `user.settings`
+#     - Google does this for forms like "password" (a form/route for each data)
+# 2. It's probably better to be explicit and reset ALL data
+#     - This prevents any conflicts or accidentally changing a field
+#
+# The problem with `PATCH` is it can have any number of `Optional` fields not set,
+# and there's no way of knowing which data is present in the request body.
 #
 # That's not a huge problem in and of itself, but you'll have to be careful to
 # make sure the DB doesn't get wrong values. Also remember @lydell's note about
 # `Json.Decode` and using `nullable` rather than `maybe` with missing values.
 #
-# `PUT` means you'll always know which data is being updated (all fields)
+# `PUT` is idempotent, meaning multiple identical PUT requests always has the
+# same result.
 #
 #
 # Responses
@@ -50,31 +54,19 @@
 #
 # Saving entries into the database
 # --------------------------------
-# > See "serialization" in `fruits.models.py` to understand `.model_dump()`
+# > See "serialization" in `fruits.models.py` to understand `.model_dump()` ...
+# > and know the difference between a `Band.select()` and `Band.objects()`!
 #
-# Data style vs Object Oriented style
+# Pick a convention: data style (or Object Oriented style). Sometimes the OOP
+# style can result in a little less code.
 #
 # 1. When we're working with queries, we can use `.add()` or `.insert()`
 # 2. When we're working with objects, we can use `.save()`
 #
 #
-# SQLite transactions
-# -------------------
-# > SQLite needs to be carefully managed for typed data entry. Unless you enable
-# > `STRICT TABLES` (which limits column types), use a `DataModelIn` Pydantic class.
-#
-# 1. Async transactions can fail if you `select()` followed by a write.
-#     - Be very careful and use the correct transaction type where needed.
-#     - @ https://tinyurl.com/piccolo-sqlite-and-asyncio
-#     - @ https://github.com/piccolo-orm/piccolo/discussions/1247
-# 2. SQL is waaay quicker at search filters than Elm or Python so ...
-#    - `await Task.select().where(Task.id == task_id)` ... GOOD!
-#    - `if list: for i in list: if i.id == task_id:`   ... BAD!
-#
-#
 # Coding style is a personal preference
 # -------------------------------------
-# > DRY is great but overused. Similar is not the same as identical.
+# > DRY is great but overused: similar is not the same as identical.
 #
 # In general, I prefer working with data rather than objects (no classes, no
 # methods, no weird decorators). I'll leave in both examples and then it's up to
@@ -103,17 +95,15 @@
 #
 # Bugs
 # ----
-# 1. ⭐ Be aware of duplicates when a field is supposed to be unique!
-#    - I don't think Piccolo's SQLite engine enforces this by default?
-# 2. Make sure all errors are handled
+# 1. ⭐ Somewhere check for UNIQUE values (either `try/except` or Elm)
+#    - `#! sqlite3.IntegrityError: UNIQUE constraint failed: colors.name`
+# 2. Handle all errors "just in time" (you'll not catch them all upfront)
 #    - See `chapter_03` of "Building with FastApi" for full checks (like `[]` empty)
+#    - Make sure to use logs and have people send enough data to replicate bug
 #    - Make sure to thoroughly test your API with Bruno for correct and incorrect data
-# 3. Some routes should NEVER be possible (admin only)
+# 3. Make some routes IMPOSSIBLE (things that are destructive and Admin only)
 #    - `DELETE` all `fruits/` will torpedo your database!
 #    - Better to use a tool like `sqlite-utils`, a GUI, or no-code dashboard
-# 4. Know the difference between a `Band.select()` and `Band.objects()`
-#    - The former will return a list of dictionaries!
-#    - Use objects VERY sparingly, but could be useful for `PATCH` updates
 #
 #
 # Wishlist
@@ -208,13 +198,15 @@ def retrieve_event(id: int):
         # dependencies=[Depends(transaction)]
         response_model=FruitsModelOut
         )
-def create_event(
+def create_fruit(
     body: FruitsModelIn,
     # user: str = Depends(authenticate)
     ) -> FruitsModelOut:
     """Create a new fruit
 
-    > The `name` field must be unique! We'll return an error if it already exists.
+    > We're using a `UNIQUE` constraint on some of the fields, so make sure to
+    > verify with SQLite that they're indeed unique (`sqlite3.IntegrityError`)
+    > or do so on the frontend code.
 
     1. Create UUID
     2. Create fruit
@@ -235,10 +227,11 @@ def create_event(
     Wishlist
     --------
     1. Dealing with `UNIQUE` constraint failed error (from SQLite)
-    2. JWT should return claim (with user `sub` details)
-    3. Check speed of creating a new fruit
-    4. What's the best way to enter the `Color` foreign key?
-    5. Enforce logged in and verified user
+        - `sqlite3.IntegrityError: UNIQUE constraint failed: colors.name`
+    2. Check speed of creating a new fruit (or joining)
+    3. What's the best way to enter the `Color` foreign key?
+    4. Enforce logged in and verified user
+    5. JWT should return claim (with user `sub` details)
     """
     pass
     

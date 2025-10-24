@@ -8,6 +8,7 @@
 # columns (`Varchar(secret=True)`) in your tables, so data like `User.id` can be
 # hidden from API responses. You can then use `create_pydantic_model`.
 #
+#
 # Serialization
 # -------------
 # > @ https://docs.pydantic.dev/latest/concepts/serialization/
@@ -18,6 +19,14 @@
 # You can exclude optional missing fields with `exclude_unset=True`, and there are
 # other options also.
 #
+#
+# Required values
+# ---------------
+# > By default it seems ALL values are optional and can be `None`
+#
+# - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/serialization/index.html#required-fields
+#
+#
 # Data integrity
 # --------------
 # > SQLite defaults to accept whatever data you give it by default ...
@@ -26,6 +35,18 @@
 # SQLite doesn't respect types unless it's a strict table. Strict tables are
 # inconvenient with Piccolo as we have helpful column types (especially when
 # using Postgres) ... ALWAYS validated the `DataModelIn` before inserting!
+#
+# 
+# Notes
+# -----
+# 1. Our `UUID` gets automatically generated, so we don't need user to supply it.
+#    - `FruitsModelIn.url = None` by default, so we've just removed it
+#    - Instead we can keep the `None` value and simply overwrite it ...
+#    - `FruitsModelIn.id` is handled this way with `Serial()` (auto-added to DB)
+#     
+#
+# We could also create a custom Pydantic model with `default_factory` here.
+#
 #
 # Errors
 # ------
@@ -39,6 +60,7 @@ from typing import Any # (1)
 FruitsModelIn: Any = create_pydantic_model(
     table=Fruits,
     model_name="FruitsModelIn",
+    exclude_columns=(Fruits.url,) # (1)
 )
 
 #! Should these be inside the tables.py file?

@@ -38,6 +38,19 @@
 #    - @ https://tinyurl.com/piccolo-sqlite-tips-concurrent (database locked error)
 #
 #
+# SQLite transactions
+# -------------------
+# > Always use a `DataModelIn` before saving to SQLite as it's not strict.
+#
+# 1. Async transactions can fail if you `select()` followed by a write.
+#     - Be very careful and use the correct transaction type where needed.
+#     - @ https://tinyurl.com/piccolo-sqlite-and-asyncio
+#     - @ https://github.com/piccolo-orm/piccolo/discussions/1247
+# 2. SQL is waaay quicker at search filters than Elm or Python so ...
+#    - `await Task.select().where(Task.id == task_id)` ... GOOD!
+#    - `if list: for i in list: if i.id == task_id:`   ... BAD!
+#
+#
 # Improvements
 # ------------
 # 1. Aim for beautiful, readable, ELi5 code (my stupid future self)
@@ -99,6 +112,7 @@
 #    - Use `sqlite-utils` or Piccolo itself
 # 2. Add SQLite transactions (see docs)
 #    - Test concurrent connections and writes
+#    - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/tutorials/fastapi.html#transactions
 # 3. Better documentation for SQLite and `engine_finder()`
 #    - Setup with FastAPI
 #    - Setup database, opening and closing connections, and so on.
