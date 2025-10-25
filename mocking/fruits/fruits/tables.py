@@ -93,6 +93,10 @@
 #
 # - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/schema/advanced.html#how-to-create-custom-column-types
 # 
+# Be careful of collisions if using shorter IDs (but UNIQUE should handle this)
+#
+# - @ https://zelark.github.io/nano-id-cc/
+#
 # 
 # Performance
 # -----------
@@ -176,10 +180,12 @@ class Fruits(Table):
     """
     `id` is by default an auto-incrementing
     integer primary key. `UUID(primary_key=True)`.
+
+    The Elm-Land version uses emojis, but we'll test out an image server.
     """
     
-    id = Serial(secret=True)               # (1)
+    id = Serial(primary_key=True, secret=True) # (1)
     color = ForeignKey(references=Colors)  # (2)
     image = Varchar(length=255, null=True) # (3)
-    name = Varchar(length=2, unique=True)  # (4)
+    name = Varchar(length=15, unique=True) # (4)
     url = UUID()                           # (5)

@@ -36,21 +36,14 @@
 # inconvenient with Piccolo as we have helpful column types (especially when
 # using Postgres) ... ALWAYS validated the `DataModelIn` before inserting!
 #
-# 
-# Notes
-# -----
-# 1. Our `UUID` gets automatically generated, so we don't need user to supply it.
-#    - `FruitsModelIn.url = None` by default, so we've just removed it
-#    - Instead we can keep the `None` value and simply overwrite it ...
-#    - `FruitsModelIn.id` is handled this way with `Serial()` (auto-added to DB)
-#     
-#
-# We could also create a custom Pydantic model with `default_factory` here.
-#
 #
 # Errors
 # ------
 # 1. `Any` is a bad type, is this the only thing we can use?
+# 2. Our `UUID` gets automatically generated, so we don't need user to supply it.
+#    - By default `create_pydantic_model` will return `None` if it's not supplied.
+#    - This is fine! We can update it in the route function.
+#    - Otherwise use `exclude_columns` (unlikely) or `secret=` for the return value.
 
 from piccolo_api.crud.serializers import create_pydantic_model
 from fruits.tables import Fruits, Colors
@@ -60,7 +53,6 @@ from typing import Any # (1)
 FruitsModelIn: Any = create_pydantic_model(
     table=Fruits,
     model_name="FruitsModelIn",
-    exclude_columns=(Fruits.url,) # (1)
 )
 
 #! Should these be inside the tables.py file?

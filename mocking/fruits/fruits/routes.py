@@ -194,46 +194,51 @@ def retrieve_event(id: int):
 
 
 @fruits_router.post(
-        "/new",
+        "/",
         # dependencies=[Depends(transaction)]
         response_model=FruitsModelOut
         )
-def create_fruit(
+async def create_fruit(
     body: FruitsModelIn,
     # user: str = Depends(authenticate)
     ) -> FruitsModelOut:
     """Create a new fruit
 
-    > We're using a `UNIQUE` constraint on some of the fields, so make sure to
-    > verify with SQLite that they're indeed unique (`sqlite3.IntegrityError`)
-    > or do so on the frontend code.
+    We're not 100% using a data style here: it's easier using objects to assign
+    a `UUID` value. We can `model_dump()` to turn into a dictionary after.
 
-    1. Create UUID
-    2. Create fruit
-    3. Do not return the `ID` field
-
-    Some fields (like the auto incrementing `id`) are created by the ORM, so
-    they're not required in the POST body. We can use `exclude_none=True` to
-    ignore any fields that aren't set in the request body.
+    - Piccolo handles the `ID` field automatically
+    - We can set `exclude_unset=` or `exclude_none=` if needed
 
     Returning values
     ----------------
-    > Only SQLite 3.35.0 and above support the returning clause.
+    > SQLite 3.35.0 and above supports the returning clause.
 
     By default, an update query returns an empty list, but using the `returning`
-    clause you can retrieve values from the updated rows. We return the full `Task`
-    object after updatating the row.
+    clause you can retrieve values from the updated rows.
 
     Wishlist
     --------
-    1. Dealing with `UNIQUE` constraint failed error (from SQLite)
+    1. Deal with `UNIQUE` constraint failed error (from SQLite)
         - `sqlite3.IntegrityError: UNIQUE constraint failed: colors.name`
     2. Check speed of creating a new fruit (or joining)
     3. What's the best way to enter the `Color` foreign key?
     4. Enforce logged in and verified user
-    5. JWT should return claim (with user `sub` details)
+        - JWT should return claim (with user `sub` details)
     """
-    pass
+    uuid = uuid4()
+    body.url = uuid
+
+    inserted = await (
+        Fruits.insert(Fruits(**body.model_dump()))
+        .returning(*Fruits.all_columns())
+    )
+
+    #! `ID` should not be returned!
+    #! Is there a better way to extract the single object?
+    return inserted[0]
+
+
     
 
 

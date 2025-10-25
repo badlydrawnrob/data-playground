@@ -12,7 +12,18 @@ post {
 
 body:json {
   {
-    "name": "Testing if the Fruits API works",
-    "completed": true
+    "color": 2,
+    "image": null,
+    "name": "Boop"
   }
+}
+
+docs {
+  # Fruits (add new)
+  
+  > `ID` and `URL` are automatically generated
+  
+  ## Color
+  
+  `Color` expects an `ID`, but the alternative option is to have a `String` (such as `"red"`) and then have your route function `.get()` that color's `ID`.
 }
