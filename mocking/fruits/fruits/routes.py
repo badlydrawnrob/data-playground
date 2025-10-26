@@ -150,7 +150,7 @@ async def retrieve_all_fruits():
     """
     fruits = await (
         Fruits.select(
-            Fruits.all_columns(exclude=[Fruits.id]), # Return the fruits table
+            Fruits.all_columns(exclude=[Fruits.id, Fruits.color]), # Return the fruits table
             Fruits.color.all_columns() # Join on the colors table
         )
     )
