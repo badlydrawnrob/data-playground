@@ -19,6 +19,7 @@ This mocking example is based on Elm Land's [fruits API](https://github.com/elm-
 5. You can check SQLite column data types in a [few ways](https://database.guide/5-ways-to-check-a-columns-data-type-in-sqlite/)
     - SQLite [data types](https://www.sqlite.org/datatype3.html) are really quite simple
     - Piccolo stores `json` as `text` (I think)
+6. Should API models and DATA models be totally separate (requires a little more work)
 
 
 ## Database
@@ -31,6 +32,8 @@ This is probably a LOT better for security reasons, so make sure you backup and 
 ## Coding style
 
 > In general prefer a data-style rather than OOP
+
+Aim to write your functions in Elm style as much as possible, which isn't mutable. Don't force Python to do what it's not meant to do, however. Maybe objects are OK when used in moderation.
 
 I imagine OCaml and Elm would do things manually, rather than using magic like `response_model=` and `model_dump()`?
 

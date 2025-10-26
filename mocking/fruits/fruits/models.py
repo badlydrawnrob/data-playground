@@ -3,10 +3,13 @@
 # ==============================================================================
 # > Here we turn our table models into Pydantic types
 #
-# It's generally best to separate API layer models from DATA models, as sometimes
-# they'll need to differ. However, Piccolo allows your tables to have secret
-# columns (`Varchar(secret=True)`) in your tables, so data like `User.id` can be
-# hidden from API responses. You can then use `create_pydantic_model`.
+# Ideally we'd have an API model layer and a DATA model layer, but we're conflating
+# the two in this mocking example. I guess in general they can be shared, so long
+# as you're not tightly coupling your code. Remember that similar is NOT the same!
+#
+# Piccolo gives us a handy `create_pydantic_model` function, and we can set any
+# column to `secret=True` to hide it from API responses. Very handy for fields
+# like `User.id` to prevent hacks and scraping.
 #
 #
 # Serialization
@@ -14,10 +17,29 @@
 # > @ https://docs.pydantic.dev/latest/concepts/serialization/
 # > For `None` values use `exclude_none=True` or `exclude_unset=True`!
 #
+# - The `ID` field is hidden by default (no need for `secret=True`)
+# - Use `include_default_columns=True` to include all columns
+#
 # Pydantic models have a `.model_dump()` method which returns the data as a
 # dictionary. This can be useful when passing in all `POST` data to a model.
 # You can exclude optional missing fields with `exclude_unset=True`, and there are
 # other options also.
+#
+#
+# Flat shape -vs- nested
+# ----------------------
+# > By default Piccolo returns a flat shape for foreign keys, which is Elm Lang's
+# > preference too. You can use `nested=True` to get a nested shape.
+#
+# - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/serialization/index.html#nested
+#
+#
+# UUID
+# ----
+# > We're currently allowing `UUID` in our Pydantic model but setting to `None`.
+#
+# We then update it in the route function with a variable assignment. Alternatively,
+# see `fruits.tables` -> "Secret columns" for a different approach.
 #
 #
 # Required values
@@ -50,15 +72,16 @@ from fruits.tables import Fruits, Colors
 from typing import Any # (1)
 
 
+# Single -----------------------------------------------------------------------
+
 FruitsModelIn: Any = create_pydantic_model(
     table=Fruits,
     model_name="FruitsModelIn",
 )
 
-#! Should these be inside the tables.py file?
+#! We don't need `include_default_columns` anymore
 FruitsModelOut: Any = create_pydantic_model(
     table=Fruits,
-    include_default_columns=True,
     model_name="FruitsModelOut",
 )
 
@@ -66,3 +89,15 @@ ColorsModelIn: Any = create_pydantic_model(
     table=Colors,
     model_name="ColorsModelIn",
 )
+
+# Multiple ---------------------------------------------------------------------
+# 1. I think foreign key nested models are automatic?
+
+# FruitsAllModelOut: Any = create_pydantic_model(
+#     table=Fruits,
+#     model_name="FruitsAllModelOut",
+#     nested=True,
+#     include_default_columns=True,
+# )
+
+

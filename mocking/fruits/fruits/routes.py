@@ -119,7 +119,7 @@
 from fastapi import APIRouter, HTTPException
 
 from fruits.models import FruitsModelIn, FruitsModelOut
-from fruits.tables import Fruits
+from fruits.tables import Fruits, Colors
 
 from typing import List
 from uuid import uuid4
@@ -137,25 +137,25 @@ fruits_router = APIRouter(
 
 @fruits_router.get(
         "/",
-        response_model=List[FruitsModelOut],
+        # response_model=List[FruitsModelOut],
         # dependencies=[Depends(transaction)]
-        ) #!
-async def retrieve_all_events(): #! No need for a response type!
+        )
+async def retrieve_all_fruits():
     """Return all fruits
 
-    > #! I don't think you need BOTH `response_model=` and a response type?
+    > #! Is there a time you'd need BOTH response type and response model?
 
-    Aim to write your functions in Elm style as much as possible, which isn't
-    mutable. Don't force Python to do what it's not meant to do, however. Maybe
-    objects are OK when used in moderation.
-
-    1. Create a pydantic model for API
-    2. Create a pydantic model for DATA
-    3. Get all fruits
-    4. Join on Colors table
-    5. Return the fruits
+    I've removed the response type from the function, we're using the
+    `response_model=` instead.
     """
-    pass
+    fruits = await (
+        Fruits.select(
+            Fruits.all_columns(exclude=[Fruits.id]), # Return the fruits table
+            Fruits.color.all_columns() # Join on the colors table
+        )
+    )
+
+    return fruits
 
 
 @fruits_router.get(
@@ -163,7 +163,7 @@ async def retrieve_all_events(): #! No need for a response type!
         response_model=FruitsModelOut,
         # dependencies=[Depends(transaction)]
         )
-def retrieve_event(id: int):
+def retrieve_fruit(id: int):
     """Retrieve a particular fruit
 
     > #! Wherever possible there should be ONE `connect()` and `close()` function
@@ -302,7 +302,7 @@ def update_fruit():
         "/{id}",
         # dependencies=[Depends(transaction)]
         )
-def delete_event(
+def delete_fruit(
     id: int,
     # user: str = Depends(authenticate)
     ) -> dict:

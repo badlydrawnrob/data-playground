@@ -131,14 +131,20 @@
 #
 # Secret columns
 # --------------
-# > API responses should have certain fields made `secret=`, such as the `ID` field,
-# > which helps prevent against brute force attacks and data scraping.
+# > API responses can have certain fields made `secret=`. By default the `ID` field
+# > is hidden in `create_pydantic_model`, so you don't need to add it. This helps
+# > prevent against brute force attacks and data scraping.
 # 
-# Use with `Band.select(exclude_secrets=True)` arguments. For the `id` field there
-# are two options:
+# Use with `Band.select(exclude_secrets=True)` arguments. For the `UUID` field,
+# we automatically create it in the route function, so the user does not need to
+# supply it. We have two options:
 # 
-# 1. `id = Serial(secret=True)`
-# 2. `exclude_columns=Table.id` with `create_pydantic_model`
+# 1. Use `secret=True` and hide it in the Pydantic model
+# 2. Use `exclude_columns` to hide it in the Pydantic model
+#
+# Then insert the hidden value: `Fruits.insert(Fruits(field=uuid4(), **data)`.
+# For now though, we'll allow a `None` value in the model and update it with
+# `Model.field = uuid4()`!
 #
 #
 # Notes
@@ -178,13 +184,15 @@ class Colors(Table):
 
 class Fruits(Table):
     """
-    `id` is by default an auto-incrementing
-    integer primary key. `UUID(primary_key=True)`.
+    > We're using both `Serial()` and `UUID()` columns.
+
+    Piccolo automatically uses an auto-incrementing `id` primary key. No need to
+    use `secret=True` as it's hidden by default. If you set it yourself, make
+    sure to use `primary_key=True`.
 
     The Elm-Land version uses emojis, but we'll test out an image server.
     """
-    
-    # id = Serial(primary_key=True, secret=True) # (1)
+
     color = ForeignKey(references=Colors)  # (2)
     image = Varchar(length=255, null=True) # (3)
     name = Varchar(length=15, unique=True) # (4)
