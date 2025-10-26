@@ -118,6 +118,7 @@
 
 from fastapi import APIRouter, HTTPException
 
+# from fruits.models import FruitsModelIn, FruitsAllModelOut, FruitsModelOut
 from fruits.models import FruitsModelIn, FruitsModelOut
 from fruits.tables import Fruits, Colors
 
@@ -137,7 +138,7 @@ fruits_router = APIRouter(
 
 @fruits_router.get(
         "/",
-        # response_model=List[FruitsModelOut],
+        # response_model=List[FruitsAllModelOut],
         # dependencies=[Depends(transaction)]
         )
 async def retrieve_all_fruits():
@@ -153,6 +154,7 @@ async def retrieve_all_fruits():
             Fruits.all_columns(exclude=[Fruits.id, Fruits.color]), # Return the fruits table
             Fruits.color.all_columns() # Join on the colors table
         )
+        # ).output(nested=True)
     )
 
     return fruits

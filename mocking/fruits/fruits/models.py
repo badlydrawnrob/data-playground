@@ -91,7 +91,8 @@ ColorsModelIn: Any = create_pydantic_model(
 )
 
 # Multiple ---------------------------------------------------------------------
-# 1. I think foreign key nested models are automatic?
+# 1. Here's a nested example. It automatically creates foreign key models:
+#    - `.output(nested=True)` in the route function
 
 # FruitsAllModelOut: Any = create_pydantic_model(
 #     table=Fruits,
