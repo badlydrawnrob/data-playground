@@ -73,6 +73,10 @@ Is this because `pyproject.toml` is `name="fruits"` and I also have a fruits sub
 - [Using LLMs](https://simonwillison.net/2025/Mar/11/using-llms-for-code/) for coding
 - Be extremely careful letting Ai handle critical parts of your app (human in the loop)
 
+### Pydantic models for foreign keys
+
+It seems [easier](https://github.com/piccolo-orm/piccolo/issues/1292) to just create your own flat-style Pydantic model!
+
 ### Pydantic `null` values
 
 - [An issue here](https://github.com/piccolo-orm/piccolo/issues/1132)

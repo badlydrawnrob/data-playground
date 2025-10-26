@@ -135,10 +135,16 @@ fruits_router = APIRouter(
 # Read operations
 # ==============================================================================
 # > #! If you're using `response_model=` I think the response type is redundant!
+#
+# Bugs
+# ----
+# 1. For anything other than a nested foreign key, it seems easier to just build
+#    your own custom Pydantic model and loop on the results, using FastAPI and
+#    `response_model`.
 
 @fruits_router.get(
         "/",
-        # response_model=List[FruitsAllModelOut],
+        # response_model=List[FruitsModelOut],
         # dependencies=[Depends(transaction)]
         )
 async def retrieve_all_fruits():
@@ -154,7 +160,6 @@ async def retrieve_all_fruits():
             Fruits.all_columns(exclude=[Fruits.id, Fruits.color]), # Return the fruits table
             Fruits.color.all_columns() # Join on the colors table
         )
-        # ).output(nested=True)
     )
 
     return fruits

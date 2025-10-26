@@ -83,6 +83,7 @@ FruitsModelIn: Any = create_pydantic_model(
 FruitsModelOut: Any = create_pydantic_model(
     table=Fruits,
     model_name="FruitsModelOut",
+    # include_columns=(Fruits.color.name, Fruits.colors.background, Fruits.name),
 )
 
 ColorsModelIn: Any = create_pydantic_model(
