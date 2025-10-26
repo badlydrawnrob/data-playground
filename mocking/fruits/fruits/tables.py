@@ -184,7 +184,7 @@ class Fruits(Table):
     The Elm-Land version uses emojis, but we'll test out an image server.
     """
     
-    id = Serial(primary_key=True, secret=True) # (1)
+    # id = Serial(primary_key=True, secret=True) # (1)
     color = ForeignKey(references=Colors)  # (2)
     image = Varchar(length=255, null=True) # (3)
     name = Varchar(length=15, unique=True) # (4)
