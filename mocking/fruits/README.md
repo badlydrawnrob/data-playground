@@ -54,6 +54,8 @@ Unless the API and DATA layer models need to vary, generating a single model tha
 
 ## Bugs
 
+For now, unless it's a blocking problem, just LOG it and move on. Find a workaround, unless it's essential to what you need to complete. You've raised a lot of issues.
+
 ### Pylance squiggles
 
 Is this because `pyproject.toml` is `name="fruits"` and I also have a fruits subfolder?

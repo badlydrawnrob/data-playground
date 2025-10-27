@@ -95,11 +95,11 @@ ColorsModelIn: Any = create_pydantic_model(
 # 1. Here's a nested example. It automatically creates foreign key models:
 #    - `.output(nested=True)` in the route function
 
-# FruitsAllModelOut: Any = create_pydantic_model(
-#     table=Fruits,
-#     model_name="FruitsAllModelOut",
-#     nested=True,
-#     include_default_columns=True,
-# )
+FruitsAllModelOut: Any = create_pydantic_model(
+    table=Fruits,
+    model_name="FruitsAllModelOut",
+    nested=True,
+    include_default_columns=True,
+)
 
 
