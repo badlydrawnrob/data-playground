@@ -12,11 +12,9 @@ dependencies = [
 	"uvicorn>=0.37.0"
 ]
 
-[tool.uv]
-dev-dependencies = [
-    "pyright>=1.1.406",
-    "sqlite-utils>=3.38",
-]
+[dependency-groups]
+database = ["sqlite-utils>=3.38"]
+testing = ["pyright>=1.1.406"]
 
 [tool.pyright]
 strict = ["."]
