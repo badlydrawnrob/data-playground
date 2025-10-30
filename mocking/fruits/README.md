@@ -22,6 +22,13 @@ This mocking example is based on Elm Land's [fruits API](https://github.com/elm-
 6. Should API models and DATA models be totally separate (requires a little more work)
 
 
+## Storytelling
+
+> How you sell your thing matters ... why should they care?
+
+Evan Czaplicki's [talk](https://www.deconstructconf.com/2017/evan-czaplicki-on-storytelling) about communicating clearly your vision and why anybody should care (when perspectives differ). Quite useful for documentation, Quick Start guides, and writing in general. Piccolo is great, but there's areas in the writing (and onboarding) for improvement.
+
+
 ## Database
 
 > Currently the master `.config/git/ignore` file disallows `*.sqlite` databases
@@ -33,9 +40,7 @@ This is probably a LOT better for security reasons, so make sure you backup and 
 
 > In general prefer a data-style rather than OOP
 
-Aim to write your functions in Elm style as much as possible, which isn't mutable. Don't force Python to do what it's not meant to do, however. Maybe objects are OK when used in moderation.
-
-I imagine OCaml and Elm would do things manually, rather than using magic like `response_model=` and `model_dump()`?
+Aim to write your functions in Elm style as much as possible (which isn't mutable). Don't force Python to do what it's not meant to do, however. Maybe objects are OK when used in moderation. I imagine OCaml and Elm would do things manually, rather than using magic like `response_model=` and `model_dump()`?
 
 
 ## Dependencies

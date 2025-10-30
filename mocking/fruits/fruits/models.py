@@ -29,9 +29,18 @@
 # Flat shape -vs- nested
 # ----------------------
 # > By default Piccolo returns a flat shape for foreign keys, which is Elm Lang's
-# > preference too. You can use `nested=True` to get a nested shape.
+# > preference too. Right now it does not include `create_pydantic_model` for this
+# > shape ...
+# 
+# Alternatively you can either:
+# 
+# 1. Write your own Pydantic models to fit a flatter shape
+# 2. Use `nested=True` and `.nested()` for automatic nested Pydantic models
+#     - Rather than `"color.name"` you'd get `"color" : { "name": <value> }`
+#     - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/serialization/index.html#nested
 #
-# - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/serialization/index.html#nested
+# Either methods would work with Elm as we can change the shape. However, it's
+# probably wise to create your own Pydantic model for more complex queries.
 #
 #
 # UUID
