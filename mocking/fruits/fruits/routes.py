@@ -41,17 +41,31 @@
 #
 # Responses
 # ---------
-# > #! I'm a little confused with FastAPI as whether to use `response_model=` or
-# > a response type hint. I don't know which is best in what context. When would
-# > you ever use both?!
+# > Take care to use the proper status codes for each operation! See also the
+# > Serialization section in `fruits.models`.
 #
-# - You can use the `response_model=` to pass a Pydantic type as the json response
-# - You can also use a Pydantic type as the response type `def func() -> Type:`
-# - Hide sensitive information with `response_model=` or Piccolo `secret=True`
-# - `Depends()` (always?) runs first before the route function executes.
-# - Take care to use the proper status codes for each operation.
+# Types:
+# Use either `response_model=` or `->` response type (unlikely you'll need both)
+#
+# Security:
+# By default Piccolo hides the `ID` field from the response. Hide sensitive information
+# with `response_model=` or Piccolo `secret=True`, and use `Depends()` to check
+# JWT tokens (if declared this always runs first, before route function body)
+#
+# Singleton:
+# For `.select()` and `.objects()` you can always use `.first()` if you're confident
+# there's only supposed to be a singleton response.
 #
 #
+# Connection to the database
+# --------------------------
+# > This is handled automatically, no need to `open()` and `close()`
+#
+# Piccolo handles connections, but you may need to add transactions when you're
+# dealing with concurrent requests (see `app.py` notes).
+# 
+#
+# 
 # Saving entries into the database
 # --------------------------------
 # > See "serialization" in `fruits.models.py` to understand `.model_dump()` ...
@@ -64,9 +78,23 @@
 # 2. When we're working with objects, we can use `.save()`
 #
 #
+# Database exceptions
+# -------------------
+# > @ https://docs.python.org/3/tutorial/errors.html#exceptions
+#
+# - Not defined
+# - No DB results for query
+# - Null not allowed
+# - No duplicate entry values
+#
+#
 # Coding style is a personal preference
 # -------------------------------------
-# > DRY is great but overused: similar is not the same as identical.
+# > Technically not 100% data style as we're using Pydantic types and assigning
+# > some arguments in the route function. DRY is great but overused: similar is
+# > not the same as identical.
+#
+# See also `app.py` "Learning frame" for coding standards.
 #
 # In general, I prefer working with data rather than objects (no classes, no
 # methods, no weird decorators). I'll leave in both examples and then it's up to
@@ -104,22 +132,29 @@
 # 3. Make some routes IMPOSSIBLE (things that are destructive and Admin only)
 #    - `DELETE` all `fruits/` will torpedo your database!
 #    - Better to use a tool like `sqlite-utils`, a GUI, or no-code dashboard
+# 4. Currently getting `.first()` with `[0]` as there should only be ONE
+#    - You've got to be super strict with your UNIQUE values for this however
+# 5. You _could_ use Piccolo `create_pydantic_model` with `nested=True`, but in
+#    general it's better to generate your own custom Pydantic type for joins.
+#    - The more complex the join, the harder it is for Piccolo "magic"!
 #
 #
 # Wishlist
 # --------
-# 1. Decide which style to use `PATCH` or `PUT` and stick to it?
-# 2. Create a filter, pagination, and search route?
-# 3. Performance: which is faster? Object oriented or data? Safer?
-# 4. Re-write the authentication function (see Piccolo issues)
-#    - Ask Mike if it's good to go! (How secure is it?)
+# 1. Enforce logged in and verified user
+#     - JWT should return claim (with user `sub` details)
+#     - Re-write the authentication function (see Piccolo issues)
+#     - Ask Mike if it's good to go! (How secure is it?)
+# 2. Decide which style to use `PATCH` or `PUT` and stick to it?
+# 3. Create a filter, pagination, and search route?
+# 4. Performance: which is faster? Object oriented or data? Safer?
 # 5. Transactions: understand when to be careful with `select()` then writes
 #     - This is only a consideration for SQLite
+# 6. Consider using `first()` instead of `list[0]` for singletons
 
 from fastapi import APIRouter, HTTPException
 
 from fruits.models import FruitsModelIn, FruitsAllModelOut, FruitsModelOut
-# from fruits.models import FruitsModelIn, FruitsModelOut
 from fruits.tables import Fruits, Colors
 
 from typing import List
@@ -135,31 +170,27 @@ fruits_router = APIRouter(
 # Read operations
 # ==============================================================================
 # > #! If you're using `response_model=` I think the response type is redundant!
-#
-# Bugs
-# ----
-# 1. For anything other than a nested foreign key, it seems easier to just build
-#    your own custom Pydantic model and loop on the results, using FastAPI and
-#    `response_model`.
 
 @fruits_router.get(
         "/",
-        # response_model=List[FruitsModelOut],
+        response_model=List[FruitsAllModelOut],
         # dependencies=[Depends(transaction)]
         )
 async def retrieve_all_fruits():
     """Return all fruits
 
-    > #! Is there a time you'd need BOTH response type and response model?
-
-    I've removed the response type from the function, we're using the
+    I've removed the response type from the function, as we're using the
     `response_model=` instead.
+
+    Wishlist
+    --------
+    1. Join on the `Fruit.id` field and not the `UUID` field
     """
     fruits = await (
         Fruits.select(
             Fruits.all_columns(exclude=[Fruits.id, Fruits.color]), # Return the fruits table
             Fruits.color.all_columns() # Join on the colors table
-        ).output(nested=True) # (1)
+        ).output(nested=True) # (5)
     )
 
     return fruits
@@ -167,37 +198,36 @@ async def retrieve_all_fruits():
 
 @fruits_router.get(
         "/{id}",
-        response_model=FruitsAllModelOut,
+        response_model=FruitsModelOut,
         # dependencies=[Depends(transaction)]
         )
-def retrieve_fruit(id: int):
+async def retrieve_fruit(id: int):
     """Retrieve a particular fruit
 
-    > #! Wherever possible there should be ONE `connect()` and `close()` function
-
-    Aim to make data immutable where possible.
-    I don't like `try/except/finally` blocks.
-    I don't like the concept of `None`.
-    Make sure there's no "exception" errors ...
-
-    @ https://docs.python.org/3/tutorial/errors.html#exceptions
-    (not defined, no DB results for query).
-
-    1. See `get("/")` and follow steps
-    2. If fruit doesn't exist raise 404 error
-    3. `if fruit` return the fruit json
-    4. Else raise 404 error with `raise HTTPException()`
+    #! Bug
+    ------
+    > Using `.first()` with an `ID` that doesn't exist returns `None`
+    
+    If we're coding in a data style, it's probably better to check for `[]` empty
+    and access first item with indexes. It's a small difference, but it avoids us
+    dealing with the `None` type (which isn't a great concept).
     """
-    pass
+    fruit = await Fruits.select().where(Fruits.id == id)
 
+    #! Check for empty list (not `None`, see above)
+    if fruit:
+        return fruit[0]
+    
+    HTTPException(
+        status_code=404,
+        detail=f"Fruit with ID: {id} does not exist"
+    )
 
 # ------------------------------------------------------------------------------
 # Write operations
 # ==============================================================================
-# 1. Be sure to handle `[]` empty and singleton (and perhaps sometimes, many)
-#     - If you're using object oriented style you can use `.first()`
-# 2. Confident your data only has one row? Remove the singleton checks!
-#     
+# Be sure to handle `[]` empty and singleton (and perhaps sometimes, many). If
+# you're confident your data only has one row, use `list[0]` or `.first()`
 
 
 @fruits_router.post(
@@ -208,41 +238,51 @@ def retrieve_fruit(id: int):
 async def create_fruit(
     body: FruitsModelIn,
     # user: str = Depends(authenticate)
-    ) -> FruitsModelOut:
+    ):
     """Create a new fruit
+    
+    Foreign keys
+    ------------
+    > The `ID` is the most correct way to add a foreign key entry
 
-    We're not 100% using a data style here: it's easier using objects to assign
-    a `UUID` value. We can `model_dump()` to turn into a dictionary after.
-
-    - Piccolo handles the `ID` field automatically
-    - We can set `exclude_unset=` or `exclude_none=` if needed
+    You could use `String` (the name) as that's also unique, but generally it's
+    safest to use an `ID` or `UUID` where possible. You can always store this on
+    the frontend as a `Tuple ID String`.
+    
 
     Returning values
     ----------------
     > SQLite 3.35.0 and above supports the returning clause.
 
-    By default, an update query returns an empty list, but using the `returning`
+    By default an update query returns an empty list, but using the `returning`
     clause you can retrieve values from the updated rows.
+
+    
+    Security
+    --------
+    Our Pydantic types only validate that data is a certain type. It won't protect
+    us from malicious code, so consider your threat risk.
+
 
     Wishlist
     --------
-    1. Deal with `UNIQUE` constraint failed error (from SQLite)
+    1. Convert `UUID` to use `default_factory`?
+    2. Deal with errors on frontend or backend (or both?):
+        - Is wrong data possible? (Pydantic doesn't cover XSS injection?)
         - `sqlite3.IntegrityError: UNIQUE constraint failed: colors.name`
-    2. Check speed of creating a new fruit (or joining)
-    3. What's the best way to enter the `Color` foreign key?
-    4. Enforce logged in and verified user
-        - JWT should return claim (with user `sub` details)
+    3. Check speed of creating a new fruit (or joining)
     """
     uuid = uuid4()
     body.url = uuid
 
     inserted = await (
-        Fruits.insert(Fruits(**body.model_dump()))
+        # Working with a data style and convert to a dictionary
+        # You can always `exclude_unset=` or `exclude_none=` here.
+        Fruits.insert(Fruits(**body.model_dump())) #! Change? Remove `Fruits`?
         .returning(*Fruits.all_columns())
     )
 
-    #! `ID` should not be returned!
-    #! Is there a better way to extract the single object?
+    #! `insert()` has no `.first()` method, so use indexes!
     return inserted[0]
 
 
@@ -253,54 +293,74 @@ async def create_fruit(
         # dependencies=[Depends(transaction)]
         response_model=FruitsModelOut
         )
-def update_fruit():
+async def update_fruit(
+    id: int,
+    data: FruitsModelIn,
+):
     """Create a new fruit (if logged in)
 
     Data checks
     -----------
-    `singleton, = list` or `if len(list) == 1:` to ensure singleton results.
-    The former will return `ValueError` if not a singleton.
+    > You must provide the full data required to update the entry. Fields like
+    > `ID` and `UUID` should not be changed. Eventually, some fields (such as
+    > timestamp) may need automatically updated.
 
+    Lists can be:
+    
+    - Empty? `if list`
+    - Singleton? `if len(list) == 1`, or `(single,)` which returns `ValueError`
+    - Many? (shouldn't be required)
+
+    Fields can be:
+
+    - null? Be sure that fields that are optional provide correct data
+
+    Positive check or negative check?
+
+    - Is it: `if` fruit exists -> HTTPException?
+    - Or: `if not` fruit exists -> HTTPException?
+
+    If we later have a check two `if`s (user is valid) will both statements run? 
+
+    
+    SQLite
+    ------
     > SQLite defaults to accept whatever data you give it by default ...
-    > it doesn't respect types unless it's a strict table. Strict tables are
-    > a bit inconvenient so ALWAYS validated the `DataModelIn` before inserting.
-    > Postgres is strict by default.
-    >
-    > @ https://sqlite.org/stricttables.html
 
-    1. Fails if user not logged in (requires valid JWT)
-    2. JWT should return a claim (with user details)
-    3. Claim has `sub` value with `UUID` ...
-    4. But we `JOIN` on the `User.id` field (an `int`)
-    5. Be careful in the response not to expose secret data
-    6. Run a speedtest on the backend and frontend
-    7. What data is best practice to return to the client?
+    See Data integrity in `fruits.tables`. Make sure you properly validate the
+    `DataIn` and `DataOut` with a Pydantic model (and any other checks you need).
+    It's probably not enough to only check it on the frontend.
 
-    Some fields (like the auto incrementing `id`) are created by the ORM, so
-    they're not required in the POST body. We can use `exclude_none=True` to
-    ignore any fields that aren't set in the request body.
 
-    ```
-    EventData(creator=username, **body.model_dump(exclude_none=True))
-    # or
-    { ... dict ... }
-    Function(**kwargs)
-    ```
-
-    @ https://docs.pydantic.dev/latest/concepts/serialization/ (dumps)
-
-    I imagine OCaml and Elm would do things manually, rather than using magic
-    like `response_model=` and `model_dump()`?
-
-    Returning values
-    ----------------
-    > Only SQLite 3.35.0 and above support the returning clause.
-
-    By default, an update query returns an empty list, but using the `returning`
-    clause you can retrieve values from the updated rows. We return the full `Task`
-    object after updatating the row.
+    Wishlist
+    --------
+    1. Change `id` to `UUID` and search on that
+    2. Run a speedtest on the backend and frontend
+    3. What data is best practice to return to the client?
+    4. What optional and required fields?
+        - What to provide if optional?
+    5. What errors could happen on an `update` function?
+        - SQLite errors (not null, not supplied, ...)
+        - Piccolo errors (should we use `if not fruit -> exception`?)
     """
-    pass
+    fruit = await Fruits.select().where(Fruits.id == id)
+
+    #! If there's something in the list ...
+    if fruit:
+        await (
+            Fruits.update(
+                #! Why does `Fruits.insert(Fruits(**body.model_dump()))` work, but
+                #! this one doesn't? You've got to remove the inner `Fruits()` here.
+                Fruits(**data.model_dump())
+            ).where(Fruits.id == id)
+        )
+
+        return f"Fruit with {id} has been successfully updated!"
+
+    HTTPException(
+        status=400, #! Is this the correct status code?
+        detail=f"There was a problem with your request"
+    )
 
 
 
@@ -309,23 +369,34 @@ def update_fruit():
         "/{id}",
         # dependencies=[Depends(transaction)]
         )
-def delete_fruit(
+async def delete_fruit(
     id: int,
     # user: str = Depends(authenticate)
     ) -> dict:
     """Delete a fruit (if logged in)
 
-    > #! What's best practice as a return body for a `DELETE` request?
+    I think it's safe enough to just run the funciton even if the record doesn't
+    exist, but it'd be nice on the frontend (or backend) to have some response
+    that says "Hey, this doesn't exist", or "Great, your things been deleted!".
 
-    I'm using a data style and I think it's safe to just run the function even
-    if the record doesn't exist. See the events route for more info on `if`
-    statements and error handling. Make sure the `DELETE` cascades correctly and
-    doesn't leave orphaned rows.
+
+    SQlite
+    ------
+    > Make sure the `DELETE` cascades correctly and doesn't leave orphaned rows.
+
+    By default I think Piccolo sets this up properly for foreign keys.
+
 
     Security
     --------
-    > `DELETE` operations can torpedo your application, so be extremely careful.
+    > `DELETE` operations can torpedo your application, so be extremely careful!
 
-    Check the user has permission to delete the record first.
+    Always check the user has permission to delete the record first, and never
+    add a route you don't need (especially for high risk / consequences).
+
+    
+    Wishlist
+    --------
+    1. #! What's best practice as a return body for a `DELETE` request?
     """
-    pass
+    return await Fruits.delete().where(Fruits.id == id)

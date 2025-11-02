@@ -9,3 +9,11 @@ get {
   body: none
   auth: inherit
 }
+
+docs {
+  # Fruits (all)
+  
+  > `nested=True` with `exclude=Fruits.id` and `create_pydantic_model(include_default_columns=True)` currently returns `null` for main `id` instead of removing it.
+  
+  For this reason and others, it's probably best for most circumstances to simply create your own custom Pydantic return type. Separate concerns.
+}

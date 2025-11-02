@@ -88,6 +88,10 @@ It seems [easier](https://github.com/piccolo-orm/piccolo/issues/1292) to just cr
 
 - [An issue here](https://github.com/piccolo-orm/piccolo/issues/1132)
 
+## Piccolo documentation
+
+- [Contributing](https://github.com/piccolo-orm/piccolo/issues/1274#issuecomment-3395426315) if you find any areas of improvement.
+
 
 ## SQLite
 

@@ -19,28 +19,33 @@
 #
 # - The `ID` field is hidden by default (no need for `secret=True`)
 # - Use `include_default_columns=True` to include all columns
+# - `create_pydantic_model` isn't great for foreign keys (unless nested)
 #
 # Pydantic models have a `.model_dump()` method which returns the data as a
 # dictionary. This can be useful when passing in all `POST` data to a model.
 # You can exclude optional missing fields with `exclude_unset=True`, and there are
 # other options also.
 #
+# 
+# Foreign keys
+# ------------
+# > #! It's wise to create your own Pydantic models if you're using joins!
+#
+# The more complex the query, the harder it is for Piccolo "magic" models.
+#
 #
 # Flat shape -vs- nested
 # ----------------------
-# > By default Piccolo returns a flat shape for foreign keys, which is Elm Lang's
-# > preference too. Right now it does not include `create_pydantic_model` for this
-# > shape ...
+# > #! `create_pydantic_model` only works with foreign keys for nested style,
+# > so create your own Pydantic models for a flatter style (which Piccolo
+# > uses by default)
 # 
-# Alternatively you can either:
+# At the moment you can either:
 # 
-# 1. Write your own Pydantic models to fit a flatter shape
+# 1. Write your own Pydantic `response_model` to fit default flat shape
 # 2. Use `nested=True` and `.nested()` for automatic nested Pydantic models
 #     - Rather than `"color.name"` you'd get `"color" : { "name": <value> }`
 #     - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/serialization/index.html#nested
-#
-# Either methods would work with Elm as we can change the shape. However, it's
-# probably wise to create your own Pydantic model for more complex queries.
 #
 #
 # UUID
@@ -100,9 +105,11 @@ ColorsModelIn: Any = create_pydantic_model(
     model_name="ColorsModelIn",
 )
 
-# Multiple ---------------------------------------------------------------------
-# 1. Here's a nested example. It automatically creates foreign key models:
-#    - `.output(nested=True)` in the route function
+# Foreign keys -----------------------------------------------------------------
+# > By default Piccolo returns a flat shape for foreign keys
+# 
+# 1. Here's a nested one (which requires `.output(nested=True)` in `.select()`)
+#    - In general though, just create your own Pydantic models for joins!
 
 FruitsAllModelOut: Any = create_pydantic_model(
     table=Fruits,

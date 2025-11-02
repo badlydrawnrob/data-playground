@@ -17,6 +17,7 @@
 # --------------
 # 1. ✅ Static typed functional python where it makes sense (rrr classes, Elm style)
 # 2. ✅ Simple and minimal data structures with a simple API (rrr file size)
+# 3. ✅ Immutable data, no `None` values, minimal `try/except/finally` blocks 
 # 3. ✅ Understanding API route architecture decisions (# of endpoints)
 # 4. ✅ Understanding backend data structures (especially search queries)
 # 5. ✅ Aiming to keep data shapes flat where possible (avoid nesting?)

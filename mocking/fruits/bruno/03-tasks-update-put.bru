@@ -5,7 +5,7 @@ meta {
 }
 
 put {
-  url: http://localhost:8000/tasks/:id
+  url: http://localhost:8000/fruits/:id
   body: json
   auth: inherit
 }
@@ -16,12 +16,21 @@ params:path {
 
 body:json {
   {
-    "name": "We haven't tested if Fruits works yet",
-    "completed": false
+    "color": 1,
+    "image": null,
+    "name": "Avocado"
   }
 }
 
 settings {
   encodeUrl: true
   timeout: 0
+}
+
+docs {
+  # Fruits (update one)
+  
+  > Currently a bug that `UUID` in the `ModelIn` should be supplied, but this is a column that shouldn't be touched.
+  
+  Our `UUID` is automatically applied on `POST`.
 }
