@@ -42,6 +42,8 @@ This is probably a LOT better for security reasons, so make sure you backup and 
 
 Aim to write your functions in Elm style as much as possible (which isn't mutable). Don't force Python to do what it's not meant to do, however. Maybe objects are OK when used in moderation. I imagine OCaml and Elm would do things manually, rather than using magic like `response_model=` and `model_dump()`?
 
+Other slight weirdness is that `Fruits.insert(Fruits(**data.model_dump()))` can insert multiple values, so we're using an inner `Fruits()` object here. Conversely, `Fruits.update()` does not require this and you can supply it a record directly (it's only updating a single entry).
+
 
 ## Dependencies
 

@@ -56,6 +56,13 @@
 # For `.select()` and `.objects()` you can always use `.first()` if you're confident
 # there's only supposed to be a singleton response.
 #
+# Returning:
+# > SQLite 3.35.0 and above supports the returning clause.
+#
+# Most functions (like `.delete()`) return no values (an empty `[]`). You can use
+# `.returning()` if you need to add values to the response. Take care with security
+# you don't expose anything important!
+#
 #
 # Connection to the database
 # --------------------------
@@ -141,16 +148,18 @@
 #
 # Wishlist
 # --------
-# 1. Enforce logged in and verified user
-#     - JWT should return claim (with user `sub` details)
-#     - Re-write the authentication function (see Piccolo issues)
-#     - Ask Mike if it's good to go! (How secure is it?)
-# 2. Decide which style to use `PATCH` or `PUT` and stick to it?
-# 3. Create a filter, pagination, and search route?
-# 4. Performance: which is faster? Object oriented or data? Safer?
-# 5. Transactions: understand when to be careful with `select()` then writes
+# 1. Deal with response body types (must be a dictionary or json)
+# 2. Re-write the auth function and enforce logged in and verified user
+#     - See Piccolo issues for an updated JWT with claims
+#     - A single function that returns an `HTTPException` if not logged in
+#     - JWT should return claim (with user `sub` details and claims)
+#     - Ask Mike if it's good to go! (How secure is it? XSS protection?)
+# 3. Decide which style to use `PATCH` or `PUT` and stick to it?
+# 4. Create a filter, pagination, and search route?
+# 5. Performance: which is faster? Object oriented or data? Safer?
+# 6. Transactions: understand when to be careful with `select()` then writes
 #     - This is only a consideration for SQLite
-# 6. Consider using `first()` instead of `list[0]` for singletons
+# 7. Consider using `first()` instead of `list[0]` for singletons
 
 from fastapi import APIRouter, HTTPException
 
@@ -240,6 +249,17 @@ async def create_fruit(
     # user: str = Depends(authenticate)
     ):
     """Create a new fruit
+
+    Coding style
+    ------------
+    > Use a data style (similar to Elm Lang) wherever possible
+
+    `.insert()` can be provided a list of values, whereas `.update()` can only
+    be provided ONE. For this reason, the internal `Fruits()` object is needed.
+
+    We provide each `Fruit()` with a `**data` dictionary. If required, you can
+    always `exclude_unset=` or `exclude_none=` here (I'm not sure you'd need to).
+
     
     Foreign keys
     ------------
@@ -252,10 +272,11 @@ async def create_fruit(
 
     Returning values
     ----------------
-    > SQLite 3.35.0 and above supports the returning clause.
+    > `.insert()` -> `[{'id': 1}]`
 
-    By default an update query returns an empty list, but using the `returning`
-    clause you can retrieve values from the updated rows.
+    We can pull the `ID` from the response that Piccolo gives or the `:id` in
+    the route provided. `.insert()` has no `.first()` method, so you've got to
+    use indexes.
 
     
     Security
@@ -276,13 +297,10 @@ async def create_fruit(
     body.url = uuid
 
     inserted = await (
-        # Working with a data style and convert to a dictionary
-        # You can always `exclude_unset=` or `exclude_none=` here.
-        Fruits.insert(Fruits(**body.model_dump())) #! Change? Remove `Fruits`?
+        Fruits.insert(Fruits(**body.model_dump()))
         .returning(*Fruits.all_columns())
     )
 
-    #! `insert()` has no `.first()` method, so use indexes!
     return inserted[0]
 
 
@@ -334,28 +352,32 @@ async def update_fruit(
 
     Wishlist
     --------
-    1. Change `id` to `UUID` and search on that
-    2. Run a speedtest on the backend and frontend
-    3. What data is best practice to return to the client?
-    4. What optional and required fields?
-        - What to provide if optional?
-    5. What errors could happen on an `update` function?
+    1. Fix `sqlite3.IntegrityError: NOT NULL constraint failed: fruits.url` error
+        - We shouldn't supply the `url` as it's an automatic `UUID` ...
+        - Currently we're using `exclude_unset` and a default `create_pydantic_model`
+        - (1) Have Elm Lang supply original `UUID` | (2) Have the route handle it?
+    2. Change `ID` to `UUID` and search on that?
+    3. Run a speedtest on the backend and frontend
+    4. What data is best practice to return to the client?
+    5. How can we assure that all data is correctly updated?
+        - What's optional and what's required?
+        - What do we provide (or exclude) if it's optional?
+        - What data do we NOT want the user to supply?
+    6. What errors could happen on an `update` function?
         - SQLite errors (not null, not supplied, ...)
-        - Piccolo errors (should we use `if not fruit -> exception`?)
+        - Positively or negatively errored (`if not fruit`, `if not user`)
     """
-    fruit = await Fruits.select().where(Fruits.id == id)
+    fruit = await Fruits.select().where(Fruits.id == id) # A list (singleton)
 
-    #! If there's something in the list ...
-    if fruit:
+    if fruit: #!
         await (
-            Fruits.update(
-                #! Why does `Fruits.insert(Fruits(**body.model_dump()))` work, but
-                #! this one doesn't? You've got to remove the inner `Fruits()` here.
-                Fruits(**data.model_dump())
-            ).where(Fruits.id == id)
+            Fruits.update(**data.model_dump(exclude_unset=True)) #! Careful (1)
+            .where(Fruits.id == id)
         )
 
-        return f"Fruit with {id} has been successfully updated!"
+        #! Must be a proper json type or dictionary!
+        #! WEIRDNESS GOES HERE!!!
+        return { "detail": f"Fruit with {id} has been successfully updated!" }
 
     HTTPException(
         status=400, #! Is this the correct status code?
@@ -373,12 +395,11 @@ async def delete_fruit(
     id: int,
     # user: str = Depends(authenticate)
     ) -> dict:
-    """Delete a fruit (if logged in)
+    """Delete a fruit
 
     I think it's safe enough to just run the funciton even if the record doesn't
     exist, but it'd be nice on the frontend (or backend) to have some response
     that says "Hey, this doesn't exist", or "Great, your things been deleted!".
-
 
     SQlite
     ------
@@ -395,8 +416,15 @@ async def delete_fruit(
     add a route you don't need (especially for high risk / consequences).
 
     
+    Status
+    ------
+    I think it's safe to simply return a status here. It might have security
+    consequences if we return what's been successful and what hasn't.
+
+    
     Wishlist
     --------
-    1. #! What's best practice as a return body for a `DELETE` request?
+    1. Must be logged in (and the user who supplied the fruit?)
+    2. #! What's best practice as a return body for a `DELETE` request?
     """
     return await Fruits.delete().where(Fruits.id == id)
