@@ -6,6 +6,8 @@
 # 1. FastApi with models and routes (API layer)
 # 2. Piccolo ORM (async data layer) for CRUD operations
 #    - Peewee isn't setup for async @ https://charlesleifer.com/blog/asyncio/
+# 3. Best practices for REST APIs (some things don't have a standard)
+#    - @ https://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api
 #
 # It seems best to split out the API layer from the DATA layer, so each could be
 # swapped out independently (SQLModel is too tightly connected). Changing ORMs

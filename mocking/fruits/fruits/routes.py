@@ -148,18 +148,17 @@
 #
 # Wishlist
 # --------
-# 1. Deal with response body types (must be a dictionary or json)
-# 2. Re-write the auth function and enforce logged in and verified user
+# 1. Re-write the auth function and enforce logged in and verified user
 #     - See Piccolo issues for an updated JWT with claims
 #     - A single function that returns an `HTTPException` if not logged in
 #     - JWT should return claim (with user `sub` details and claims)
 #     - Ask Mike if it's good to go! (How secure is it? XSS protection?)
-# 3. Decide which style to use `PATCH` or `PUT` and stick to it?
-# 4. Create a filter, pagination, and search route?
-# 5. Performance: which is faster? Object oriented or data? Safer?
-# 6. Transactions: understand when to be careful with `select()` then writes
+# 2. Decide which style to use `PATCH` or `PUT` and stick to it?
+# 3. Create a filter, pagination, and search route?
+# 4. Performance: which is faster? Object oriented or data? Safer?
+# 5. Transactions: understand when to be careful with `select()` then writes
 #     - This is only a consideration for SQLite
-# 7. Consider using `first()` instead of `list[0]` for singletons
+# 6. Consider using `first()` instead of `list[0]` for singletons
 
 from fastapi import APIRouter, HTTPException
 
@@ -309,7 +308,6 @@ async def create_fruit(
 
 @fruits_router.put("/{id}",
         # dependencies=[Depends(transaction)]
-        response_model=FruitsModelOut
         )
 async def update_fruit(
     id: int,
@@ -333,12 +331,14 @@ async def update_fruit(
 
     - null? Be sure that fields that are optional provide correct data
 
-    Positive check or negative check?
+    
+    Positive or negative guards?
+    ----------------------------
+    > It may be better to use a negative guard if we've got more than one check.
 
-    - Is it: `if` fruit exists -> HTTPException?
-    - Or: `if not` fruit exists -> HTTPException?
-
-    If we later have a check two `if`s (user is valid) will both statements run? 
+    For example, if we're validating our user, we'd need to both: `if not user`
+    and `if not fruit` (each with a different `HTTPException`). I'm not sure two
+    different exceptions is possible with positive guards.
 
     
     SQLite
@@ -377,7 +377,7 @@ async def update_fruit(
 
         #! Must be a proper json type or dictionary!
         #! WEIRDNESS GOES HERE!!!
-        return { "detail": f"Fruit with {id} has been successfully updated!" }
+        return { "message": f"Fruit with {id} has been successfully updated!" }
 
     HTTPException(
         status=400, #! Is this the correct status code?
@@ -389,17 +389,19 @@ async def update_fruit(
 
 @fruits_router.delete(
         "/{id}",
+        status_code=204
         # dependencies=[Depends(transaction)]
         )
 async def delete_fruit(
     id: int,
     # user: str = Depends(authenticate)
-    ) -> dict:
+    ):
     """Delete a fruit
 
-    I think it's safe enough to just run the funciton even if the record doesn't
-    exist, but it'd be nice on the frontend (or backend) to have some response
-    that says "Hey, this doesn't exist", or "Great, your things been deleted!".
+    We don't need a `return` value here as there's nothing to return. We could
+    also check that item exists, but for security reasons it's probably better
+    to be opaque about which `:id`s hold a database entry.
+
 
     SQlite
     ------
@@ -418,13 +420,17 @@ async def delete_fruit(
     
     Status
     ------
-    I think it's safe to simply return a status here. It might have security
-    consequences if we return what's been successful and what hasn't.
+    > FastApi expects a response body unless it's `204`!
+
+    You could've responded with a `{"message": "Deleted {id}}` here, but might
+    be a bit better for security to use a `204` with no response body. It declares
+    success without a message.
 
     
     Wishlist
     --------
     1. Must be logged in (and the user who supplied the fruit?)
-    2. #! What's best practice as a return body for a `DELETE` request?
+    2. Add a `.callback(check_record_not_found)` for "NOT FOUND"?
+        - See `agsi new` and the `check_record_not_found()` function!
     """
-    return await Fruits.delete().where(Fruits.id == id)
+    await Fruits.delete().where(Fruits.id == id)

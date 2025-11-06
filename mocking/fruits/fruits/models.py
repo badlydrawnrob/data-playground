@@ -58,9 +58,23 @@
 #
 # Required values
 # ---------------
-# > By default it seems ALL values are optional and can be `None`
+# > By default it seems ALL values are optional and can be `None`, but this is
+# > not always acceptable: see "Unrequired values" below.
 #
 # - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/serialization/index.html#required-fields
+#
+#
+# Un-required values
+# ------------------
+# > In one of our routes, we needn't supply the `ID` or `UUID` as these have
+# > already been set (or are automatic) ...
+#
+# We have two options:
+#
+# 1. Don't supply these in the request body and use `exclude_unset=` in dump
+# 2. Don't supply these in the request body and use a custom Pydantic model
+#     - A `FruitsModelInWithoutUUID` with only the fields we require
+#     - This would work great with `.update()` database functions!
 #
 #
 # Data integrity
@@ -80,6 +94,11 @@
 #    - By default `create_pydantic_model` will return `None` if it's not supplied.
 #    - This is fine! We can update it in the route function.
 #    - Otherwise use `exclude_columns` (unlikely) or `secret=` for the return value.
+#
+#
+# Wishlist
+# --------
+# 1. Add a `ColorsModelIn` model and endpoint for the `Colors` table.
 
 from piccolo_api.crud.serializers import create_pydantic_model
 from fruits.tables import Fruits, Colors
@@ -87,23 +106,18 @@ from typing import Any # (1)
 
 
 # Single -----------------------------------------------------------------------
+# You may need to use `exclude_unset=` in some routes.
 
 FruitsModelIn: Any = create_pydantic_model(
     table=Fruits,
     model_name="FruitsModelIn",
 )
 
-#! We don't need `include_default_columns` anymore
 FruitsModelOut: Any = create_pydantic_model(
     table=Fruits,
     model_name="FruitsModelOut",
-    # include_columns=(Fruits.color.name, Fruits.colors.background, Fruits.name),
 )
 
-ColorsModelIn: Any = create_pydantic_model(
-    table=Colors,
-    model_name="ColorsModelIn",
-)
 
 # Foreign keys -----------------------------------------------------------------
 # > By default Piccolo returns a flat shape for foreign keys
