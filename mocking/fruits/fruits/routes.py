@@ -58,6 +58,7 @@
 #
 # Returning:
 # > SQLite 3.35.0 and above supports the returning clause.
+# > Use `first()` on functions that allow it (and `list[0]` otherwise)
 #
 # Most functions (like `.delete()`) return no values (an empty `[]`). You can use
 # `.returning()` if you need to add values to the response. Take care with security
@@ -148,17 +149,23 @@
 #
 # Wishlist
 # --------
-# 1. Re-write the auth function and enforce logged in and verified user
-#     - See Piccolo issues for an updated JWT with claims
+# 1. Include the original auth function from "building with FastAPI"
+#     - HS256 is perfectly fine if you own the stack (see `README.md`)
+#     - Enforce logged in and verified user (just one account)
+#     - Change "claims" to not hold any sensitive data (only a `UUID`)
 #     - A single function that returns an `HTTPException` if not logged in
-#     - JWT should return claim (with user `sub` details and claims)
-#     - Ask Mike if it's good to go! (How secure is it? XSS protection?)
-# 2. Decide which style to use `PATCH` or `PUT` and stick to it?
-# 3. Create a filter, pagination, and search route?
-# 4. Performance: which is faster? Object oriented or data? Safer?
-# 5. Transactions: understand when to be careful with `select()` then writes
-#     - This is only a consideration for SQLite
-# 6. Consider using `first()` instead of `list[0]` for singletons
+# 2. Understand and implement the `BaseUser` table properly
+#    - And how does it differ from `piccolo_user` table?
+#    - @ https://github.com/sinisaos/simple-piccolo/blob/main/fastapi_app.py#L73
+#    - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/authentication/baseuser.html#baseuser
+#    - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/authentication/baseuser.html#extending-baseuser
+# 3. Write an endpoint to get basic user preferences
+# 4. How to make sure of XSS protection (ask Mike)
+# 5. Create a filter, pagination, and search route?
+#     - Investigate `case` in Python` to validate query strings
+#     - @ https://stackoverflow.com/a/11479840 (Python 3.10+)
+# 6. Transactions: understand when to be careful with `select()` then writes
+# 7. Performance: which is faster? Object oriented or data? Safer?
 
 from fastapi import APIRouter, HTTPException
 

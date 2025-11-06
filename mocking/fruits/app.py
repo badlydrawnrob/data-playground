@@ -111,32 +111,23 @@
 #
 # Wishlist
 # --------
+# > Some of these may never get done! (YAGNI and just-in-time)
+#
 # 1. Create a script that automatically creates mock data
 #    - Use `sqlite-utils` or Piccolo itself
 # 2. Add SQLite transactions (see docs)
 #    - Test concurrent connections and writes
 #    - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/tutorials/fastapi.html#transactions
-# 3. Better documentation for SQLite and `engine_finder()`
-#    - Setup with FastAPI
-#    - Setup database, opening and closing connections, and so on.
-#    - Does SQLite have connection pooling?
-# 4. Understand how Piccolo apps work a bit better?
+# 3. Understand how Piccolo apps work a bit better?
 #     - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/projects_and_apps/
-# 5. Investigate `case` in Python`
-#     - @ https://stackoverflow.com/a/11479840 (Python 3.10+)
-# 6. Understand and implement the `BaseUser` table properly
-#    - And how does it differ from `piccolo_user` table?
-#    - @ https://github.com/sinisaos/simple-piccolo/blob/main/fastapi_app.py#L73
-#    - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/authentication/baseuser.html#baseuser
-#    - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/authentication/baseuser.html#extending-baseuser
-# 7. Decide whether to persue Migrations or just use JQ and `sqlite-utils`
+# 4. Decide whether to persue Migrations or just use JQ and `sqlite-utils`
 #    - Migrations are a little advanced for beginners
 #    - Auto migrations do not work with SQLite
-# 8. How best to reduce the surface area of XSS attacks?
+# 5. How best to reduce the surface area of XSS attacks?
 #    - Do we need to sanitize text if it's not rendered as HTML or used in SQL?
-# 9. What's the best method to insert one-to-many relationships?
+# 6. What's the best method to insert one-to-many relationships?
 #    - See the `tables.py` file for more notes.
-# 10. Harden validating fields and routes ...
+# 7. Harden validating fields and routes ...
 #    - Fields are not empty and not null, for example
 
 
