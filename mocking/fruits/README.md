@@ -52,6 +52,19 @@ Other slight weirdness is that `Fruits.insert(Fruits(**data.model_dump()))` can 
 Just keep an eye on how fast these are changing and what impact it has on your maintenance.
 
 
+## Security
+
+> You're not Facebook. Or Google. Only build what you need.
+
+Aim for speed and ease of reading, but take care with security. I don't _really_ need a fully functioning JWT [with claims](https://github.com/piccolo-orm/piccolo/discussions/1277) like Auth0, only a secure way for a user to login and validate their routes. Only include a `UUID` in the `payload` (it's public anyway) and an expiry date. Anything else can be retrieved once logged in from a `/profile` endpoint and cached in `localStorage` if needed.
+
+`HS256` is fine if you own the stack and aren't sharing the `SECRET` with anyone else. For working with 3rd party JWTs, you'll need to use a `RS256` public key, or supply that to a client you don't control (if you're supplying the JWT). The JWT should ideally be used as authoration/access only — not data storage (which could reveal personal information).
+
+Some services use tokens as a method of avoiding database or other lookups, but that only matters at scale; for a small service hitting an extra `/profile` endpoint won't make a difference in speed. Some systems use it to provide permissions like scopes (see Auth0). Again, it's too early to worry about that stuff.
+
+Build simply. Don't overplan. YAGNI!
+
+
 ## Models
 
 > Currently I'm using `create_pydantic_models` and not _quite_ splitting API and DATA layer
