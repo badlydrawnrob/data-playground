@@ -4,22 +4,35 @@
 
 This mocking example is based on Elm Land's [fruits API](https://github.com/elm-land/elm-land/tree/main/examples/06-query-parameters) to see the difference in speed and efficiency of Elm-based queries compared to SQLite and FastAPI.
 
-1. Pick a naming convention and stick to it:
-    - Singular -vs- plural (eg: column names)
-    - Capital Case, Sentence case, lowercase (e.g: tags)
-2. Use a business identifiers as well as incremental serial `ID`.
-    - Make sure to [use indexes](https://github.com/piccolo-orm/piccolo/issues/1271#issuecomment-3395347091) for fast searching, but ...
-    - Integers are approximately 1.2 times faster than bytes ...
-    - About 1.4 times faster than strings during join operations.
-3. **Authentication uses the `BaseUser` table** and [`BaseUser.login()`](https://piccolo-orm.readthedocs.io/en/latest/piccolo/authentication/baseuser.html#login-login-sync) function
-    - **[JWT is a bad default](https://evertpot.com/jwt-is-a-bad-default/) but probably [use it anyway]**
-4. Piccolo uses [seperate packages](https://github.com/piccolo-orm/piccolo/issues/1272) for it's Admin and API.
-    - Ideally you could `uv add 'piccolo-api[sqlite]'` and `scaffold --fastapi`
-    - It might be wise to host `piccolo-admin` only locally for extra security
-5. You can check SQLite column data types in a [few ways](https://database.guide/5-ways-to-check-a-columns-data-type-in-sqlite/)
-    - SQLite [data types](https://www.sqlite.org/datatype3.html) are really quite simple
-    - Piccolo stores `json` as `text` (I think)
-6. Should API models and DATA models be totally separate (requires a little more work)
+## Versions
+
+1. Fruits API with basic routes and no authentication
+2. Fruits API with basic routes and authentication
+3. Fruits API with query routes and authentication
+
+
+## Conventions
+
+1. Public `UUID` business identifier (with Serial `ID` for joins using indexing?)
+2. Use Serial `ID`s (or bytes) when possible, both are faster than `String`!
+3. JWT for authentication only, `/profile` endpoint for preferences[^1]
+4. Piccolo already has a `BaseUser` and `BaseUser.login()` function
+5. Piccolo Admin is potentially a security risk (use offline only?) 
+6. Piccolo API and Admin don't need to be used, they're handy packages
+7. Piccolo stores values as `Int` or `Text` with SQLite (even `json`)
+8. Use `create_pydantic_models` sparingly and roll your own Pydantic types
+9. Split API models from Data models wherever possible (not complected)
+
+## To Do
+
+1. Naming conventions:
+    - `Fruit` -vs- `Fruits`
+    - `["Capital", "Case"]` -vs- `["lower", "case"]`
+    - And so on ...
+2. **Create the `BaseUser` table and use [`BaseUser.login()`](https://piccolo-orm.readthedocs.io/en/latest/piccolo/authentication/baseuser.html#login-login-sync) method**
+    - `piccolo_admin` uses this table for sessions authentication
+3. Fix larger comments with Pep 8?
+    - Longer `#` comments could use `"""` docstrings.
 
 
 ## Storytelling
@@ -133,3 +146,7 @@ Postgres is _far_ more capable than SQLite but is also harder to setup, store, a
 3. Authenticate all routes that require authentication, or are "risky".
     - Make sure it's the correct user that is allowed to edit their posts.
 4. What data should be public? What data should be private?
+
+
+
+[^1]: Some say that JWT [is a bad default](https://evertpot.com/jwt-is-a-bad-default/) but I'm going to use it anyway!

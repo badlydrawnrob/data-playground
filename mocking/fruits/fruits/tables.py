@@ -65,7 +65,12 @@
 #
 # Indexing
 # --------
-# Indexing columns speeds up the search and joins.
+# > #! Indexing columns speeds up the search and joins!
+#
+# If we were using `UUID`s a primary keys, we'd have to use indexes as they're
+# not inherently ordered like serial `ID`s. SQLite creates a separate index to
+# map the UUID values to their corresponding row IDs, greatly speeding up the
+# search and retrieval of rows.
 #
 #
 # Altering the table
@@ -100,10 +105,14 @@
 # 
 # Performance
 # -----------
-# > A `String` is never going to be as fast as an `Int`, but it's probably fast
-# > enough for a prototype. Postgres may have better performance (using `bytes`).
+# > An `Int` is always going to be faster than a `String`, but a string is
+# > probably fast enough for a prototype. For even better performance with Postgres
+# > you can use `bytes`.
 # >
 # > @ https://tinyurl.com/da2acfb-uuid-fast-api-08 (speed testing short UUIDs)
+# >
+# > See also Indexing above.
+#
 #
 # In the future you'll want to use `shortuuid`, `nanoid`, or `fastnanoid` (untested)
 # to handle your URL ids. There's a few ways to handle this:

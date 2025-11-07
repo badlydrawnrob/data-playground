@@ -18,27 +18,33 @@ Examples such as the **Programming Flashcards App**, **Google Ads**, **Simple An
 > - When to use [Postgres -vs- SQLite](https://www.boltic.io/blog/postgresql-vs-sqlite)
 > - [Modern SQL](https://modern-sql.com/) and what's changed
 
-```terminal
--- Launch sqlite
+```sql
+/* Launch sqlite */
 sqlite3 database.sqlite
 
--- Schema information
+/* Schema information */
 .schema --indent
+.schema Table --indent
 
--- Table information
-pragma table_info(ticket);
+/* Table information (orm)*/
+pragma table_info(Table);
+pragma table_xinfo(Table);
 
--- Clear lines
+/* Column types (real) */
+select typeof(Column) from Table
+limit 1;
+
+/* Clear lines */
 .shell clear
 
--- Quit sqlite
+/* Quit sqlite */
 .quit
 .exit
 ```
 
 ### Handy settings
 
-> You can [save settings](https://stackoverflow.com/a/42910299) in your `~/` home directory with an `.sqliterc` file!
+> [Save SQLite settings](https://stackoverflow.com/a/42910299) in `~/.sqliterc`
 
 ```sql
 -- Show table headings and column format
@@ -112,12 +118,13 @@ I think the original SQL courses I did ages back are on Udemy.
 > Sqlite is very permissive.
 > It isn't at all Type safe!
 
-You can, however, enable [strict tables](https://www.sqlite.org/stricttables.html) (or [strict mode](https://sqlite.org/src/wiki?name=StrictMode)). Be careful with bugs when dealing with SQLite, as it's not as strict as Postgres. For example, if you write improper SQL such as:
+SQLite datatypes are [very simple](https://www.sqlite.org/datatype3.html), with main ones being `NULL`, `INTEGER`, `TEXT` (and occasionally `BLOB`). You can enable [strict tables](https://www.sqlite.org/stricttables.html) (or [strict mode](https://sqlite.org/src/wiki?name=StrictMode)), but some ORMs use custom types so these will restrict you somewhat. By default SQLite will guarantee `NOT NULL` and `UNIQUE` values, but you've got to take care not to introduce bugs when `INSERT`ing row values. Postgres is far more strict. An example below:
 
 ```sql
 -- Creates `null` column name (missing name) 
 ALTER TABLE BandMember ADD COLUMN TEXT;
--- These types are allowed 🤦
+-- Not strict by default! 🤦
+-- Ignores types and bounds; infers types if incorrect.
 CREATE TABLE shit_types (a INT, b VARCHAR(10));
 INSERT INTO shit_types (a,b) VALUES('123',1234567891011);
 -- 123|1234567891011

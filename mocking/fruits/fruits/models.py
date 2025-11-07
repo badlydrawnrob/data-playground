@@ -106,7 +106,8 @@ from typing import Any # (1)
 
 
 # Single -----------------------------------------------------------------------
-# You may need to use `exclude_unset=` in some routes.
+# For flat models you can use automatic Pydantic model creation. You may need to
+# use `**data.model_dump(exclude_unset=True)` in some routes.
 
 FruitsModelIn: Any = create_pydantic_model(
     table=Fruits,
@@ -120,10 +121,13 @@ FruitsModelOut: Any = create_pydantic_model(
 
 
 # Foreign keys -----------------------------------------------------------------
-# > By default Piccolo returns a flat shape for foreign keys
+# > Piccolo returns a flat shape for foreign key joins by default.
+#
+# A flat shape is great for Elm Lang, but not helpful when trying to use
+# `create_pydantic_model`: use a nested style if you're using that function (for
+# the time being at least). Requires `.output(nested=True)` in the `.select()`.
 # 
-# 1. Here's a nested one (which requires `.output(nested=True)` in `.select()`)
-#    - In general though, just create your own Pydantic models for joins!
+# Ideally, create your own Pydantic models for whatever you want to return!
 
 FruitsAllModelOut: Any = create_pydantic_model(
     table=Fruits,
