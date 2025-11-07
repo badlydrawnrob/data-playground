@@ -6,7 +6,7 @@ This mocking example is based on Elm Land's [fruits API](https://github.com/elm-
 
 ## Versions
 
-1. Fruits API with basic routes and no authentication
+1. [Fruits API](https://tinyurl.com/fruits-api-0f2caad) with basic routes and no authentication
 2. Fruits API with basic routes and authentication
 3. Fruits API with query routes and authentication
 
