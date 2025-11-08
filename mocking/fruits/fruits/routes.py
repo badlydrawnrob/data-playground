@@ -167,10 +167,15 @@
 # 6. Transactions: understand when to be careful with `select()` then writes
 # 7. Performance: which is faster? Object oriented or data? Safer?
 
-from fastapi import APIRouter, HTTPException
+from auth.jwt_handler import create_access_token
 
-from fruits.models import FruitsModelIn, FruitsAllModelOut, FruitsModelOut
+from fastapi import APIRouter, Depends, HTTPException
+from fastapi.security import OAuth2PasswordRequestForm
+
+from fruits.models import FruitsModelIn, FruitsAllModelOut, FruitsModelOut, TokenResponse
 from fruits.tables import Fruits, Colors
+
+from piccolo.apps.user.tables import BaseUser
 
 from typing import List
 from uuid import uuid4
@@ -179,6 +184,40 @@ from uuid import uuid4
 fruits_router = APIRouter(
     tags=["Fruits"] # used for `/redoc` (menu groupings)
 )
+
+user_router = APIRouter(
+    tags=["User"]
+)
+
+# ------------------------------------------------------------------------------
+# User operations
+# ==============================================================================
+# > You f* dope: you've got Query logs on (they're not responses!!)
+
+@user_router.post("/login") #! (2)
+async def sign_in_user(
+        data: OAuth2PasswordRequestForm = Depends()
+    ) -> TokenResponse:
+
+    user = await BaseUser.login(
+        username=data.username,
+        password=data.password
+    )
+
+    if user is None:
+        raise HTTPException(
+            status_code=404,
+            detail="User doesn't exist or invalid password"
+        )
+
+
+    result = await BaseUser.select().where(BaseUser.id == user).first()
+    access_token = create_access_token(result.username)
+
+    return {
+        "access_token": access_token,
+        "token_type": "Bearer"
+    }
 
 
 # ------------------------------------------------------------------------------

@@ -100,9 +100,17 @@
 # --------
 # 1. Add a `ColorsModelIn` model and endpoint for the `Colors` table.
 
-from piccolo_api.crud.serializers import create_pydantic_model
 from fruits.tables import Fruits, Colors
+from pydantic import BaseModel
+from piccolo_api.crud.serializers import create_pydantic_model
 from typing import Any # (1)
+
+
+# User -------------------------------------------------------------------------
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str
 
 
 # Single -----------------------------------------------------------------------

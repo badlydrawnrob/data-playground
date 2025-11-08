@@ -33,6 +33,15 @@ This mocking example is based on Elm Land's [fruits API](https://github.com/elm-
     - `piccolo_admin` uses this table for sessions authentication
 3. Fix larger comments with Pep 8?
     - Longer `#` comments could use `"""` docstrings.
+4. **Fix timezone in `"expiry"` and `jwt_handler` to not be naive**
+    - [Explanation and fixes](https://blog.miguelgrinberg.com/post/it-s-time-for-a-change-datetime-utcnow-is-now-deprecated)
+    - Is python `time.time()` naive? Does that need changing too?
+    - [How to make](https://stackoverflow.com/questions/7065164/how-to-make-a-datetime-object-aware-not-naive) a datetime object aware? (not naive)
+    - Possibly use [`ISO-8601`](https://package.elm-lang.org/packages/rtfeldman/elm-iso8601-date-strings/latest/Iso8601) date string?
+        - It's generally best to avoid doing this unless an external API requires it. UTC integers are less error-prone, take up less memory, and are more efficient for time arithmetic
+5. `BaseUser` is a little bit awkward to extend with a `UUID` field
+    - Can we extend it properly without a `Profile` column?
+    - Or simply use the `username` and forgo the `UUID`?
 
 
 ## Storytelling

@@ -1,0 +1,41 @@
+meta {
+  name: Fruits (user login)
+  type: http
+  seq: 6
+}
+
+post {
+  url: http://localhost:8000/login
+  body: formUrlEncoded
+  auth: inherit
+}
+
+body:json {
+  {
+    "username": "havana",
+    "password": "Rem0te"
+  }
+}
+
+body:form-urlencoded {
+  username: havana
+  password: Rem0te
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+docs {
+  # Login
+  
+  > Generates a JWT with `UUID`
+  
+  Takes a `username` and `password` key/value.
+  
+  We're now using a `urlencoded` form to submit our user sign-up data! This uses [OAuth2 `grant_type`](https://oauth.net/2/grant-types/) to authenticate.
+    
+  - [FastApi documentation](https://fastapi.tiangolo.com/tutorial/security/simple-oauth2/)
+  - More about `urlencoded` [here](https://www.restack.io/p/fastapi-answer-x-www-form-urlencoded-example).
+}

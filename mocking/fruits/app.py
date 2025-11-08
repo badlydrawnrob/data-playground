@@ -129,7 +129,8 @@
 #    - See the `tables.py` file for more notes.
 # 7. Harden validating fields and routes ...
 #    - Fields are not empty and not null, for example
-
+# 8. Make sure `.env` secret key is long/secure enough
+# 9. Check that `UUID` type is correct for JWT
 
 from contextlib import asynccontextmanager
 
@@ -145,7 +146,7 @@ from piccolo.table import create_db_tables
 
 
 from fruits.piccolo_app import APP_CONFIG 
-from fruits.routes import fruits_router
+from fruits.routes import fruits_router, user_router
 from fruits.tables import Colors, Fruits
 
 
@@ -156,7 +157,9 @@ from fruits.tables import Colors, Fruits
 # > what it does, not how.
 #
 # 1. `create_admin` only registers the tables for the view (not create them)
-# 2. `create_tables()` or `create_db_tables()` creates the DB and tables.
+# 2. `piccolo migrations forwards user` will create the `BaseUser` table
+#     - @ https://tinyurl.com/baseuser-create-list-edit (CLI user functions)
+# 3. `create_tables()` or `create_db_tables()` creates the DB and tables.
 #
 # 
 # Migrations
@@ -259,6 +262,7 @@ app.add_middleware(
 # Routes and tabs ---------------------------------------------------------------
 
 app.include_router(fruits_router, prefix="/fruits") # Swagger and `/redoc` groups
+app.include_router(user_router) #! Move to it's own route file?
 
 
 # Homepage ---------------------------------------------------------------------
