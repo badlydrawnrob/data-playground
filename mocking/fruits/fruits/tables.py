@@ -4,23 +4,20 @@
 # > @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/schema/index.html
 # > @ https://github.com/piccolo-orm/piccolo/issues/1257
 #
-# Piccolo with SQLite names it's Column types, but in reality they're stored as
-# basic SQLite data types: `Integer`, `Real`, `Text`. `Blob` is also there but I
-# don't think Piccolo uses it (Postgres has a wider range of types).
+# Piccolo names SQLite Column types, but in reality they're stored as basic data
+# data types: `Integer`, `Real`, `Text`. `Blob` is also there but I don't think
+# Piccolo uses it (Postgres has a wider range of types).
 # 
-# `INSERT`s the values in order of the class fields; I've ordered them
-# alphabetically (except the `ID` field) — it's a personal preference. See the docs
+# > `INSERT` is ordered by class field order (not alphabetically)
+#
+# ```sql
+# INSERT INTO "fruits" ("id","color","image", "name")
+# ```
+# 
+# It's my preference to order by ABC anyway (except the `ID` field). See the docs
 # for Column arguments, with popular ones including `null=`, `default=`, `unique=`,
 # `index=`, `secret=`. Also wise to stick to naming conventions for table names
 # (singular vs plural).
-#
-# ```sql
-#  -- agsi new
-# INSERT INTO "task" ("id","name","completed")
-# ```
-#
-# Insertion is handled in the order you declare your table class fields, NOT in
-# alphabetical order, so pick a convention and stick with it!
 #
 #
 # Data integrity

@@ -7,8 +7,6 @@ requires-python = ">=3.13"
 dependencies = [
     "fastapi[standard]>=0.119.0",
 	"passlib[bcrypt]>=1.7.4",
-    "piccolo-admin>=1.0.0",
-	"piccolo-api>=1.7.0",
 	"piccolo[orjson,sqlite]>=1.28.0",
 	"python-decouple>=3.8.0",
 	"python-jose>=3.4.0",
@@ -17,7 +15,7 @@ dependencies = [
 
 [dependency-groups]
 database = ["sqlite-utils>=3.38"]
-testing = ["pyright>=1.1.406"]
+testing  = ["pyright>=1.1.406"]
 
 [tool.pyright]
 strict = ["."]

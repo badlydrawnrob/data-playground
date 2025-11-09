@@ -53,6 +53,23 @@ limit 1;
 ```
 
 
+### Cleanup
+
+> To save space remove all unecessary folders once you're done.
+
+```bash
+# Delete the environment (use `uv sync` to restore)
+rm -rf .venv && rm uv.lock
+
+# Check the command before running it (delete all cache folders)
+find . -type d -name "__pycache__" | wc -l
+find . -type d -name "__pycache__" -exec echo rm -r {} \; # `-f` is dangerous!
+
+# Run the command (add the `-v` flag to show all files deleted)
+find . -type d -name "node_modules" -exec echo rm -r {} \;
+```
+
+
 ## Tools
 
 > True as of 2025. There are lots of frameworks for dealing with data ...

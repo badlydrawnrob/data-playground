@@ -27,11 +27,16 @@ This mocking example is based on Elm Land's [fruits API](https://github.com/elm-
 
 ## Setup
 
-> After running these commands, make sure to insert values into database.
+> After running these commands, insert values into database.
+> Add `Colors` first as it's a foreign key `Fruits.colors` (see `sqlite-utils.sql`).
 
 ```
 piccolo migrations forwards user
 piccolo user create
+
+havana
+havana@gmail.com
+Rem0te
 
 uv run main.py
 ```
@@ -43,10 +48,8 @@ uv run main.py
     - `Fruit` -vs- `Fruits`
     - `["Capital", "Case"]` -vs- `["lower", "case"]`
     - And so on ...
-2. Use SQLite Utils to easily setup mock data
-    - Colors (hardcoded)
-    - Fruits (easily added to)
-    - Migrations are a little advanced for beginners
+2. Populate database with `sqlite-utils` (migrations are confusing)
+    - colors and fruits defaults
     - Auto migrations do not work with SQLite
 3. Fix larger comments with Pep 8?
     - Longer `#` comments could use `"""` docstrings.
