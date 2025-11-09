@@ -22,6 +22,20 @@ This mocking example is based on Elm Land's [fruits API](https://github.com/elm-
 7. Piccolo stores values as `Int` or `Text` with SQLite (even `json`)
 8. Use `create_pydantic_models` sparingly and roll your own Pydantic types
 9. Split API models from Data models wherever possible (not complected)
+10. Avoid unecessary endpoints that could become a security risk
+
+
+## Setup
+
+> After running these commands, make sure to insert values into database.
+
+```
+piccolo migrations forwards user
+piccolo user create
+
+uv run main.py
+```
+
 
 ## To Do
 
@@ -29,8 +43,11 @@ This mocking example is based on Elm Land's [fruits API](https://github.com/elm-
     - `Fruit` -vs- `Fruits`
     - `["Capital", "Case"]` -vs- `["lower", "case"]`
     - And so on ...
-2. **Create the `BaseUser` table and use [`BaseUser.login()`](https://piccolo-orm.readthedocs.io/en/latest/piccolo/authentication/baseuser.html#login-login-sync) method**
-    - `piccolo_admin` uses this table for sessions authentication
+2. Use SQLite Utils to easily setup mock data
+    - Colors (hardcoded)
+    - Fruits (easily added to)
+    - Migrations are a little advanced for beginners
+    - Auto migrations do not work with SQLite
 3. Fix larger comments with Pep 8?
     - Longer `#` comments could use `"""` docstrings.
 4. **Fix timezone in `"expiry"` and `jwt_handler` to not be naive**
@@ -158,4 +175,4 @@ Postgres is _far_ more capable than SQLite but is also harder to setup, store, a
 
 
 
-[^1]: Some say that JWT [is a bad default](https://evertpot.com/jwt-is-a-bad-default/) but I'm going to use it anyway!
+[^1]: Some say that JWT [is a bad default](https://evertpot.com/jwt-is-a-bad-default/) but I'm going to use it anyway! We also don't currently have a `client_secret`.

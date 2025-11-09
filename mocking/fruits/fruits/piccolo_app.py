@@ -1,6 +1,8 @@
 """
 Import all of the Tables subclasses in your app here, and register them with
-the APP_CONFIG.
+the APP_CONFIG. Some functions (like auto migrations) aren't supported with
+SQLite. `table_classes=` can also be explicitly listed by importing the tables
+and using a `List Table`.
 
 Security
 --------
@@ -31,17 +33,16 @@ we need to use `RepositoryEnv`. Using in the root folder is easier.
     - @ https://tinyurl.com/a-note-on-env-security
 """
 
-from fruits.tables import Fruits
-from piccolo.conf.apps import AppConfig
 from decouple import config
+from piccolo.conf.apps import AppConfig, table_finder
 
 
 APP_CONFIG = AppConfig(
     app_name="fruits",
-    table_classes=[Fruits], # Explicitly list all tables here
+    table_classes=table_finder(modules=['fruits.tables']), # ... Or `List Table`
     migrations_folder_path=None, #! `None` not currently supported
     migration_dependencies=[], # Optional
     commands=[] # Advanced use only
 )
 
-SECRET = config('SECRET_KEY') #! Should be named `SECRET_KEY`?
+SECRET = config("SECRET_KEY") #! Should be named `SECRET_KEY`?

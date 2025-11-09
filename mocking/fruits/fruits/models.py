@@ -99,6 +99,7 @@
 # Wishlist
 # --------
 # 1. Add a `ColorsModelIn` model and endpoint for the `Colors` table.
+# 2. Add a `default_factory` setting with custom `Fruits` model for `UUID`?
 
 from fruits.tables import Fruits, Colors
 from pydantic import BaseModel
@@ -120,6 +121,7 @@ class TokenResponse(BaseModel):
 FruitsModelIn: Any = create_pydantic_model(
     table=Fruits,
     model_name="FruitsModelIn",
+    exclude_columns=(Fruits.id,) # Auto-UUID in table
 )
 
 FruitsModelOut: Any = create_pydantic_model(

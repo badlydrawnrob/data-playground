@@ -65,7 +65,8 @@
 #
 # Indexing
 # --------
-# > #! Indexing columns speeds up the search and joins!
+# > #! Indexing columns speeds up the search and joins! It can slow down the
+# > inserts, however.
 #
 # If we were using `UUID`s a primary keys, we'd have to use indexes as they're
 # not inherently ordered like serial `ID`s. SQLite creates a separate index to
@@ -83,12 +84,12 @@
 #
 # UUID
 # ----
-# > Fruits uses the default `UUID` column for it's business identifier, and you'll
-# > want the `ID` (Serial) to be hidden in the API response (see Secrets)
+# > Fruits has a business identifier `UUID` which is indexed (replaces serial `ID`
+# > and indexing speeds up lookup). The `ID` is now naturally hidden from view.
+# > If you need to hide the `UUID` from response, use `secret=` argument.
 # 
-# `UUID` gets stored as `Text` in the database (a Pydantic `String`). Piccolo 
-# automatically handles the regular `ID` fields which are incremented. We can use
-# the business identifier for public URLs instead of the `ID` field.
+# `UUID` gets stored as `Text` in the database (a Pydantic `String`). With `orjson`
+# this prints out as a regular string, which we can adapt for the url.
 #
 # You'll also want to use short UUIDs for prettier URLs:
 #
@@ -105,9 +106,10 @@
 # 
 # Performance
 # -----------
-# > An `Int` is always going to be faster than a `String`, but a string is
-# > probably fast enough for a prototype. For even better performance with Postgres
-# > you can use `bytes`.
+# > `Int` is faster than `bytes`, which is faster than `String` (most SQLite
+# > values are `Text` with Piccolo). `String` is likely fast enough joins/lookups
+# > for small prototypes but as rows grow it can slow down without indexing.
+# > Postgres will give you even better performance.
 # >
 # > @ https://tinyurl.com/da2acfb-uuid-fast-api-08 (speed testing short UUIDs)
 # >
@@ -121,6 +123,9 @@
 # 2. Store the full `UUID` in bytes (with Postgres) on the backend, then:
 #     - Convert to a short UUID in the route function
 #     - Convert to a short UUID in the client code (javascript)
+#
+# #! Of course you'll not be able to `ORDER BY` row anymore with a `UUID`, like
+# you could with a regular `Int`.
 #
 # #! I'm not sure how performance will be affected by converting from a `UUID` to
 # a `fastnanoid`, for example. But it seems faster than generating a `fastnanoid`
@@ -158,14 +163,14 @@
 #
 # Notes
 # -----
-# 1. You're joining on foreign keys, so does that need exluding at all?
-# 2. For now we're simply using emojis ...
-# 3. Short `UUID`s can be handled in DB, route function, or the client:
-#    - @ https://dba.stackexchange.com/questions/307520/how-to-handle-short-uuids-with-postgres
-# 4. Piccolo stores `null` values as `None` in the SQLite database
-# 5. There's two ways to generate this:
-#    - `create_pydantic_model` then manually use the `uuid.uuid4()` function
-#    - Custom Pydantic model: `str = Field(default_factory=nanoid.generate)`
+# 1. We're now using `UUID` as the main primary key
+#     - We don't have the benefit of auto-increment serial `ID` now, so you'll
+#       have to set it in the route function!
+#     - Either use the `uuid.uuid4()` function and assign it to `data.id` ...
+#     - Or use Pydantic's `str = Field(default_factory=uuid.uuid4())`
+# 2. Short `UUID`s can be handled in DB, route function, or the client:
+#     - @ https://dba.stackexchange.com/questions/307520/how-to-handle-short-uuids-with-postgres
+# 3. Piccolo stores `null` values as `None` in the SQLite database
 #
 #
 # Wishlist
@@ -184,6 +189,8 @@ class Colors(Table):
     """
     This table must be declared before `Fruits`, or
     you'll get `'Colours' is not defined` error!
+
+    `id` is an auto-incrementing integer
     """
 
     color = Varchar(length=7)      # e.g. #FF5733
@@ -202,7 +209,7 @@ class Fruits(Table):
     The Elm-Land version uses emojis, but we'll test out an image server.
     """
 
-    color = ForeignKey(references=Colors)  # (2)
-    image = Varchar(length=255, null=True) # (3)
-    name = Varchar(length=15, unique=True) # (4)
-    url = UUID()                           # (5)
+    id = UUID(primary_key=True, index=True) # (1), (2)
+    color = ForeignKey(references=Colors)
+    image = Varchar(length=255, null=True)  # (3)
+    name = Varchar(length=15, unique=True)

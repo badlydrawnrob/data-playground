@@ -7,13 +7,13 @@ meta {
 get {
   url: http://localhost:8000/fruits
   body: none
-  auth: inherit
+  auth: none
 }
 
 docs {
   # Fruits (all)
   
-  > `nested=True` with `exclude=Fruits.id` and `create_pydantic_model(include_default_columns=True)` currently returns `null` for main `id` instead of removing it.
+  > Use nested style if you're going to use foreign keys with auto-Pydantic models. Unfortunately using `exclude=Fruits.id` does not remove it (renders as `null`)
   
   For this reason and others, it's probably best for most circumstances to simply create your own custom Pydantic return type. Separate concerns.
 }

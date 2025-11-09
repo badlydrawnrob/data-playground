@@ -73,33 +73,21 @@
 #
 # Questions
 # ---------
-# 1. Do we need `@app.on_event("startup")` or `lifespan` event handlers?
-#    - How does Piccolo handle setting up the database?
-# 2. When does async break with SQLite? (`.select()` + write operations)
+# 1. When does async break with SQLite? (`.select()` + write operations)
+# 2. What is best practice for response data and status codes?
 # 3. How to have a high-level view of data and flow so everything makes sense?
 #    - As your application grows it can be hard to understand.
-# 4. Are `id` fields handled automatically by Piccolo?
-# 5. Where is it better to use raw SQL instead of an ORM?
+# 4. Where is it better to use raw SQL instead of an ORM?
 #    - At scale performance can be an issue with ORM queries.
-# 6. Where to use `PUT` vs `PATCH` requests? (all data or some data)
-# 7. When to use ATOMIC vs DYNAMIC routes? (Elm Spa Article forms)
+# 5. When to use ATOMIC vs DYNAMIC routes? (Elm Spa Article forms)
 #    - e.g: `/user/{id}/fruits` (POST)
 #    - e.g: `/user/{id}/fruits/{fruit_id}` (ADD/DELETE, -vs- `List Int`)
-# 8. Are `Int` id joins faster than `String` joins? (email as id)
-# 9. When to use abstraction to reduce code duplication?
-# 10. ~~Are results cached?~~ (later/never)
-#    - @ https://www.powersync.com/blog/sqlite-optimizations-for-ultra-high-performance
-# 11. Avoid admin routes? (make sure Piccolo admin is protected)
-#    - ~~@ https://fastapi.tiangolo.com/advanced/security/oauth2-scopes/~~
-# 12. Potentially use SQLite Utils to easily setup mock data?
-# 13. Consider different `include_router` packages for authentication routes?
-#    - @ https://fastapi.tiangolo.com/tutorial/bigger-applications/
-#    - @ https://stackoverflow.com/a/67318405
-# 14. Add logging for FastApi on the production server?
-#    - @ https://tinyurl.com/prep-fastapi-for-production
-# 15. Change `.env` settings to something simpler?
+# 6. When to use abstraction to reduce code duplication?
+# 7. Change `.env` settings to something simpler?
 #    - By default `.env` files don't handle dictionaries.
 #    - You store it as a `json` string, then convert to a dictionary
+# 8. ~~Are results cached?~~ (later/never)
+#    - @ https://www.powersync.com/blog/sqlite-optimizations-for-ultra-high-performance
 #
 #
 # Errors
@@ -118,19 +106,18 @@
 # 2. Add SQLite transactions (see docs)
 #    - Test concurrent connections and writes
 #    - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/tutorials/fastapi.html#transactions
-# 3. Understand how Piccolo apps work a bit better?
+# 4. Add `UUID` for certain endpoints that are indexed
+#    - We don't really need these for `Colors`
+# 5. Add logging for FastApi on the production server?
+#    - @ https://tinyurl.com/prep-fastapi-for-production
+# 6. Understand how Piccolo apps work a bit better?
 #     - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/projects_and_apps/
-# 4. Decide whether to persue Migrations or just use JQ and `sqlite-utils`
-#    - Migrations are a little advanced for beginners
-#    - Auto migrations do not work with SQLite
-# 5. How best to reduce the surface area of XSS attacks?
+# 7. How best to reduce the surface area of XSS attacks?
 #    - Do we need to sanitize text if it's not rendered as HTML or used in SQL?
-# 6. What's the best method to insert one-to-many relationships?
+# 8. What's the best method to insert one-to-many relationships?
 #    - See the `tables.py` file for more notes.
-# 7. Harden validating fields and routes ...
-#    - Fields are not empty and not null, for example
-# 8. Make sure `.env` secret key is long/secure enough
-# 9. Check that `UUID` type is correct for JWT
+# 9. What's affecting performance over time?
+#    - Lookups with `UUID`s for example
 
 from contextlib import asynccontextmanager
 

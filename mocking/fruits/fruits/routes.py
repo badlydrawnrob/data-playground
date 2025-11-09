@@ -7,12 +7,39 @@
 # See `fruits.models` for information on our model types.
 #
 #
+# Coding style is a personal preference
+# -------------------------------------
+# > Technically not 100% data style as we're using Pydantic types and assigning
+# > some arguments in the route function. DRY is great but overused: similar is
+# > not the same as identical.
+#
+# See also `app.py` "Learning frame" for coding standards.
+#
+# In general, I prefer working with data rather than objects (no classes, no
+# methods, no weird decorators). I'll leave in both examples and then it's up to
+# the individual to decide which they prefer.
+#
+# However, some functions may benefit from an oject oriented style as they're less
+# code and (potentially) quicker than a typed functional style, such as updating
+# a single field. With `update_task` we have to do some gymnastics with a data style.
+#
+# Aim for minimalism wherever possible: `Task._meta.primary_key` -> `Task.id`.
+#
+#
+# Routes
+# ------
+# > You can split out different route groups for better organisation
+#
+# - @ https://fastapi.tiangolo.com/tutorial/bigger-applications/
+# - @ https://stackoverflow.com/a/67318405
+#
+#
 # Requests
 # --------
 # > You can use `status=` in the decorator instead of response if needed
 # > @ https://docs.pydantic.dev/latest/concepts/serialization/
 #
-# - You can use named arguments with types for clarity
+# - You can use named arguments with types for clarity (#! `body` -> `data`)
 # - You can use `(**kwargs)` to `data.model_dump()` a dictionary into a model
 # - You can use `.model_dump(exclude_unset=True)` to remove `None` fields
 # - You can use `PUT` or `PATCH` to update data, but `PUT` is far more explicit
@@ -96,25 +123,6 @@
 # - No duplicate entry values
 #
 #
-# Coding style is a personal preference
-# -------------------------------------
-# > Technically not 100% data style as we're using Pydantic types and assigning
-# > some arguments in the route function. DRY is great but overused: similar is
-# > not the same as identical.
-#
-# See also `app.py` "Learning frame" for coding standards.
-#
-# In general, I prefer working with data rather than objects (no classes, no
-# methods, no weird decorators). I'll leave in both examples and then it's up to
-# the individual to decide which they prefer.
-#
-# However, some functions may benefit from an oject oriented style as they're less
-# code and (potentially) quicker than a typed functional style, such as updating
-# a single field. With `update_task` we have to do some gymnastics with a data style.
-#
-# Aim for minimalism wherever possible: `Task._meta.primary_key` -> `Task.id`.
-#
-#
 # Questions
 # ---------
 # 1. How do we test concurrent connections for read and write?
@@ -149,24 +157,23 @@
 #
 # Wishlist
 # --------
-# 1. Include the original auth function from "building with FastAPI"
-#     - HS256 is perfectly fine if you own the stack (see `README.md`)
-#     - Enforce logged in and verified user (just one account)
-#     - Change "claims" to not hold any sensitive data (only a `UUID`)
-#     - A single function that returns an `HTTPException` if not logged in
+# 1. Create a filter, pagination, and search route?
+#     - Investigate `case` in Python` to validate query strings
+#     - @ https://stackoverflow.com/a/11479840 (Python 3.10+)
 # 2. Understand and implement the `BaseUser` table properly
 #    - And how does it differ from `piccolo_user` table?
 #    - @ https://github.com/sinisaos/simple-piccolo/blob/main/fastapi_app.py#L73
 #    - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/authentication/baseuser.html#baseuser
 #    - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/authentication/baseuser.html#extending-baseuser
-# 3. Write an endpoint to get basic user preferences
-# 4. How to make sure of XSS protection (ask Mike)
-# 5. Create a filter, pagination, and search route?
-#     - Investigate `case` in Python` to validate query strings
-#     - @ https://stackoverflow.com/a/11479840 (Python 3.10+)
+# 3. Harden validating fields and routes ...
+#    - Fields are not empty and not null, for example
+#    - SQLite errors such as `UNIQUE` constraints
+# 4. Write an endpoint to get basic user preferences
+#    - You'd grab this after getting the JWT with Elm Lang
+# 5. #! How to make sure of XSS protection (ask Mike)
 # 6. Transactions: understand when to be careful with `select()` then writes
-# 7. Performance: which is faster? Object oriented or data? Safer?
 
+from auth.authenticate import authenticate
 from auth.jwt_handler import create_access_token
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -192,23 +199,21 @@ user_router = APIRouter(
 # ------------------------------------------------------------------------------
 # User operations
 # ==============================================================================
-# > You f* dope: you've got Query logs on (they're not responses!!)
+# > Currently does not require a `client_id` value
+#
+# ```
+# curl -X 'POST' \
+# 'http://localhost:8000/login' \
+# -H 'accept: application/json' \
+# -H 'Content-Type: application/x-www-form-urlencoded' \
+# -d 'grant_type=password&username=[USER]&password=[PASSWORD]&scope=&client_id=none&client_secret=none'
+# ```
 
 @user_router.post("/login") #! (2)
 async def sign_in_user(
         data: OAuth2PasswordRequestForm = Depends()
     ) -> TokenResponse:
 
-    #! 1. Can't assign the `1` id to variable
-    #! 2. Getting warning:
-    #! /Users/rob/Sites/GitHub/data-playground/mocking/fruits/.venv/bin/piccolo:10: Warning: => 1 migration hasn't been run - the app might not behave as expected.
-    #! session_auth | 2019-11-12T20:47:17 | - | False
-    #!
-    #! Because of (1) I'm getting this error:
-    #!
-    #! access_token = create_access_token(result.username)
-    #!                                   ^^^^^^^^^^^^^^^
-    #! AttributeError: 'dict' object has no attribute 'username'
     user = await BaseUser.login(
         username=data.username,
         password=data.password
@@ -222,10 +227,10 @@ async def sign_in_user(
 
 
     result = await BaseUser.select().where(BaseUser.id == user).first()
-    access_token = create_access_token(result.username)
+    token = create_access_token(result["username"])
 
     return {
-        "access_token": access_token,
+        "access_token": token,
         "token_type": "Bearer"
     }
 
@@ -248,7 +253,8 @@ async def retrieve_all_fruits():
 
     Wishlist
     --------
-    1. Join on the `Fruit.id` field and not the `UUID` field
+    1. Consider using a `UUID` that's also indexed
+        - We want to join on the `ID` field, not the `UUID`!
     """
     fruits = await (
         Fruits.select(
@@ -260,12 +266,13 @@ async def retrieve_all_fruits():
     return fruits
 
 
+
 @fruits_router.get(
         "/{id}",
         response_model=FruitsModelOut,
         # dependencies=[Depends(transaction)]
         )
-async def retrieve_fruit(id: int):
+async def retrieve_fruit(id: str):
     """Retrieve a particular fruit
 
     #! Bug
@@ -290,6 +297,9 @@ async def retrieve_fruit(id: int):
 # ------------------------------------------------------------------------------
 # Write operations
 # ==============================================================================
+# > Protected by the `auth.authenticate` function, but no user-level checks yet.
+# > If you're logged in, you can post.
+#
 # Be sure to handle `[]` empty and singleton (and perhaps sometimes, many). If
 # you're confident your data only has one row, use `list[0]` or `.first()`
 
@@ -300,8 +310,8 @@ async def retrieve_fruit(id: int):
         response_model=FruitsModelOut
         )
 async def create_fruit(
-    body: FruitsModelIn,
-    # user: str = Depends(authenticate)
+    data: FruitsModelIn,
+    user: str = Depends(authenticate)
     ):
     """Create a new fruit
 
@@ -316,6 +326,11 @@ async def create_fruit(
     always `exclude_unset=` or `exclude_none=` here (I'm not sure you'd need to).
 
     
+    UUID
+    ----
+    > The `UUID` is handled automatically by Piccolo
+
+
     Foreign keys
     ------------
     > The `ID` is the most correct way to add a foreign key entry
@@ -348,26 +363,22 @@ async def create_fruit(
         - `sqlite3.IntegrityError: UNIQUE constraint failed: colors.name`
     3. Check speed of creating a new fruit (or joining)
     """
-    uuid = uuid4()
-    body.url = uuid
-
     inserted = await (
-        Fruits.insert(Fruits(**body.model_dump()))
+        Fruits.insert(Fruits(**data.model_dump()))
         .returning(*Fruits.all_columns())
     )
 
     return inserted[0]
 
 
-    
-
 
 @fruits_router.put("/{id}",
         # dependencies=[Depends(transaction)]
         )
 async def update_fruit(
-    id: int,
+    id: str,
     data: FruitsModelIn,
+    user: str = Depends(authenticate)
 ):
     """Create a new fruit (if logged in)
 
@@ -412,7 +423,8 @@ async def update_fruit(
         - We shouldn't supply the `url` as it's an automatic `UUID` ...
         - Currently we're using `exclude_unset` and a default `create_pydantic_model`
         - (1) Have Elm Lang supply original `UUID` | (2) Have the route handle it?
-    2. Change `ID` to `UUID` and search on that?
+    2. Consider using `UUID` that's also indexed
+        - So we can join on the `UUID` instead of the `ID`.
     3. Run a speedtest on the backend and frontend
     4. What data is best practice to return to the client?
     5. How can we assure that all data is correctly updated?
@@ -431,8 +443,6 @@ async def update_fruit(
             .where(Fruits.id == id)
         )
 
-        #! Must be a proper json type or dictionary!
-        #! WEIRDNESS GOES HERE!!!
         return { "message": f"Fruit with {id} has been successfully updated!" }
 
     HTTPException(
@@ -442,15 +452,14 @@ async def update_fruit(
 
 
 
-
 @fruits_router.delete(
         "/{id}",
         status_code=204
         # dependencies=[Depends(transaction)]
         )
 async def delete_fruit(
-    id: int,
-    # user: str = Depends(authenticate)
+    id: str,
+    user: str = Depends(authenticate)
     ):
     """Delete a fruit
 

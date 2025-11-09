@@ -11,7 +11,7 @@ put {
 }
 
 params:path {
-  id: 1
+  id: 2b26bb7c-1f7a-49e7-ba71-6c87ed209b4d
 }
 
 body:json {
@@ -30,7 +30,7 @@ settings {
 docs {
   # Fruits (update one)
   
-  > Currently a bug that `UUID` in the `ModelIn` should be supplied, but this is a column that shouldn't be touched.
+  > `UUID` should NOT be supplied by the user, or updated by the system. It's static once created.
   
-  Our `UUID` is automatically applied on `POST`.
+  Our `UUID` is automatically applied on the original `POST`.
 }

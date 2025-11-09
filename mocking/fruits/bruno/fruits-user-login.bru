@@ -7,7 +7,7 @@ meta {
 post {
   url: http://localhost:8000/login
   body: formUrlEncoded
-  auth: inherit
+  auth: none
 }
 
 body:json {
@@ -18,6 +18,10 @@ body:json {
 }
 
 body:form-urlencoded {
+  grant_type: password
+  scope: 
+  client_id: 
+  client_secret: 
   username: havana
   password: Rem0te
 }
@@ -30,12 +34,15 @@ settings {
 docs {
   # Login
   
-  > Generates a JWT with `UUID`
+  > Generates a JWT with `UUID
   
   Takes a `username` and `password` key/value.
   
-  We're now using a `urlencoded` form to submit our user sign-up data! This uses [OAuth2 `grant_type`](https://oauth.net/2/grant-types/) to authenticate.
-    
-  - [FastApi documentation](https://fastapi.tiangolo.com/tutorial/security/simple-oauth2/)
-  - More about `urlencoded` [here](https://www.restack.io/p/fastapi-answer-x-www-form-urlencoded-example).
+  We're now using a `urlencoded` form to submit our user sign-up data! This uses [OAuth2 `grant_type`](https://oauth.net/2/grant-types/) to authenticate. See [FastApi documentation](https://fastapi.tiangolo.com/tutorial/security/simple-oauth2/).
+  
+  ## `client_id` and `client_secret`
+  
+  > #! Is this a security risk?
+  
+  We don't currently specify these, but Bruno requires a `client_id`, so we just pass it any string to satisfy it. I _think_ that for internal apps these aren't really needed.
 }
