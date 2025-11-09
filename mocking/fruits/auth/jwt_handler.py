@@ -1,13 +1,3 @@
-from datetime import datetime, timezone
-from fastapi import HTTPException
-from fruits.piccolo_app import SECRET
-from jose import jwt, JWTError
-import time
-
-
-
-
-
 # ------------------------------------------------------------------------------
 # JWT Token handler
 # ==============================================================================
@@ -99,6 +89,12 @@ import time
 # 1. Use the `UUID` (eventually `shortuuid`) as the `"user"` value
 #     - From this we can use indexing for the selects and joins we need
 #       our public/private IDs (encode/decode with `base57`)
+
+from datetime import datetime, timezone
+from fastapi import HTTPException
+from fruits.piccolo_app import SECRET
+from jose import jwt, JWTError
+import time
 
 
 def create_access_token(username: str) -> str:

@@ -199,6 +199,16 @@ async def sign_in_user(
         data: OAuth2PasswordRequestForm = Depends()
     ) -> TokenResponse:
 
+    #! 1. Can't assign the `1` id to variable
+    #! 2. Getting warning:
+    #! /Users/rob/Sites/GitHub/data-playground/mocking/fruits/.venv/bin/piccolo:10: Warning: => 1 migration hasn't been run - the app might not behave as expected.
+    #! session_auth | 2019-11-12T20:47:17 | - | False
+    #!
+    #! Because of (1) I'm getting this error:
+    #!
+    #! access_token = create_access_token(result.username)
+    #!                                   ^^^^^^^^^^^^^^^
+    #! AttributeError: 'dict' object has no attribute 'username'
     user = await BaseUser.login(
         username=data.username,
         password=data.password

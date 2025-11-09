@@ -34,7 +34,6 @@ we need to use `RepositoryEnv`. Using in the root folder is easier.
 from fruits.tables import Fruits
 from piccolo.conf.apps import AppConfig
 from decouple import config
-#! from typing import Optional
 
 
 APP_CONFIG = AppConfig(
