@@ -124,7 +124,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
-from piccolo_admin.endpoints import create_admin
+#! from piccolo_admin.endpoints import create_admin
 from piccolo.table import create_db_tables
 
 
@@ -212,7 +212,7 @@ async def lifespan(app: FastAPI):
 #
 # Piccolo Admin
 # --------------
-# > #! Make sure to protect your admin routes in production! `allowed_hosts=`
+# > ⚠️ Protect your admin routes in production with `allowed_hosts=`!
 #
 # Static files
 # -------------
@@ -220,9 +220,9 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-admin = create_admin(tables=APP_CONFIG.table_classes)
+#! admin = create_admin(tables=APP_CONFIG.table_classes)
 
-app.mount("/admin", admin)
+#! app.mount("/admin", admin)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 

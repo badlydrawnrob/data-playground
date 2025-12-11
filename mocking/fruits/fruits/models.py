@@ -103,7 +103,7 @@
 
 from fruits.tables import Fruits, Colors
 from pydantic import BaseModel
-from piccolo_api.crud.serializers import create_pydantic_model
+from piccolo.utils.pydantic import create_pydantic_model
 from typing import Any # (1)
 
 
