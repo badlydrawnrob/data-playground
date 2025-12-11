@@ -64,13 +64,13 @@
 #     - @ https://tinyurl.com/miguel-utcnow-deprecated
 # 6. UTC is the primary time standard for the world to regulate clocks and time
 #     - Using a single timezone assures every entry will sync between users
-#     - UTC integers are far less error prone and take up less memory ...
-#     - And are much more efficient for time arithmetic than ...
-#     - `Iso8601` strings (the values we use for `json` API)
-# 7. If you require a timezone to display to a user, convert UTC timestamp
-#     - `utc_now.astimezone(ZoneInfo("Asia/Tokyo"))`
+# 7. For arithmetic UTC integers are far less error prone, take up less memory,
+#    and are much more efficient than `Iso8601` strings (the values we use for
+#    our `json API`, see (8)).
 # 8. Elm Lang has an `Iso8601` package and a `toTime` (`Time.Posix`) function
 #     - Very handy for regular `String` times and converting to `Hour` etc.
+# 9. If you require a timezone to display to a user, convert UTC timestamp
+#     - `utc_now.astimezone(ZoneInfo("Asia/Tokyo"))`
 #
 # 
 # Expiration checks
