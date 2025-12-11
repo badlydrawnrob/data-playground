@@ -61,7 +61,7 @@
 #     - Elm code uses a lot of whitespace which I prefer
 #     - If something can be simplified or removed, do so
 # 2. Do not include needless packages where they can be avoided
-#     - Code and dependencies should follow a miniamlist approach
+#     - Code and dependencies should follow a minamilist approach
 # 3. Code should be pitched at the right level of ability and knowledge
 #     - Advanced features should be hidden for begginers (like `Readable`)
 # 4. Code should follow expectations setup from other parts of the documentation
@@ -93,8 +93,6 @@
 # Errors
 # ------
 # 1. Tighten up the types?
-# 2. SQLiteEngine has no `connect()` and `close()` functions?
-#     - This should be documented somewhere.
 #
 #
 # Wishlist
@@ -127,8 +125,6 @@ from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
 from piccolo_admin.endpoints import create_admin
-# from piccolo_api.crud.endpoints import PiccoloCRUD
-# from piccolo_api.fastapi.endpoints import FastAPIWrapper
 from piccolo.table import create_db_tables
 
 

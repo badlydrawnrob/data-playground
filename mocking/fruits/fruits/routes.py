@@ -94,10 +94,11 @@
 #
 # Connection to the database
 # --------------------------
-# > This is handled automatically, no need to `open()` and `close()`
+# > SQLiteEngine has no `connect()` and `close()` functions to open/close the
+# > `fruits.sqlite` database.
 #
-# Piccolo handles connections, but you may need to add transactions when you're
-# dealing with concurrent requests (see `app.py` notes).
+# Piccolo handles connections automatically, but you may need to add transactions
+# when you're dealing with concurrent requests (see `app.py` notes).
 # 
 #
 # 
