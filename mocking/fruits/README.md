@@ -44,6 +44,10 @@ uv run main.py
 
 ## To Do
 
+> Handle all errors "just-in-time" but use logs and screenshots/123s so you can
+> replicate the bug. Make sure to use logs and test the API with Bruno for correct
+> and incorrect data.
+
 1. Naming conventions:
     - `Fruit` -vs- `Fruits`
     - `["Capital", "Case"]` -vs- `["lower", "case"]`
@@ -54,8 +58,13 @@ uv run main.py
 3. `BaseUser` is a little bit awkward to extend with a `UUID` field
     - Can we extend it properly without a `Profile` column?
     - Or simply use the `username` and forgo the `UUID`?
-4. Fix larger comments with Pep 8?
+4. Add in [piccolo admin](https://github.com/piccolo-orm/piccolo_admin)?
+    - Currently not included in our Python packages
+    - Used in `app.py` and `piccolo_conf.py`
+5. Fix larger comments with Pep 8?
     - Longer `#` comments could use `"""` docstrings.
+6. `create_pydantic_model` requires the `piccolo-api` package
+    - Just create my own models in future?
 
 
 ## Storytelling

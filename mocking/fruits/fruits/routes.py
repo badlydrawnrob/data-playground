@@ -140,39 +140,39 @@
 #
 # Bugs
 # ----
-# 1. ⭐ Somewhere check for UNIQUE values (either `try/except` or Elm)
-#    - `#! sqlite3.IntegrityError: UNIQUE constraint failed: colors.name`
-# 2. Handle all errors "just in time" (you'll not catch them all upfront)
-#    - See `chapter_03` of "Building with FastApi" for full checks (like `[]` empty)
-#    - Make sure to use logs and have people send enough data to replicate bug
-#    - Make sure to thoroughly test your API with Bruno for correct and incorrect data
-# 3. Make some routes IMPOSSIBLE (things that are destructive and Admin only)
-#    - `DELETE` all `fruits/` will torpedo your database!
-#    - Better to use a tool like `sqlite-utils`, a GUI, or no-code dashboard
-# 4. Currently getting `.first()` with `[0]` as there should only be ONE
-#    - You've got to be super strict with your UNIQUE values for this however
-# 5. You _could_ use Piccolo `create_pydantic_model` with `nested=True`, but in
-#    general it's better to generate your own custom Pydantic type for joins.
-#    - The more complex the join, the harder it is for Piccolo "magic"!
+# 1. ⚠️ Be stricter with UNIQUE values for insert (which effects response)
+#     - Currently "Internal Server Error" for unique constraint fails
+#     - Create a code for this particular error (see APIs you won't hate)
+#     - If you've ensured all entries are unique throughout the stack, then
+#       `fruits[0]` and `.first()` should be totally fine to use.
+# 2. ⚠️ IMPOSSIBLE routes: anything that's destructive or hackable ...
+#    - Do admin stuff offline with `sqlite-utils`, GUI, or no-code. Wait until
+#      you can hire a professional to build out a secure platform (with roles)
+#    - `piccolo-admin` and `piccolo user create` are good examples of this
+#    - `DELETE` all `fruits/` is a terrible idea and will kill your database
 #
 #
 # Wishlist
 # --------
 # 1. Create a filter, pagination, and search route?
-#     - Investigate `case` in Python` to validate query strings
-#     - @ https://stackoverflow.com/a/11479840 (Python 3.10+)
+#    - ⭐️ Probably a good time to use RAW sql queries
+#    - Investigate `case` in Python` to validate query strings
+#    - @ https://stackoverflow.com/a/11479840 (Python 3.10+)
 # 2. Understand and implement the `BaseUser` table properly
 #    - And how does it differ from `piccolo_user` table?
 #    - @ https://github.com/sinisaos/simple-piccolo/blob/main/fastapi_app.py#L73
 #    - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/authentication/baseuser.html#baseuser
 #    - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/authentication/baseuser.html#extending-baseuser
-# 3. Harden validating fields and routes ...
+# 3. Create custom Pydantic types for joins (rather than `create_pydantic_model`)
+#    - The more complex the join, the harder it is for Piccolo "magic"!
+# 4. Protect against XSS injections (ask Mike)
+#    - Mostly needed when rich text or javascript is a possiblity
+# 5. Harden validating fields and routes ...
 #    - Fields are not empty and not null, for example
 #    - SQLite errors such as `UNIQUE` constraints
-# 4. Write an endpoint to get basic user preferences
+# 6. Write an endpoint to get basic user preferences
 #    - You'd grab this after getting the JWT with Elm Lang
-# 5. #! How to make sure of XSS protection (ask Mike)
-# 6. Transactions: understand when to be careful with `select()` then writes
+# 7. Transactions: understand when to be careful with `select()` then writes
 
 from auth.authenticate import authenticate
 from auth.jwt_handler import create_access_token
@@ -200,7 +200,8 @@ user_router = APIRouter(
 # ------------------------------------------------------------------------------
 # User operations
 # ==============================================================================
-# > Currently does not require a `client_id` value
+# > Currently does not require a `client_id` value, but Bruno complains if it
+# > doesn't contain some value (using `none` for now).
 #
 # ```
 # curl -X 'POST' \
