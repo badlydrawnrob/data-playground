@@ -30,6 +30,9 @@ This mocking example is based on Elm Land's [fruits API](https://github.com/elm-
 > After running these commands, insert values into database.
 > Add `Colors` first as it's a foreign key `Fruits.colors` (see `sqlite-utils.sql`).
 
+We don't need to worry about user creation or hashing passwords, but currently we
+set them up manually (rather than in-app). We can eventually build in `BaseUser.create_user()` when ready.
+
 ```
 piccolo migrations forwards user
 piccolo user create
