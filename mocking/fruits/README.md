@@ -51,23 +51,36 @@ uv run main.py
 > replicate the bug. Make sure to use logs and test the API with Bruno for correct
 > and incorrect data.
 
-1. Naming conventions:
+1. Figure out transactions
+    - See "Using SQLite and Asyncio effectively"
+    - Try testing concurrent requests and how it's handled
+    - Basically if a simple `select()` use the default
+    - If a `select()` followed by an `insert()`, use a transaction
+    - Use `dependencies=[Depends(transaction)]` in the request
+2. Naming conventions:
     - `Fruit` -vs- `Fruits`
     - `["Capital", "Case"]` -vs- `["lower", "case"]`
     - And so on ...
-2. Populate database with `sqlite-utils` (migrations are confusing)
+3. Populate database with `sqlite-utils` (migrations are confusing)
     - colors and fruits defaults
     - Auto migrations do not work with SQLite
-3. `BaseUser` is a little bit awkward to extend with a `UUID` field
+4. Prefer custom Pydantic models ...
+    - Are we happy with a flat `json` response?
+    - Or stick to a nested one?
+5. `BaseUser` is a little bit awkward to extend with a `UUID` field
     - Can we extend it properly without a `Profile` column?
     - Or simply use the `username` and forgo the `UUID`?
-4. Add in [piccolo admin](https://github.com/piccolo-orm/piccolo_admin)?
+6. Assure that data integrity and types are maintained with SQLite
+    - It can fall over in [some circumstances](https://github.com/piccolo-orm/piccolo/discussions/1247) without strict tables or pydantic!
+7. Add in [piccolo admin](https://github.com/piccolo-orm/piccolo_admin)?
     - Currently not included in our Python packages
     - Used in `app.py` and `piccolo_conf.py`
-5. Fix larger comments with Pep 8?
+8. Fix larger comments with Pep 8?
     - Longer `#` comments could use `"""` docstrings.
-6. `create_pydantic_model` requires the `piccolo-api` package
+9. `create_pydantic_model` requires the `piccolo-api` package
     - Just create my own models in future?
+10. Check the "APIs you won't hate" book on standard return values
+    - What [should be returned](https://softwareengineering.stackexchange.com/questions/314066/restful-api-should-i-be-returning-the-object-that-was-created-updated) from a `Update`, `Delete`, ..., in a REST API?
 
 
 ## Storytelling
