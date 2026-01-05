@@ -64,6 +64,8 @@ uv run main.py
     - https://piccolo-orm.readthedocs.io/en/latest/piccolo/tutorials/using_sqlite_and_asyncio_effectively.html#timeout
 3. Naming conventions:
     - `Fruit` -vs- `Fruits`
+    - `FruitModelIn` or `FruitsModelIn`?
+    - `/fruits` folder or `/fruit`?
     - `["Capital", "Case"]` -vs- `["lower", "case"]`
     - And so on ...
 4. Run a speedtest on all backend endpoints as well as frontend
@@ -92,7 +94,9 @@ uv run main.py
 
 ## Performance
 
-1. It might reduce errors to increase [`timeout`](https://github.com/piccolo-orm/piccolo/issues/687) value in SQLite
+1. Aim for atomic transactions rather than bulk
+    - You can always do bulk inserts/edits with `sqlite-utils`
+It might reduce errors to increase [`timeout`](https://github.com/piccolo-orm/piccolo/issues/687) value in SQLite
 2. Using a single `update()` statement instead of a read then write
     - Always use the `.returning()` method or [bugs](https://github.com/piccolo-orm/piccolo/issues/13190) can appear.
 3. Use [Bombardier](https://github.com/codesenberg/bombardier) to stress-test your server
@@ -128,6 +132,17 @@ Other slight weirdness is that `Fruits.insert(Fruits(**data.model_dump()))` can 
 Just keep an eye on how fast these are changing and what impact it has on your maintenance.
 
 
+## User experience
+
+> See the "Van Man Problem" for API architecture and design.
+
+1. `Delete` operations should always prompt the user to confirm.
+2. Handle errors correctly. Don't leak sensitive information.
+3. Authenticate all routes that require authentication, or are "risky".
+    - Make sure it's the correct user that is allowed to edit their posts.
+4. What data should be public? What data should be private?
+
+
 ## Security
 
 > You're not Facebook. Or Google. Only build what you need.
@@ -159,10 +174,6 @@ Is this because `pyproject.toml` is `name="fruits"` and I also have a fruits sub
 ### Naming conventions
 
 > Have a naming convention and stick to it: singular or plural?
-
-- Table `Fruit` or `Fruits`?
-- Model `FruitModelIn` or `FruitsModelIn`?
-- Folder `fruit` or `fruits`? (package)
 
 ### 🤖 Ai fails hard
 
@@ -199,16 +210,6 @@ The upsides are Piccolo gives a wider range of [columns](https://piccolo-orm.rea
 
 Postgres is _far_ more capable than SQLite but is also harder to setup, store, and migrate data (it's documentation is huge).
 
-
-## User experience
-
-> See the "Van Man Problem" for API architecture and design.
-
-1. `Delete` operations should always prompt the user to confirm.
-2. Handle errors correctly. Don't leak sensitive information.
-3. Authenticate all routes that require authentication, or are "risky".
-    - Make sure it's the correct user that is allowed to edit their posts.
-4. What data should be public? What data should be private?
 
 
 
