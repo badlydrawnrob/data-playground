@@ -51,36 +51,51 @@ uv run main.py
 > replicate the bug. Make sure to use logs and test the API with Bruno for correct
 > and incorrect data.
 
-1. Figure out transactions
-    - See "Using SQLite and Asyncio effectively"
-    - Try testing concurrent requests and how it's handled
-    - Basically if a simple `select()` use the default
-    - If a `select()` followed by an `insert()`, use a transaction
-    - Use `dependencies=[Depends(transaction)]` in the request
-2. Naming conventions:
+1. Try to avoid transactions where possible (but understand them)
+    - **TL;DR:** NEVER use read and write operations within the same endpoint,
+      only use them independently. `RETURNING` is essential here.
+    - `IMMEDIATE` is only ever required with SQLite when using a write after
+      a read operation. We'd need to use `DEFFERED` in those conditions.
+    - For `IMMEDIATE` you'd need to read "Using SQLite and Asyncio effectively"
+      and (ideally) use `dependencies=[Depends(transaction)]` in the endpoint.
+    - Try out some concurrent requests with bombardier and the simplified setup
+      using `UPDATE` only (without an initial `SELECT`).
+2. Should `timeout` always be used with SQLite?
+    - https://piccolo-orm.readthedocs.io/en/latest/piccolo/tutorials/using_sqlite_and_asyncio_effectively.html#timeout
+3. Naming conventions:
     - `Fruit` -vs- `Fruits`
     - `["Capital", "Case"]` -vs- `["lower", "case"]`
     - And so on ...
-3. Populate database with `sqlite-utils` (migrations are confusing)
+4. Run a speedtest on all backend endpoints as well as frontend
+    - You can use bombardier for API concurrent connections.
+5. Populate database with `sqlite-utils` (migrations are confusing)
     - colors and fruits defaults
     - Auto migrations do not work with SQLite
-4. Prefer custom Pydantic models ...
+6. Prefer custom Pydantic models ...
     - Are we happy with a flat `json` response?
     - Or stick to a nested one?
-5. `BaseUser` is a little bit awkward to extend with a `UUID` field
+7. `BaseUser` is a little bit awkward to extend with a `UUID` field
     - Can we extend it properly without a `Profile` column?
     - Or simply use the `username` and forgo the `UUID`?
-6. Assure that data integrity and types are maintained with SQLite
+8. Assure that data integrity and types are maintained with SQLite
     - It can fall over in [some circumstances](https://github.com/piccolo-orm/piccolo/discussions/1247) without strict tables or pydantic!
-7. Add in [piccolo admin](https://github.com/piccolo-orm/piccolo_admin)?
+9. Add in [piccolo admin](https://github.com/piccolo-orm/piccolo_admin)?
     - Currently not included in our Python packages
     - Used in `app.py` and `piccolo_conf.py`
-8. Fix larger comments with Pep 8?
+10. Fix larger comments with Pep 8?
     - Longer `#` comments could use `"""` docstrings.
-9. `create_pydantic_model` requires the `piccolo-api` package
+11. `create_pydantic_model` requires the `piccolo-api` package
     - Just create my own models in future?
-10. Check the "APIs you won't hate" book on standard return values
+12. Check the "APIs you won't hate" book on standard return values
     - What [should be returned](https://softwareengineering.stackexchange.com/questions/314066/restful-api-should-i-be-returning-the-object-that-was-created-updated) from a `Update`, `Delete`, ..., in a REST API?
+
+
+## Performance
+
+1. It might reduce errors to increase [`timeout`](https://github.com/piccolo-orm/piccolo/issues/687) value in SQLite
+2. Using a single `update()` statement instead of a read then write
+    - Always use the `.returning()` method or [bugs](https://github.com/piccolo-orm/piccolo/issues/13190) can appear.
+3. Use [Bombardier](https://github.com/codesenberg/bombardier) to stress-test your server
 
 
 ## Storytelling

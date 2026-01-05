@@ -87,9 +87,10 @@
 # > SQLite 3.35.0 and above supports the returning clause.
 # > Use `first()` on functions that allow it (and `list[0]` otherwise)
 #
-# Most functions (like `.delete()`) return no values (an empty `[]`). You can use
-# `.returning()` if you need to add values to the response. Take care with security
-# you don't expose anything important!
+# Returning values are essential for some endpoints to work correctly! See
+# `update_fruit` for an example. Most functions (like `.delete()`) return no values
+# (an empty `[]`). You can use `.returning()` if you need to add values to the
+# response. Take care with security you don't expose anything important!
 #
 #
 # Connection to the database
@@ -173,6 +174,7 @@
 # 6. Write an endpoint to get basic user preferences
 #    - You'd grab this after getting the JWT with Elm Lang
 # 7. Transactions: understand when to be careful with `select()` then writes
+#    - @ 
 
 from auth.authenticate import authenticate
 from auth.jwt_handler import create_access_token
@@ -313,13 +315,14 @@ async def retrieve_fruit(id: str):
         )
 async def create_fruit(
     data: FruitsModelIn,
-    user: str = Depends(authenticate)
+    user: str = Depends(authenticate) # Must be logged in
     ):
     """Create a new fruit
 
     Coding style
     ------------
-    > Use a data style (similar to Elm Lang) wherever possible
+    > ⚠️ ALWAYS make sure you've checked for duplicates (SQLite integrity error).
+    > Use a data style (like Elm) where possible!
 
     `.insert()` can be provided a list of values, whereas `.update()` can only
     be provided ONE. For this reason, the internal `Fruits()` object is needed.
@@ -374,36 +377,43 @@ async def create_fruit(
 
 
 
-@fruits_router.put("/{id}",
-        # dependencies=[Depends(transaction)]
-        )
+@fruits_router.put("/{id}")
 async def update_fruit(
     id: str,
     data: FruitsModelIn,
-    user: str = Depends(authenticate)
+    user: str = Depends(authenticate) # Must be logged in
 ):
     """Create a new fruit (if logged in)
 
+    ⚠️ `RETURNING` is essential
+    ---------------------------
+    > Without the `returning()` option, Piccolo will return an `[]` for both
+    > "row exists and has been updated" and "row does not exist", so our exception
+    > would be wrong. This is a failing of SQL (no way to return affected rows?).
+
+    Always use `.returning(*Table.all_columns())` on `UPDATE`! Without this
+    function you'd need to run a `select()` first, or use `NOT EXISTS` in raw SQL,
+    to discover if the row existed before updating it.
+
+    
     Data checks
     -----------
-    > You must provide the full data required to update the entry. Fields like
-    > `ID` and `UUID` should not be changed. Eventually, some fields (such as
-    > timestamp) may need automatically updated.
+    > Full `json` data required (except `ID` and `UUID`, handled automatically).
+    > Eventually other fields (such as timestamp) may need automatically updating.
 
-    Lists can be:
+    There is no need to use `select()` first to "get" the fruit and check that it
+    exists. Therefore we don't need to check if it's empty, singleton, or many.
+    If we've setup our `POST` correctly, there should only be ONE entry.
+
+    Optional data
     
-    - Empty? `if list`
-    - Singleton? `if len(list) == 1`, or `(single,)` which returns `ValueError`
-    - Many? (shouldn't be required)
-
-    Fields can be:
-
-    - null? Be sure that fields that are optional provide correct data
+    - Check for `null` fields that are optional and provide correct data.
 
     
-    Positive or negative guards?
-    ----------------------------
+    ⚠️ Positive or negative guards?
+    -------------------------------
     > It may be better to use a negative guard if we've got more than one check.
+    > #! We're not currently checking it's the correct user's data.
 
     For example, if we're validating our user, we'd need to both: `if not user`
     and `if not fruit` (each with a different `HTTPException`). I'm not sure two
@@ -421,36 +431,43 @@ async def update_fruit(
 
     Wishlist
     --------
-    1. Fix `sqlite3.IntegrityError: NOT NULL constraint failed: fruits.url` error
-        - We shouldn't supply the `url` as it's an automatic `UUID` ...
-        - Currently we're using `exclude_unset` and a default `create_pydantic_model`
-        - (1) Have Elm Lang supply original `UUID` | (2) Have the route handle it?
-    2. Consider using `UUID` that's also indexed
-        - So we can join on the `UUID` instead of the `ID`.
-    3. Run a speedtest on the backend and frontend
-    4. What data is best practice to return to the client?
-    5. How can we assure that all data is correctly updated?
+    1. Use a `UUID` that's also indexed
+        - We want to join on the `UUID` not the `ID`
+        - We shouldn't need a separate `ID` field for this.
+    2. Fix `sqlite3.IntegrityError: NOT NULL constraint failed: fruits.url` error
+        - `UUID` (url) is automatically generated, so we shouldn't supply it.
+        - We should eventually create a custom Pydantic model (rathern than using
+          `create_pydantic_model`).
+        - We must `exclude_unset` to avoid adding fields we don't want!
+        - Does Elm frontend need to know about (or supply) the `UUID`?
+            - (1) Have Elm Lang supply original `UUID`
+            - (2) Have the route handle it?
+    3. What data is best practice to return to the client?
+        - We want a ERROR CODE if something goes wrong ...
+        - As well as a error message to present to the user.
+    4. How can we assure that all data is correctly updated?
         - What's optional and what's required?
         - What do we provide (or exclude) if it's optional?
         - What data do we NOT want the user to supply?
-    6. What errors could happen on an `update` function?
+    5. What errors could happen on an `update` function?
+        - Invalid data (400) or Row not found (404)
+        - ⚠️ I think it's safer to always return 400 for security reasons
         - SQLite errors (not null, not supplied, ...)
         - Positively or negatively errored (`if not fruit`, `if not user`)
     """
-    fruit = await Fruits.select().where(Fruits.id == id) # A list (singleton)
-
-    if fruit: #!
-        await (
-            Fruits.update(**data.model_dump(exclude_unset=True)) #! Careful (1)
+    fruit = await (
+            Fruits.update(**data.model_dump(exclude_unset=True)) #! Careful (1, 2)
             .where(Fruits.id == id)
+            .returning(*Fruits.all_columns()) #! This is essential!
         )
-
-        return { "message": f"Fruit with {id} has been successfully updated!" }
-
-    HTTPException(
-        status=400, #! Is this the correct status code?
-        detail=f"There was a problem with your request"
-    )
+    
+    if not fruit:
+        HTTPException(
+            status_code=400,
+            detail=f"There was a problem with your request" #! (5)
+        )
+    
+    return { "message": f"Fruit with {id} has been successfully updated!" }
 
 
 
