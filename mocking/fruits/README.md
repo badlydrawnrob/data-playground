@@ -51,15 +51,15 @@ uv run main.py
 > replicate the bug. Make sure to use logs and test the API with Bruno for correct
 > and incorrect data.
 
-1. Try to avoid transactions where possible (but understand them)
-    - **TL;DR:** NEVER use read and write operations within the same endpoint,
-      only use them independently. `RETURNING` is essential here.
-    - `IMMEDIATE` is only ever required with SQLite when using a write after
-      a read operation. We'd need to use `DEFFERED` in those conditions.
-    - For `IMMEDIATE` you'd need to read "Using SQLite and Asyncio effectively"
+1. Transactions can be avoided by using writes only (faster queries).
+    - It's helpful to understand _why_ transactions _would_ be needed ... when
+      read and write operations are housed in the same endpoint/transaction.
+    - Transactions are `DEFFERED` by default (`IMMEDIATE` is required if read
+      and writes are used together). Always test concurrent connections.
+    - `RETURNING` statement is essential if using writes only, as we need to make
+      sure that a row exists (otherwise we'd need `EXISTS` and a `SELECT`).
+    - If requiring `IMMEDIATE`, read "Using SQLite and Asyncio effectively"
       and (ideally) use `dependencies=[Depends(transaction)]` in the endpoint.
-    - Try out some concurrent requests with bombardier and the simplified setup
-      using `UPDATE` only (without an initial `SELECT`).
 2. Should `timeout` always be used with SQLite?
     - https://piccolo-orm.readthedocs.io/en/latest/piccolo/tutorials/using_sqlite_and_asyncio_effectively.html#timeout
 3. Naming conventions:
@@ -96,10 +96,10 @@ uv run main.py
 
 1. Aim for atomic transactions rather than bulk
     - You can always do bulk inserts/edits with `sqlite-utils`
-It might reduce errors to increase [`timeout`](https://github.com/piccolo-orm/piccolo/issues/687) value in SQLite
-2. Using a single `update()` statement instead of a read then write
-    - Always use the `.returning()` method or [bugs](https://github.com/piccolo-orm/piccolo/issues/13190) can appear.
-3. Use [Bombardier](https://github.com/codesenberg/bombardier) to stress-test your server
+2. It might reduce errors to increase [`timeout`](https://github.com/piccolo-orm/piccolo/issues/687) value in SQLite
+3. Using a single `update()` statement instead of a read then write
+    - Always use the `.returning()` method or [bugs](https://github.com/piccolo-orm/piccolo/issues/1319) can appear.
+4. Use [Bombardier](https://github.com/codesenberg/bombardier) to stress-test your server
 
 
 ## Storytelling

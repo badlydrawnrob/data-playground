@@ -179,7 +179,7 @@
 #     - Get `ID` with `UUID` ==, then join on `ID`
 
 from piccolo.table import Table
-from piccolo.columns import ForeignKey, Varchar, Serial, UUID
+from piccolo.columns import ForeignKey, Varchar, UUID
 
 
 class Colors(Table):
@@ -199,10 +199,13 @@ class Fruits(Table):
     """
     > We're using both `Serial()` and `UUID()` columns.
 
-    Piccolo automatically uses an auto-incrementing `id` primary key. No need to
-    use `secret=True` as it's hidden by default. If you set it yourself, make
-    sure to use `primary_key=True`.
+    Our primary key is `secret=True` by default (hidden in the response).
 
+    By default Piccolo uses an auto-incrementing `id` primary key with the
+    `Serial()` column type (created automatically). We've changed it here to
+    use the `UUID` column type. It must be marked as the `primary_key`, so Piccolo
+    knows to create it (no need for a `default_factory` in the `Table` subclass).
+    
     The Elm-Land version uses emojis, but we'll test out an image server.
     """
 

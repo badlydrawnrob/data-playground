@@ -242,7 +242,7 @@ async def sign_in_user(
 # ------------------------------------------------------------------------------
 # Read operations
 # ==============================================================================
-# > #! If you're using `response_model=` I think the response type is redundant!
+# > #! Response type is generally redundant if using `response_model=`
 
 @fruits_router.get(
         "/",
