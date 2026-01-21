@@ -188,7 +188,7 @@ from fruits.tables import Fruits, Colors
 from piccolo.apps.user.tables import BaseUser
 
 from typing import List
-from uuid import uuid4
+# from uuid import uuid4
 
 
 fruits_router = APIRouter(
