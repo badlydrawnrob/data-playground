@@ -41,6 +41,23 @@
 #    - @ https://tinyurl.com/piccolo-sqlite-tips-concurrent (database locked error)
 #
 #
+# Piccolo Auth and Admin
+# ----------------------
+# > @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/authentication/index.html
+# > @ https://piccolo-api.readthedocs.io/en/latest/session_auth/index.html
+# > @ https://piccolo-api.readthedocs.io/en/latest/piccolo_admin/index.html
+#
+# I'm using the simpler authentication with my own JWT setup (you could use the
+# Piccolo API for stronger session auth). You may also like to explore your data
+# entries with Piccolo Admin. I've disabled the admin for now as I'd prefer it
+# for localhost only (for security).
+#
+# ```
+# admin = create_admin(tables=APP_CONFIG.table_classes)
+# app.mount("/admin", admin)
+# ```
+#
+#
 # SQLite transactions
 # -------------------
 # > Always use a `DataModelIn` before saving to SQLite as it's not strict.
@@ -202,27 +219,12 @@ async def lifespan(app: FastAPI):
 #
 # 1. `StaticFiles` does NOT serve static files by default (why not?!) so you've
 #     got to explicitly tell it to. We're using the fastapi package (not starlette)
+#     - @ https://fastapi.tiangolo.com/tutorial/static-files/#use-staticfiles
 # 2. `Mount` is a FastAPI advanced feature (maybe not great for quickstart). The
 #    current `agsi new` command uses Starlette, but possibly best to use FastAPI?
 #    - @ https://fastapi.tiangolo.com/advanced/sub-applications/
-# 3. It seems `create_admin` function automatically creates the tables?
-#    - If so `@asynccontextmanager` above is not needed?
-#    - I'm not super keen on the `tables=` argument. Better to be explicit and
-#      list all tables here? Do we _really_ need `APP_CONFIG` at all?
-#
-# Piccolo Admin
-# --------------
-# > ⚠️ Protect your admin routes in production with `allowed_hosts=`!
-#
-# Static files
-# -------------
-# > @ https://fastapi.tiangolo.com/tutorial/static-files/#use-staticfiles
 
 app = FastAPI(lifespan=lifespan)
-
-#! admin = create_admin(tables=APP_CONFIG.table_classes)
-
-#! app.mount("/admin", admin)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 

@@ -60,6 +60,17 @@
 # 2. Handle this in Elm by `caseing` on the `Colors` list
 #
 #
+# Foreign keys
+# ------------
+# > Piccolo always joins on any foreign keys, so you can traverse them to get
+# > any data field you'd need.
+#
+# For example: `.where(Fruits.color.name == "green")` to get all fruits that
+# share the colour green:
+#
+#    @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/query_types/joins.html#joins
+#
+#
 # Indexing
 # --------
 # > #! Indexing columns speeds up the search and joins! It can slow down the

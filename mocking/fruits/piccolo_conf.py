@@ -21,6 +21,5 @@ LOG_RESPONSES = config("SQLITE_LOG_RESPONSES", default=False, cast=bool)
 DB = SQLiteEngine(path='fruits.sqlite', log_queries=LOG_QUERIES, log_responses=LOG_RESPONSES)
 
 APP_REGISTRY = AppRegistry(
-    #! apps=["fruits.piccolo_app", "piccolo_admin.piccolo_app"]
-    apps=["fruits.piccolo_app"]
+    apps=["fruits.piccolo_app", "piccolo.apps.user.piccolo_app"]
 )
