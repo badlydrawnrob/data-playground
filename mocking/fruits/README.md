@@ -13,9 +13,9 @@ This mocking example is based on Elm Land's [fruits API](https://github.com/elm-
 
 ## Conventions
 
-1. Public `UUID` business identifier (with Serial `ID` for joins using indexing?)
+1. Public `UUID` business identifier (auto-indexed)[^1]
 2. Use Serial `ID`s (or bytes) when possible, both are faster than `String`!
-3. JWT for authentication only, `/profile` endpoint for preferences[^1]
+3. JWT for authentication only, `/profile` endpoint for preferences[^2]
 4. Piccolo already has a `BaseUser` and `BaseUser.login()` function
 5. Piccolo Admin is potentially a security risk (use offline only?) 
 6. Piccolo API and Admin don't need to be used, they're handy packages
@@ -33,15 +33,25 @@ This mocking example is based on Elm Land's [fruits API](https://github.com/elm-
 We don't need to worry about user creation or hashing passwords, but currently we
 set them up manually (rather than in-app). We can eventually build in `BaseUser.create_user()` when ready.
 
-```
+```bash
+# Run the app (and create DB)
+# Populate the database with `sqlite_utils.sql`
+uv run main.py
+
+# Setup the user table
 piccolo migrations forwards user
+
+# Create the user (see `bruno/collection.bru`
+# for user details to use with CLI command)
 piccolo user create
 
-havana
-havana@gmail.com
-Rem0te
-
-uv run main.py
+# Login and create JWT token (or use Bruno)
+# `client_id` and `client_secret` not set!
+curl -X 'POST' \
+'http://localhost:8000/login' \
+-H 'accept: application/json' \
+-H 'Content-Type: application/x-www-form-urlencoded' \
+-d 'grant_type=password&username=[USER]&password=[PASSWORD]&scope=&client_id=none&client_secret=none'
 ```
 
 
@@ -213,4 +223,6 @@ Postgres is _far_ more capable than SQLite but is also harder to setup, store, a
 
 
 
-[^1]: Some say that JWT [is a bad default](https://evertpot.com/jwt-is-a-bad-default/) but I'm going to use it anyway! We also don't currently have a `client_secret`.
+[^1]: Also an option is using _both_ `UUID` (or short uuid) _and_ a primary key (`Serial`) on which to do lookups and joins. The UUID would be public-facing and the primary key private. The downside is it may require an extra `select()` to grab the primary key.
+
+[^2]: Some say that JWT [is a bad default](https://evertpot.com/jwt-is-a-bad-default/) but I'm going to use it anyway! We also don't currently have a `client_secret`.

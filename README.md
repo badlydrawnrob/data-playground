@@ -26,9 +26,12 @@ sqlite3 database.sqlite
 .schema --indent
 .schema Table --indent
 
-/* Table information (orm)*/
+/* Table information (orm) */
 pragma table_info(Table);
 pragma table_xinfo(Table);
+
+/* Index information */
+pragma index_info|list(table);
 
 /* Column types (real) */
 select typeof(Column) from Table

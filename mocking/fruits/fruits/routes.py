@@ -1,29 +1,26 @@
 # ------------------------------------------------------------------------------
 # Routes
 # ==============================================================================
-# > We're using `@fruits_router` rather than `@app` here as it's better organised.
-# > You need to register the router in `app.py` with `include_router`.
+# > See `badlydrawnrob/python-playground/building-with-fast-api` for more docs.
+# 
+# We're using `@fruits_router` rather than `@app` here as it's better organised.
+# You need to register the router in `app.py` with `include_router`.
 #
 # See `fruits.models` for information on our model types.
 #
 #
 # Coding style is a personal preference
 # -------------------------------------
-# > Technically not 100% data style as we're using Pydantic types and assigning
-# > some arguments in the route function. DRY is great but overused: similar is
-# > not the same as identical.
+# > Technically not 100% data functional style. DRY is great when it's needed
+# > but don't overuse it: similar is not the same as identical.
 #
 # See also `app.py` "Learning frame" for coding standards.
 #
-# In general, I prefer working with data rather than objects (no classes, no
-# methods, no weird decorators). I'll leave in both examples and then it's up to
-# the individual to decide which they prefer.
-#
-# However, some functions may benefit from an oject oriented style as they're less
-# code and (potentially) quicker than a typed functional style, such as updating
-# a single field. With `update_task` we have to do some gymnastics with a data style.
-#
-# Aim for minimalism wherever possible: `Task._meta.primary_key` -> `Task.id`.
+# 1. Prefer a functional style with `.add()` or `.insert()` (no objects)
+# 2. Prefer working directly with data (rather than classes and methods)
+# 3. Only ever use objects if it dramatically increases performance!
+#     - The only place I can think of is updating a single field
+# 4. Minimalism and brutalist (`Task._meta.primary_key` -> `Task.id`)
 #
 #
 # Routes
@@ -36,121 +33,44 @@
 #
 # Requests
 # --------
-# > You can use `status=` in the decorator instead of response if needed
-# > @ https://docs.pydantic.dev/latest/concepts/serialization/
+# > Named arguments with types are used for clarity (`body` renamed as `data`)
+# > `session=Depends(get_session)` is an example of `**kwargs`.
 #
-# - You can use named arguments with types for clarity (#! `body` -> `data`)
-# - You can use `(**kwargs)` to `data.model_dump()` a dictionary into a model
-# - You can use `.model_dump(exclude_unset=True)` to remove `None` fields
-# - You can use `PUT` or `PATCH` to update data, but `PUT` is far more explicit
-#
-#
-# PATCH -vs- PUT
-# --------------
-# > In general I feel it's better to be explicit unless there's a good reason
-# > not to. So, store all fields in Elm model, then `PUT` with updated values.
-#
-# 1. Use dedicated routes (not patch) for `user` and `user.settings`
-#     - Google does this for forms like "password" (a form/route for each data)
-# 2. It's probably better to be explicit and reset ALL data
-#     - This prevents any conflicts or accidentally changing a field
-#
-# The problem with `PATCH` is it can have any number of `Optional` fields not set,
-# and there's no way of knowing which data is present in the request body.
-#
-# That's not a huge problem in and of itself, but you'll have to be careful to
-# make sure the DB doesn't get wrong values. Also remember @lydell's note about
-# `Json.Decode` and using `nullable` rather than `maybe` with missing values.
-#
-# `PUT` is idempotent, meaning multiple identical PUT requests always has the
-# same result.
+# You can take the `FruitsModelIn` and `**data.model_dump()` inside the `Fruits`
+# table, using `exclude_unset=True` if you want to avoid `None` values.
 #
 #
 # Responses
 # ---------
-# > Take care to use the proper status codes for each operation! See also the
-# > Serialization section in `fruits.models`.
+# > See "APIs You Won't Hate" (book 2) for return values and error guides.
 #
-# Types:
-# Use either `response_model=` or `->` response type (unlikely you'll need both)
-#
-# Security:
-# By default Piccolo hides the `ID` field from the response. Hide sensitive information
-# with `response_model=` or Piccolo `secret=True`, and use `Depends()` to check
-# JWT tokens (if declared this always runs first, before route function body)
-#
-# Singleton:
-# For `.select()` and `.objects()` you can always use `.first()` if you're confident
-# there's only supposed to be a singleton response.
-#
-# Returning:
-# > SQLite 3.35.0 and above supports the returning clause.
-# > Use `first()` on functions that allow it (and `list[0]` otherwise)
-#
-# Returning values are essential for some endpoints to work correctly! See
-# `update_fruit` for an example. Most functions (like `.delete()`) return no values
-# (an empty `[]`). You can use `.returning()` if you need to add values to the
-# response. Take care with security you don't expose anything important!
+# 1. Hide any values that are sensitive (Piccolo hides `Fruits.id` by default)
+# 2. `Depends()` always runs before the endpoint body to check the JWT token
+# 3. `.first()` can be used if you're confident there's only a singleton response
+# 4. SQLite 3.35.0 and above supports the returning clause which helps avoid
+#    having to change the transaction value (see `planner/tables.py`):
+#     - ⚠️ Returning values are ESSENTIAL for some endpoints to work correctly
+#     - ⚠️ If a query supports returning values and we don't use it, we can't
+#       check if any rows were updated! (See `update_fruit` as an example)
 #
 #
-# Connection to the database
-# --------------------------
-# > SQLiteEngine has no `connect()` and `close()` functions to open/close the
-# > `fruits.sqlite` database.
-#
-# Piccolo handles connections automatically, but you may need to add transactions
-# when you're dealing with concurrent requests (see `app.py` notes).
-# 
-#
-# 
-# Saving entries into the database
-# --------------------------------
-# > See "serialization" in `fruits.models.py` to understand `.model_dump()` ...
-# > and know the difference between a `Band.select()` and `Band.objects()`!
-#
-# Pick a convention: data style (or Object Oriented style). Sometimes the OOP
-# style can result in a little less code.
-#
-# 1. When we're working with queries, we can use `.add()` or `.insert()`
-# 2. When we're working with objects, we can use `.save()`
-#
-#
-# Database exceptions
-# -------------------
-# > @ https://docs.python.org/3/tutorial/errors.html#exceptions
-#
-# - Not defined
-# - No DB results for query
-# - Null not allowed
-# - No duplicate entry values
+# API Errors
+# ----------
+# > See `README.md` of `badlydrawnrob/python-playground/building-with-fast-api/
+# > for a list of expected errors with APIs!
 #
 #
 # Questions
 # ---------
-# 1. How do we test concurrent connections for read and write?
-#    - How many connections can SQLite handle?
-# 2. When do queries not return an `[]` empty list?
-#    - `Band.objects().get(Band.id == 1)` will return single object (no list)
-# 3. What's the difference between a response type and `response_model=`?
-#    - Why is `response_model=` used in some cases and not others?
-# 4. What are named keyword arguments and how do they work?
-#    - `session=Depends(get_session)` (sometimes it has a type also)
-# 5. `Depends()` can go in the route decorator AND route function.
-#    - What's up with that?!
+# 1. When do queries not return an `[]` empty list?
+# 2. How to assure a singleton query is indeed unique?
+# 3. `Depends()` can go in the route decorator AND route function?
 #
 #
 # Bugs
 # ----
-# 1. ⚠️ Be stricter with UNIQUE values for insert (which effects response)
-#     - Currently "Internal Server Error" for unique constraint fails
-#     - Create a code for this particular error (see APIs you won't hate)
-#     - If you've ensured all entries are unique throughout the stack, then
-#       `fruits[0]` and `.first()` should be totally fine to use.
-# 2. ⚠️ IMPOSSIBLE routes: anything that's destructive or hackable ...
-#    - Do admin stuff offline with `sqlite-utils`, GUI, or no-code. Wait until
-#      you can hire a professional to build out a secure platform (with roles)
-#    - `piccolo-admin` and `piccolo user create` are good examples of this
-#    - `DELETE` all `fruits/` is a terrible idea and will kill your database
+# > ⚠️ See `README.md` of `badlydrawnrob/python-playground/building-with-fast-api/`
+# > for a list of expected bugs with APIs!
 #
 #
 # Wishlist
@@ -174,7 +94,7 @@
 # 6. Write an endpoint to get basic user preferences
 #    - You'd grab this after getting the JWT with Elm Lang
 # 7. Transactions: understand when to be careful with `select()` then writes
-#    - @ 
+# 8. Can UUID be `None` in the Pydantic model if it's auto-generated? (see `FruitsModelIn`)
 
 from auth.authenticate import authenticate
 from auth.jwt_handler import create_access_token
@@ -188,7 +108,6 @@ from fruits.tables import Fruits, Colors
 from piccolo.apps.user.tables import BaseUser
 
 from typing import List
-# from uuid import uuid4
 
 
 fruits_router = APIRouter(
@@ -202,16 +121,8 @@ user_router = APIRouter(
 # ------------------------------------------------------------------------------
 # User operations
 # ==============================================================================
-# > Currently does not require a `client_id` value, but Bruno complains if it
-# > doesn't contain some value (using `none` for now).
-#
-# ```
-# curl -X 'POST' \
-# 'http://localhost:8000/login' \
-# -H 'accept: application/json' \
-# -H 'Content-Type: application/x-www-form-urlencoded' \
-# -d 'grant_type=password&username=[USER]&password=[PASSWORD]&scope=&client_id=none&client_secret=none'
-# ```
+# > Only the core arguments are needed (client and secret set to `none`)
+# > @ https://www.oauth.com/oauth2-servers/client-registration/client-id-secret/
 
 @user_router.post("/login") #! (2)
 async def sign_in_user(

@@ -1,193 +1,56 @@
 # ------------------------------------------------------------------------------
 # Fruits database models
 # ==============================================================================
-# > @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/schema/index.html
-# > @ https://github.com/piccolo-orm/piccolo/issues/1257
-#
-# Piccolo names SQLite Column types, but in reality they're stored as basic data
-# data types: `Integer`, `Real`, `Text`. `Blob` is also there but I don't think
-# Piccolo uses it (Postgres has a wider range of types).
+# > See `badlydrawnrob/python-playground/building-with-fast-api` for more docs.
+# > SQLite is not as strict or flexible as Postgres; migrate to that in future?
 # 
-# > `INSERT` is ordered by class field order (not alphabetically)
+#     @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/schema/index.html
+#     @ https://github.com/piccolo-orm/piccolo/issues/1257
+#     @ https://github.com/piccolo-orm/piccolo/issues/1319 (Async problems)
 #
-# ```sql
-# INSERT INTO "fruits" ("id","color","image", "name")
-# ```
-# 
-# It's my preference to order by ABC anyway (except the `ID` field). See the docs
-# for Column arguments, with popular ones including `null=`, `default=`, `unique=`,
-# `index=`, `secret=`. Also wise to stick to naming conventions for table names
-# (singular vs plural).
+# Do not worry prematurely about performance; consider it when you have users!
 #
-#
-# Data integrity
-# --------------
-# > SQLite defaults to accept whatever data you give it ... it's not strict!
-# > @ https://sqlite.org/stricttables.html to enforce strict tables.
-#
-# So ... ALWAYS validated the `DataModelIn` before inserting!
-#
-# Making SQLite use strict tables is safer, but limits the range of Column types
-# Piccolo uses (even if they're still using SQLites basic underlying types. If
-# you're validating data with Pydantic first, there shouldn't be any problems.
-# Postgres has better support for the wide range of types Piccolo uses, such as
-# `jsonb` and `UUID`. Hopefully migrating data to Postgres will make use of this.
-#
-#
-# Required values
-# ---------------
-# > By default it seems ALL values are optional and can be `None`.
-# 
-# So if it's required, you must validate it before inserting (I don't think
-# SQLite will catch it!
-#
-# - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/serialization/index.html#required-fields
-#
-#
-# Unique constraints
-# ------------------
-# > Things like `movie.id` and `move.uuid` should have a `UNIQUE` constraint.
-# > SQLite validates that a value is unique if it's set. `Null values` are not
-# > considered equal (distinct), so make sure `NOT NULL` is set!
-#
-# ```
-# #! sqlite3.IntegrityError: UNIQUE constraint failed: colors.name
-# ```
-#
-# If there's a unique constraint conflict, you'll have to notify the user:
-#
-# 1. Use a `try/except` block to catch the `sqlite3.IntegrityError`
-# 2. Handle this in Elm by `caseing` on the `Colors` list
-#
-#
-# Foreign keys
-# ------------
-# > Piccolo always joins on any foreign keys, so you can traverse them to get
-# > any data field you'd need.
-#
-# For example: `.where(Fruits.color.name == "green")` to get all fruits that
-# share the colour green:
-#
-#    @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/query_types/joins.html#joins
-#
-#
-# Indexing
-# --------
-# > #! Indexing columns speeds up the search and joins! It can slow down the
-# > inserts, however.
-#
-# If we were using `UUID`s a primary keys, we'd have to use indexes as they're
-# not inherently ordered like serial `ID`s. SQLite creates a separate index to
-# map the UUID values to their corresponding row IDs, greatly speeding up the
-# search and retrieval of rows.
-#
-#
-# Altering the table
-# ------------------
-# > SQLite has limited support for `ALTER TABLE` statements.
-#
-# Changes can be achieved by recreating the table with the desired constraint or
-# changes and copying the data. Better to use `sqlite-utils` or move to Postgres.
-#
-#
-# UUID
-# ----
-# > Fruits has a business identifier `UUID` which is indexed (replaces serial `ID`
-# > and indexing speeds up lookup). The `ID` is now naturally hidden from view.
-# > If you need to hide the `UUID` from response, use `secret=` argument.
-# 
-# `UUID` gets stored as `Text` in the database (a Pydantic `String`). With `orjson`
-# this prints out as a regular string, which we can adapt for the url.
-#
-# You'll also want to use short UUIDs for prettier URLs:
-#
-# - @ https://github.com/piccolo-orm/piccolo/issues/1271#issuecomment-3395347091
-#
-# You might want to create your own custom Column type:
-#
-# - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/schema/advanced.html#how-to-create-custom-column-types
-# 
-# Be careful of collisions if using shorter IDs (but UNIQUE should handle this)
-#
-# - @ https://zelark.github.io/nano-id-cc/
-#
-# 
-# Performance
-# -----------
-# > `Int` is faster than `bytes`, which is faster than `String` (most SQLite
-# > values are `Text` with Piccolo). `String` is likely fast enough joins/lookups
-# > for small prototypes but as rows grow it can slow down without indexing.
-# > Postgres will give you even better performance.
-# >
-# > @ https://tinyurl.com/da2acfb-uuid-fast-api-08 (speed testing short UUIDs)
-# >
-# > See also Indexing above.
-#
-#
-# In the future you'll want to use `shortuuid`, `nanoid`, or `fastnanoid` (untested)
-# to handle your URL ids. There's a few ways to handle this:
-#
-# 1. Store the short UUID in the backend using `Text` column
-# 2. Store the full `UUID` in bytes (with Postgres) on the backend, then:
-#     - Convert to a short UUID in the route function
-#     - Convert to a short UUID in the client code (javascript)
-#
-# #! Of course you'll not be able to `ORDER BY` row anymore with a `UUID`, like
-# you could with a regular `Int`.
-#
-# #! I'm not sure how performance will be affected by converting from a `UUID` to
-# a `fastnanoid`, for example. But it seems faster than generating a `fastnanoid`
-# directly. You could always use an Elm decoder and test that. Research needed.
-#
-# #! It's too early to worry about general peformance, but it's likely I'll move
-# to Postgres when I have a team member.
+# 1. Piccolo columns are stored as basic data types in SQLite
+#     - `Integer`, `Real`, `Text`, etc (Postgres has better typing)
+# 2. SQLite is NOT set to strict mode, so potentially ANY value is accepted
+#     - We're heavily relying on API layer models (add DATA models if you wish)
+#     - Without care, potentially ANY data can be inserted without strictness
+# 3. Table fields required by default `null=False` (null /= null ... NOT distinct)
+# 4. Values are inserted by field order (not alphabetically)
+# 5. Insertions are by field order (not alphabetical)
+# 6. `sqlite3.IntegrityError` null and distinct values are a problem
+#     - Duplicate checking is best handled with the DB (not the client)
+# 7. Piccolo uses full joins on queries (e.g: `Fruits.color.name` is valid)
+#     - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/query_types/joins.html#joins
+# 8. ⏱ UUIDs (primary key) should also be INDEXED for quicker lookups.
+#     - `Int > Bytes > String` performance speed (Postgres bytes is better)
+#     - `order_by` defaults to INDEX row id (not UUID)
+#     - ⏱ `Serial` as primary key with public UUID is another pattern
+#     - Pretty URLs can be created by shortening UUID on backend/frontend
+# 9. Hide fields in your Pydantic model (which ideally are custom)
+#     - Primary keys are hidden by default in the response
+#     - Alternatively you can use `create_pydantic_model` with `secret=True`
 #
 #
 # One-to-one relationships
 # ------------------------
-# > There's a couple of ways to enter a foreign key relationship
+# > Where you need an `ID` on the frontend, make data structures.
+# > For example, a foreign key relationship can be represented like ...
 #
-# 1. Use the `ID` of the related table (e.g: Elm `(Int, Color)` tuple)
-# 2. Use the related object itself (e.g: `Color` object)
-#
-#
-# Secret columns
-# --------------
-# > API responses can have certain fields made `secret=`. By default the `ID` field
-# > is hidden in `create_pydantic_model`, so you don't need to add it. This helps
-# > prevent against brute force attacks and data scraping.
-# 
-# Use with `Band.select(exclude_secrets=True)` arguments. For the `UUID` field,
-# we automatically create it in the route function, so the user does not need to
-# supply it. We have two options:
-# 
-# 1. Use `secret=True` and hide it in the Pydantic model
-# 2. Use `exclude_columns` to hide it in the Pydantic model
-#
-# Then insert the hidden value: `Fruits.insert(Fruits(field=uuid4(), **data)`.
-# For now though, we'll allow a `None` value in the model and update it with
-# `Model.field = uuid4()`!
+# 1. `(Int, Colour)` tuple (foreign key `Serial` ID: potentially fastest)
+# 2. `Color` dictionary/object (`Color.id` / `String` and let SQLite handle join)
 #
 #
-# Notes
-# -----
-# 1. We're now using `UUID` as the main primary key
-#     - We don't have the benefit of auto-increment serial `ID` now, so you'll
-#       have to set it in the route function!
-#     - Either use the `uuid.uuid4()` function and assign it to `data.id` ...
-#     - Or use Pydantic's `str = Field(default_factory=uuid.uuid4())`
-# 2. Short `UUID`s can be handled in DB, route function, or the client:
-#     - @ https://dba.stackexchange.com/questions/307520/how-to-handle-short-uuids-with-postgres
-# 3. Piccolo stores `null` values as `None` in the SQLite database
-#
-#
-# Wishlist
+# WISHLIST
 # --------
-# 1. What's the average url length for an image API?
-# 2. Does class field order matter or just use alphabetical order?
-# 3. Test the following for speed:
+# 1. Average url length for image API?
+#     - @ ...
+# 2. Is it better to use ABC order for class fields?
+#     - Or by importance? (does order matter)
+# 3. Performance speed testing (someday):
 #     - Indexed `UUID` join
-#     - Get `ID` with `UUID` ==, then join on `ID`
+#     - Non-indexed `UUID` with `Serial` ID (still requires lookup by UUID?)
+#     - @ https://dba.stackexchange.com/questions/307520/how-to-handle-short-uuids-with-postgres
 
 from piccolo.table import Table
 from piccolo.columns import ForeignKey, Varchar, UUID
@@ -210,7 +73,7 @@ class Fruits(Table):
     """
     > We're using both `Serial()` and `UUID()` columns.
 
-    Our primary key is `secret=True` by default (hidden in the response).
+    > Primary key is `secret=True` by default (hidden in the response).
 
     By default Piccolo uses an auto-incrementing `id` primary key with the
     `Serial()` column type (created automatically). We've changed it here to
@@ -220,7 +83,7 @@ class Fruits(Table):
     The Elm-Land version uses emojis, but we'll test out an image server.
     """
 
-    id = UUID(primary_key=True, index=True) # (1), (2)
+    id = UUID(primary_key=True, index=True) # (2), (3)
     color = ForeignKey(references=Colors)
-    image = Varchar(length=255, null=True)  # (3)
+    image = Varchar(length=255, null=True)  # (1)
     name = Varchar(length=15, unique=True)
