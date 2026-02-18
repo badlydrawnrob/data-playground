@@ -8,41 +8,22 @@
 #     @ https://github.com/piccolo-orm/piccolo/issues/1257
 #     @ https://github.com/piccolo-orm/piccolo/issues/1319 (Async problems)
 #
-# Do not worry prematurely about performance; consider it when you have users!
+# Do not prematurely optimize and worry about performance with customers.
 #
-# 1. Piccolo columns are stored as basic data types in SQLite
-#     - `Integer`, `Real`, `Text`, etc (Postgres has better typing)
-# 2. SQLite is NOT set to strict mode, so potentially ANY value is accepted
-#     - We're heavily relying on API layer models (add DATA models if you wish)
-#     - Without care, potentially ANY data can be inserted without strictness
-# 3. Table fields required by default `null=False` (null /= null ... NOT distinct)
-# 4. Values are inserted by field order (not alphabetically)
-# 5. Insertions are by field order (not alphabetical)
-# 6. `sqlite3.IntegrityError` null and distinct values are a problem
-#     - Duplicate checking is best handled with the DB (not the client)
-# 7. Piccolo uses full joins on queries (e.g: `Fruits.color.name` is valid)
-#     - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/query_types/joins.html#joins
-# 8. ⏱ UUIDs (primary key) should also be INDEXED for quicker lookups.
-#     - `Int > Bytes > String` performance speed (Postgres bytes is better)
-#     - `order_by` defaults to INDEX row id (not UUID)
-#     - ⏱ `Serial` as primary key with public UUID is another pattern
-#     - Pretty URLs can be created by shortening UUID on backend/frontend
-# 9. Hide fields in your Pydantic model (which ideally are custom)
-#     - Primary keys are hidden by default in the response
-#     - Alternatively you can use `create_pydantic_model` with `secret=True`
+# 1. Take care with inserts: SQLite is not in strict model
+#     - `sqlite3.IntegrityError` is raised for null and distinct values
+#     - Duplicate values are best handled with the DB (not the client)
+# 2. Table fields are required by default (use `null=True` for optional)
+# 3. Insertions are by field order (not alphabetical)
+# 4. Primary keys are hidden in the response (use `secret=False` to show)
+# 5. Foreign keys are always joined, so you can traverse them
+# 6. Foreign keys that are strings should always be indexed for performance
+# 7. It's more secure to not expose primary keys (but the client may need them)
 #
 #
-# One-to-one relationships
-# ------------------------
-# > Where you need an `ID` on the frontend, make data structures.
-# > For example, a foreign key relationship can be represented like ...
-#
-# 1. `(Int, Colour)` tuple (foreign key `Serial` ID: potentially fastest)
-# 2. `Color` dictionary/object (`Color.id` / `String` and let SQLite handle join)
-#
-#
+# ------------------------------------------------------------------------------
 # WISHLIST
-# --------
+# ------------------------------------------------------------------------------
 # 1. Average url length for image API?
 #     - @ ...
 # 2. Is it better to use ABC order for class fields?

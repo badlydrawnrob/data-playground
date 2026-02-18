@@ -1,7 +1,8 @@
 # ------------------------------------------------------------------------------
 # Routes
 # ==============================================================================
-# > See `badlydrawnrob/python-playground/building-with-fast-api` for more docs.
+# > See `badlydrawnrob/python-playground/building-with-fast-api` for more docs,
+# > and coding style guides.
 # 
 # We're using `@fruits_router` rather than `@app` here as it's better organised.
 # You need to register the router in `app.py` with `include_router`.
@@ -11,16 +12,12 @@
 #
 # Coding style is a personal preference
 # -------------------------------------
-# > Technically not 100% data functional style. DRY is great when it's needed
-# > but don't overuse it: similar is not the same as identical.
+# > Prefer functional (occasionally objects speed up performance)
+# 
+# DRY is great but don't over use it: similar is not the same as identical.
+# Brutalist, minimalist, zen and explicit is better than implicit.
 #
-# See also `app.py` "Learning frame" for coding standards.
-#
-# 1. Prefer a functional style with `.add()` or `.insert()` (no objects)
-# 2. Prefer working directly with data (rather than classes and methods)
-# 3. Only ever use objects if it dramatically increases performance!
-#     - The only place I can think of is updating a single field
-# 4. Minimalism and brutalist (`Task._meta.primary_key` -> `Task.id`)
+# See also `app.py` "Learning frame" for coding standards.
 #
 #
 # Routes
@@ -33,48 +30,38 @@
 #
 # Requests
 # --------
-# > Named arguments with types are used for clarity (`body` renamed as `data`)
-# > `session=Depends(get_session)` is an example of `**kwargs`.
-#
-# You can take the `FruitsModelIn` and `**data.model_dump()` inside the `Fruits`
-# table, using `exclude_unset=True` if you want to avoid `None` values.
+# > You can use named arguments with types for clarity.
+# > These can be named anything you like (unless keyword arguments).
+# 
+# - `body` -> `data` is a more descriptive name (to me)
+# - `session=Depends(get_session)` is an example of `**kwargs`
+# - `FruitsModelIn` can be converted to a dictionary
+#     - `**data.model_dump()` can be used inside `Fruits` table instance
+#     - `exclude_unset=True` removes any `None` values in the dictionary
 #
 #
 # Responses
 # ---------
 # > See "APIs You Won't Hate" (book 2) for return values and error guides.
 #
-# 1. Hide any values that are sensitive (Piccolo hides `Fruits.id` by default)
-# 2. `Depends()` always runs before the endpoint body to check the JWT token
-# 3. `.first()` can be used if you're confident there's only a singleton response
-# 4. SQLite 3.35.0 and above supports the returning clause which helps avoid
-#    having to change the transaction value (see `planner/tables.py`):
-#     - ⚠️ Returning values are ESSENTIAL for some endpoints to work correctly
-#     - ⚠️ If a query supports returning values and we don't use it, we can't
+# 1. Hide any sensitive values (primary key hidden by default)
+# 2. If SQL return is a singleton, use `.first()` where possible
+# 3. ⚠️ SQLite 3.35.0 and above supports the returning clause (this is non-optional)
+#     - Removes the need for read/writes and changing transaction type
+#     - If a query supports returning values and we don't use it, we can't
 #       check if any rows were updated! (See `update_fruit` as an example)
 #
 #
-# API Errors
-# ----------
+# ⛔️ API Errors and bugs
+# ----------------------
 # > See `README.md` of `badlydrawnrob/python-playground/building-with-fast-api/
-# > for a list of expected errors with APIs!
+# 
+# For a list of expected errors with APIs!
 #
 #
-# Questions
-# ---------
-# 1. When do queries not return an `[]` empty list?
-# 2. How to assure a singleton query is indeed unique?
-# 3. `Depends()` can go in the route decorator AND route function?
-#
-#
-# Bugs
-# ----
-# > ⚠️ See `README.md` of `badlydrawnrob/python-playground/building-with-fast-api/`
-# > for a list of expected bugs with APIs!
-#
-#
-# Wishlist
-# --------
+# ------------------------------------------------------------------------------
+# WISHLIST
+# ------------------------------------------------------------------------------
 # 1. Create a filter, pagination, and search route?
 #    - ⭐️ Probably a good time to use RAW sql queries
 #    - Investigate `case` in Python` to validate query strings
@@ -95,6 +82,13 @@
 #    - You'd grab this after getting the JWT with Elm Lang
 # 7. Transactions: understand when to be careful with `select()` then writes
 # 8. Can UUID be `None` in the Pydantic model if it's auto-generated? (see `FruitsModelIn`)
+#
+#
+# Questions
+# ---------
+# 1. When do queries not return an `[]` empty list?
+# 2. How to assure a singleton query is indeed unique?
+# 3. `Depends()` can go in the route decorator AND route function?
 
 from auth.authenticate import authenticate
 from auth.jwt_handler import create_access_token
@@ -121,8 +115,10 @@ user_router = APIRouter(
 # ------------------------------------------------------------------------------
 # User operations
 # ==============================================================================
-# > Only the core arguments are needed (client and secret set to `none`)
-# > @ https://www.oauth.com/oauth2-servers/client-registration/client-id-secret/
+# > For now the core arguments are needed, but you may wish to add `client_id`
+# > and `client_secret` to your API (currently set to `none` for testing)
+#
+# @ https://www.oauth.com/oauth2-servers/client-registration/client-id-secret/
 
 @user_router.post("/login") #! (2)
 async def sign_in_user(
@@ -140,12 +136,10 @@ async def sign_in_user(
             detail="User doesn't exist or invalid password"
         )
 
-
-    result = await BaseUser.select().where(BaseUser.id == user).first()
-    token = create_access_token(result["username"])
+    access_token = create_access_token(data.username)
 
     return {
-        "access_token": token,
+        "access_token": access_token,
         "token_type": "Bearer"
     }
 
@@ -153,7 +147,8 @@ async def sign_in_user(
 # ------------------------------------------------------------------------------
 # Read operations
 # ==============================================================================
-# > #! Response type is generally redundant if using `response_model=`
+# > ⚠️ Response type is generally redundant if using `response_model=`, but if
+# > both are used `response_model=` takes precedence.
 
 @fruits_router.get(
         "/",

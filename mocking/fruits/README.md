@@ -54,62 +54,62 @@ curl -X 'POST' \
 -d 'grant_type=password&username=[USER]&password=[PASSWORD]&scope=&client_id=none&client_secret=none'
 ```
 
+## Coding style
 
-## To Do
+> See the article `/words/coding-style` for my preferred style.
+
+TL;DR: Zen, brutalist, minimal. Aim for statically typed functional where possible.
+
+
+## To-Do list
 
 > Handle all errors "just-in-time" but use logs and screenshots/123s so you can
 > replicate the bug. Make sure to use logs and test the API with Bruno for correct
 > and incorrect data.
 
-1. Transactions can be avoided by using writes only (faster queries).
-    - It's helpful to understand _why_ transactions _would_ be needed ... when
-      read and write operations are housed in the same endpoint/transaction.
-    - Transactions are `DEFFERED` by default (`IMMEDIATE` is required if read
-      and writes are used together). Always test concurrent connections.
-    - `RETURNING` statement is essential if using writes only, as we need to make
-      sure that a row exists (otherwise we'd need `EXISTS` and a `SELECT`).
-    - If requiring `IMMEDIATE`, read "Using SQLite and Asyncio effectively"
-      and (ideally) use `dependencies=[Depends(transaction)]` in the endpoint.
-2. Should `timeout` always be used with SQLite?
-    - https://piccolo-orm.readthedocs.io/en/latest/piccolo/tutorials/using_sqlite_and_asyncio_effectively.html#timeout
-3. Naming conventions:
-    - `Fruit` -vs- `Fruits`
-    - `FruitModelIn` or `FruitsModelIn`?
-    - `/fruits` folder or `/fruit`?
-    - `["Capital", "Case"]` -vs- `["lower", "case"]`
-    - And so on ...
-4. Run a speedtest on all backend endpoints as well as frontend
-    - You can use bombardier for API concurrent connections.
-5. Populate database with `sqlite-utils` (migrations are confusing)
-    - colors and fruits defaults
-    - Auto migrations do not work with SQLite
-6. Prefer custom Pydantic models ...
-    - Are we happy with a flat `json` response?
-    - Or stick to a nested one?
-7. `BaseUser` is a little bit awkward to extend with a `UUID` field
-    - Can we extend it properly without a `Profile` column?
-    - Or simply use the `username` and forgo the `UUID`?
-8. Assure that data integrity and types are maintained with SQLite
-    - It can fall over in [some circumstances](https://github.com/piccolo-orm/piccolo/discussions/1247) without strict tables or pydantic!
-9. Add in [piccolo admin](https://github.com/piccolo-orm/piccolo_admin)?
-    - Currently not included in our Python packages
-    - Used in `app.py` and `piccolo_conf.py`
-10. Fix larger comments with Pep 8?
-    - Longer `#` comments could use `"""` docstrings.
-11. `create_pydantic_model` requires the `piccolo-api` package
-    - Just create my own models in future?
-12. Check the "APIs you won't hate" book on standard return values
-    - What [should be returned](https://softwareengineering.stackexchange.com/questions/314066/restful-api-should-i-be-returning-the-object-that-was-created-updated) from a `Update`, `Delete`, ..., in a REST API?
+1. Create a backup of the `dependencies=[Depends(transaction)]` method
+2. Follow up the Bombardier and `timeout` theory (it's worse than default)
+3. Fix naming conventions (and stick to them)
+    - Singular -vs- plural (`Fruit`/`Fruits`, `/fruit`/`/fruits`, etc)
+    - Capital or lowercase (`["list", "example"]`)
+4. Bombardier and Locust tests
+5. Can `BaseUser` be extended easily with a `UUID` field?
+    - Seems awkward to do, maybe stick with `Serial` id.
+6. Can I break the SQLite database with [bad types](https://github.com/piccolo-orm/piccolo/discussions/1247) (via the API)?
+7. Check the "APIs you won't hate" book on standard return values
+    - What [should be returned](https://softwareengineering.stackexchange.com/questions/314066/restful-api-should-i-be-returning-the-object-that-was-created-updated) from an update, delete, etc?
 
 
-## Performance
+## Performance
 
-1. Aim for atomic transactions rather than bulk
-    - You can always do bulk inserts/edits with `sqlite-utils`
-2. It might reduce errors to increase [`timeout`](https://github.com/piccolo-orm/piccolo/issues/687) value in SQLite
-3. Using a single `update()` statement instead of a read then write
-    - Always use the `.returning()` method or [bugs](https://github.com/piccolo-orm/piccolo/issues/1319) can appear.
-4. Use [Bombardier](https://github.com/codesenberg/bombardier) to stress-test your server
+> We should forget about small efficiencies, say about 97% of the time: premature optimization is the root of all evil. Yet we should not pass up our opportunities in that critical 3%.
+
+A counter quote is [design your systems well](http://www.joshbarczak.com/blog/?p=580), care about [web obesity](https://idlewords.com/talks/website_obesity.htm), [slow 4g](https://nordicapis.com/optimizing-apis-for-mobile-apps/), and take easy wins.
+
+1. Prefer ATOMIC transactions (not bulk)
+2. Never use a read/write when a write will do (`.returning()`)
+
+**The big question in my mind is "Do you have customers yet?"** If the answer is "NO!" you can optimize all you like; it won't make a bit of difference. If you've got paying customers, understand bottlenecks before _strategic_ optimization.
+
+See also [`building-with-fast-api`](https://github.com/badlydrawnrob/python-playground/tree/master/building-with-fast-api) for more details.
+
+
+## Errors
+
+> For a more comprehensive look at errors, see [`building-with-fast-api`](https://github.com/badlydrawnrob/python-playground/tree/master/building-with-fast-api)
+
+
+## Potential improvements
+
+1. Aim for beautiful, readable, ELi5 code
+    - Code for your stupid future self!
+2. Tesla 5 steps (less dumb spec, remove stuff, etc)
+3. Minimise dependencies and don't make me think!
+4. Finger painting for adults (learning frame)
+    - Which features are we omitting? (beginner friendly)
+    - What's your [readability](https://readable.com/) score?
+5. Faster loading and performance (major bottlenecks)
+    - If speed is negligible, easier to read takes precedence
 
 
 ## Storytelling
@@ -117,22 +117,6 @@ curl -X 'POST' \
 > How you sell your thing matters ... why should they care?
 
 Evan Czaplicki's [talk](https://www.deconstructconf.com/2017/evan-czaplicki-on-storytelling) about communicating clearly your vision and why anybody should care (when perspectives differ). Quite useful for documentation, Quick Start guides, and writing in general. Piccolo is great, but there's areas in the writing (and onboarding) for improvement.
-
-
-## Database
-
-> Currently the master `.config/git/ignore` file disallows `*.sqlite` databases
-
-This is probably a LOT better for security reasons, so make sure you backup and have an easy way to setup your initial data.
-
-
-## Coding style
-
-> In general prefer a data-style rather than OOP
-
-Aim to write your functions in Elm style as much as possible (which isn't mutable). Don't force Python to do what it's not meant to do, however. Maybe objects are OK when used in moderation. I imagine OCaml and Elm would do things manually, rather than using magic like `response_model=` and `model_dump()`?
-
-Other slight weirdness is that `Fruits.insert(Fruits(**data.model_dump()))` can insert multiple values, so we're using an inner `Fruits()` object here. Conversely, `Fruits.update()` does not require this and you can supply it a record directly (it's only updating a single entry).
 
 
 ## Dependencies
@@ -156,6 +140,9 @@ Just keep an eye on how fast these are changing and what impact it has on your m
 ## Security
 
 > You're not Facebook. Or Google. Only build what you need.
+> Make sure your `.config/git/ignore` file doesn't commit `*.sqlite` databases!
+
+Backup your database **outside** of version control in production.
 
 Aim for speed and ease of reading, but take care with security. I don't _really_ need a fully functioning JWT [with claims](https://github.com/piccolo-orm/piccolo/discussions/1277) like Auth0, only a secure way for a user to login and validate their routes. Only include a `UUID` in the `payload` (it's public anyway) and an expiry date. Anything else can be retrieved once logged in from a `/profile` endpoint and cached in `localStorage` if needed.
 
@@ -173,7 +160,7 @@ Build simply. Don't overplan. YAGNI!
 Unless the API and DATA layer models need to vary, generating a single model that can be reused for `DataModelIn` and `DataModelOut` might work ok. FastAPI will check it for data integrity in `data: Request` and `response_model=`.
 
 
-## Bugs
+## 🐞 Bugs
 
 For now, unless it's a blocking problem, just LOG it and move on. Find a workaround, unless it's essential to what you need to complete. You've raised a lot of issues.
 
@@ -203,22 +190,6 @@ It seems [easier](https://github.com/piccolo-orm/piccolo/issues/1292) to just cr
 ## Piccolo documentation
 
 - [Contributing](https://github.com/piccolo-orm/piccolo/issues/1274#issuecomment-3395426315) if you find any areas of improvement.
-
-
-## SQLite
-
-> Piccolo is one of the easiest ways to query your data (see [ORM challenges](https://piccolo-orm.com/blog/orm-design-challenges/))
-
-- Peewee was great but not setup for `async` (although it has an [untested plugin](https://peewee-async.readthedocs.io/en/latest/index.html))
-- SQLModel is an abstraction of an abstraction (SQLAlchemy) and feels bloated to me
-
-SQLModel uses the Data Mapper pattern rather than Active Record and is a little more confusing with `.session.exec()`, add, commit, etc, whereas Piccolo needs no `connect()` or `close()` functions as it's `select()` queries are handled automatically. Peewee and Piccolo have an object oriented style, but (I think) only Piccolo has a functional data style. Piccolo feels a lot lighter and easier to wrap your head around!
-
-The downside of using SQLite over Postgres is data integrity (without [strict tables](https://www.sqlite.org/stricttables.html)) and data types. Some SQLite fields are stored as `json`, which will require a [plugin](https://sqlite.org/json1.html) to query them, or use [`sqlite-utils`](https://sqlite-utils.datasette.io/en/stable/cli-reference.html) (with `--json-cols`) and `jq`.
-    
-The upsides are Piccolo gives a wider range of [columns](https://piccolo-orm.readthedocs.io/en/latest/piccolo/schema/column_types.html) to work with, so whereas SQLite only has `1` (`True`) and `0` (`False`) for boolean values, Piccolo will add them as [proper (`json`)](https://github.com/piccolo-orm/piccolo/issues/1257) types. You also have to be careful with [empty `String`](https://github.com/piccolo-orm/piccolo/issues/353) values.
-
-Postgres is _far_ more capable than SQLite but is also harder to setup, store, and migrate data (it's documentation is huge).
 
 
 

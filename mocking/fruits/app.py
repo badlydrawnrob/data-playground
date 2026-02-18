@@ -33,59 +33,60 @@
 #
 # Piccolo ORM
 # -----------
-# 1. Piccolo by default uses `engine_finder` from `piccolo_conf.py`
-# 2. Piccolo can automatically create tables from your models
-#    - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/query_types/create_table.html
-# 3. Piccolo connects and closes database with a single function (careful with async writes)
-#    - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/tutorials/fastapi.html#transactions
-#    - @ https://tinyurl.com/piccolo-sqlite-tips-concurrent (database locked error)
+# > @ https://tinyurl.com/piccolo-sqlite-tips-concurrent
+#
+# Piccolo automatically creates the database and schema. It also connects and
+# closes the database connection as needed.
 #
 #
-# Piccolo Auth and Admin
-# ----------------------
-# > @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/authentication/index.html
-# > @ https://piccolo-api.readthedocs.io/en/latest/session_auth/index.html
+# Piccolo Admin
+# -------------
 # > @ https://piccolo-api.readthedocs.io/en/latest/piccolo_admin/index.html
 #
-# I'm using the simpler authentication with my own JWT setup (you could use the
-# Piccolo API for stronger session auth). You may also like to explore your data
-# entries with Piccolo Admin. I've disabled the admin for now as I'd prefer it
-# for localhost only (for security).
-#
-# ```
-# admin = create_admin(tables=APP_CONFIG.table_classes)
-# app.mount("/admin", admin)
-# ```
+# The authentication method we're using is fine for now, although Piccolo offers
+# other ways to authenticate. You may also like to explore your data
+# entries with Piccolo Admin (I'm using it for local only as a security measure).
 #
 #
-# SQLite transactions
-# -------------------
-# > Always use a `DataModelIn` before saving to SQLite as it's not strict.
-#
-# 1. Async transactions can fail if you `select()` followed by a write.
-#     - Be very careful and use the correct transaction type where needed.
-#     - @ https://tinyurl.com/piccolo-sqlite-and-asyncio
-#     - @ https://github.com/piccolo-orm/piccolo/discussions/1247
-# 2. SQL is waaay quicker at search filters than Elm or Python so ...
-#    - `await Task.select().where(Task.id == task_id)` ... GOOD!
-#    - `if list: for i in list: if i.id == task_id:`   ... BAD!
+# Serialization
+# -------------
+# > It would be wise to use `DataModelIn` layer before insertions
+# 
+# SQLite is not in strict mode, so potentially ANY data is permissable.
 #
 #
-# Improvements
-# ------------
-# 1. Aim for beautiful, readable, ELi5 code (my stupid future self)
-#     - I shouldn't need to be an expert to understand Piccolo!
-#     - Elm code uses a lot of whitespace which I prefer
-#     - If something can be simplified or removed, do so
-# 2. Do not include needless packages where they can be avoided
-#     - Code and dependencies should follow a minamilist approach
-# 3. Code should be pitched at the right level of ability and knowledge
-#     - Advanced features should be hidden for begginers (like `Readable`)
-# 4. Code should follow expectations setup from other parts of the documentation
-#     - `playground run` is using a `Band` database, so why not here?
-# 5. Aim for faster loading while still sticking to the above
-#     - Which code is faster in an object oriented style? (e.g: find task with id)
-#     - If speed is negligible, prefer readable and functional style
+# Performance (SQL -vs- Elm)
+# --------------------------
+# > SQL is waaay quicker at search filters than Elm or Python so ...
+# 
+# - `await Task.select().where(Task.id == task_id)` ... GOOD!
+# - `if list: for i in list: if i.id == task_id:`   ... BAD!
+#
+#
+# ------------------------------------------------------------------------------
+# Wishlist
+# ------------------------------------------------------------------------------
+# > Some of these may never get done! (YAGNI and just-in-time)
+#
+# 1. ⚠️ Tighten up the types?
+#    - Does the API allow me to break the app? (SQLite types are too loose)
+# 2. Create a script that automatically creates mock data
+#    - Use `sqlite-utils` or Piccolo itself
+# 3. Add SQLite transactions (see docs)
+#    - Test concurrent connections and writes
+#    - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/tutorials/fastapi.html#transactions
+# 4. Add `UUID` for certain endpoints that are indexed
+#    - We don't really need these for `Colors`
+# 5. Add logging for FastApi on the production server?
+#    - @ https://tinyurl.com/prep-fastapi-for-production
+# 6. Understand how Piccolo apps work a bit better?
+#     - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/projects_and_apps/
+# 7. How best to reduce the surface area of XSS attacks?
+#    - Do we need to sanitize text if it's not rendered as HTML or used in SQL?
+# 8. What's the best method to insert one-to-many relationships?
+#    - See the `tables.py` file for more notes.
+# 9. What's affecting performance over time?
+#    - Lookups with `UUID`s for example
 #
 #
 # Questions
@@ -105,34 +106,6 @@
 #    - You store it as a `json` string, then convert to a dictionary
 # 8. ~~Are results cached?~~ (later/never)
 #    - @ https://www.powersync.com/blog/sqlite-optimizations-for-ultra-high-performance
-#
-#
-# Errors
-# ------
-# 1. Tighten up the types?
-#
-#
-# Wishlist
-# --------
-# > Some of these may never get done! (YAGNI and just-in-time)
-#
-# 1. Create a script that automatically creates mock data
-#    - Use `sqlite-utils` or Piccolo itself
-# 2. Add SQLite transactions (see docs)
-#    - Test concurrent connections and writes
-#    - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/tutorials/fastapi.html#transactions
-# 4. Add `UUID` for certain endpoints that are indexed
-#    - We don't really need these for `Colors`
-# 5. Add logging for FastApi on the production server?
-#    - @ https://tinyurl.com/prep-fastapi-for-production
-# 6. Understand how Piccolo apps work a bit better?
-#     - @ https://piccolo-orm.readthedocs.io/en/latest/piccolo/projects_and_apps/
-# 7. How best to reduce the surface area of XSS attacks?
-#    - Do we need to sanitize text if it's not rendered as HTML or used in SQL?
-# 8. What's the best method to insert one-to-many relationships?
-#    - See the `tables.py` file for more notes.
-# 9. What's affecting performance over time?
-#    - Lookups with `UUID`s for example
 
 from contextlib import asynccontextmanager
 

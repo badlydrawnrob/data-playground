@@ -3,17 +3,13 @@
 # ==============================================================================
 # > See `badlydrawnrob/python-playground/building-with-fast-api` for more docs.
 #
-# Piccolo helps us turn our table models into Pydantic types
+# Piccolo turns our table models into Pydantic types with `create_pydantic_model`.
+# Ideally we'd have both API models and DATA models to assure strict types added
+# with SQLite (which isn't in strict table mode). Take care with inserts.
 #
-# Ideally we'd have an API model layer and a DATA model layer, but we're conflating
-# the two in this mocking example. I guess in general they can be shared, so long
-# as you're not tightly coupling your code. Remember that similar is NOT the same!
-#
-# Values are required by default (`null=False`).
-#
-#
-# Wishlist
-# --------
+# ------------------------------------------------------------------------------
+# WISHLIST
+# ------------------------------------------------------------------------------
 # 1. Add a `ColorsModelIn` model and endpoint for the `Colors` table.
 # 2. Add a `default_factory` setting with custom `Fruits` model for `UUID`?
 # 3. Check if field can be `None` in Pydantic model when it shouldn't be? 
@@ -32,8 +28,10 @@ class TokenResponse(BaseModel):
 
 
 # Single -----------------------------------------------------------------------
-# For flat models you can use automatic Pydantic model creation. You may need to
-# use `**data.model_dump(exclude_unset=True)` in some routes.
+#
+# > Flat shape by default
+# 
+# You may need to use `**data.model_dump(exclude_unset=True)`
 
 FruitsModelIn: Any = create_pydantic_model(
     table=Fruits,
@@ -48,13 +46,12 @@ FruitsModelOut: Any = create_pydantic_model(
 
 
 # Foreign keys -----------------------------------------------------------------
-# > Piccolo returns a flat shape for foreign key joins by default.
-#
-# A flat shape is great for Elm Lang, but not helpful when trying to use
-# `create_pydantic_model`: use a nested style if you're using that function (for
-# the time being at least). Requires `.output(nested=True)` in the `.select()`.
 # 
-# Ideally, create your own Pydantic models for whatever you want to return!
+# > As complexity increases, it's better to create custom Pydantic models.
+#
+# Flat shape is great for Elm Lang, but not helpful when trying to use Piccolo's
+# `create_pydantic_model` function with foreign keys. A nested shape is much easier
+# to work with, but requires `.output(nested=True)` in the `.select()`.
 
 FruitsAllModelOut: Any = create_pydantic_model(
     table=Fruits,
